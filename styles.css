@@ -88,16 +88,14 @@ header.site-header{
 }
 
 .logo .mark{
-  width:32px;
-  height:32px;
-  border-radius:8px;
-  background:var(--gradient);
+  width:34px;
+  height:34px;
   display:flex;
   align-items:center;
   justify-content:center;
   flex-shrink:0;
 }
-.logo .mark svg{width:18px;height:18px;}
+.logo .mark img{width:100%;height:100%;object-fit:contain;}
 
 .logo .brandname .sub{
   display:block;
