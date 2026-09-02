@@ -88,7 +88,7 @@ header.site-header{
 }
 
 .logo .mark{
-    width:38px;
+  width:38px;
   height:38px;
   display:flex;
   align-items:center;
@@ -101,6 +101,7 @@ header.site-header{
   object-fit:contain;
   filter:drop-shadow(0 2px 7px rgba(47,212,196,0.18));
 }
+
 .logo .brandname .sub{
   display:block;
   font-family:'JetBrains Mono', monospace;
