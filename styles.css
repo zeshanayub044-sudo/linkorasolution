@@ -402,16 +402,8 @@ body.modal-open{overflow:hidden;}
 .order-form input:focus,.order-form textarea:focus{outline:none;border-color:var(--teal);}
 
 /* ---------- Local SEO / Google Business Profile ---------- */
-.gmb-layout{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;}
+.gmb-layout{max-width:860px;}
 .gmb-layout h3{font-size:1.5rem;margin-bottom:20px;}
-.gmb-visual{position:relative;min-height:360px;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius);background:radial-gradient(circle at 50% 48%,rgba(47,212,196,.14),transparent 27%),var(--surface);}
-.gmb-visual__grid{position:absolute;inset:-25%;background-image:linear-gradient(rgba(76,141,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(76,141,255,.12) 1px,transparent 1px);background-size:38px 38px;transform:rotate(-14deg);}
-.gmb-visual__pin{position:absolute;top:58px;left:calc(50% - 32px);width:64px;color:var(--teal);filter:drop-shadow(0 8px 14px rgba(47,212,196,.3));}
-.gmb-visual__search{position:absolute;top:154px;left:30px;right:30px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:9px;padding:13px 15px;border:1px solid var(--border);border-radius:10px;background:rgba(13,18,25,.94);font-size:.78rem;color:var(--text-muted);box-shadow:0 10px 25px rgba(0,0,0,.2);}
-.gmb-visual__search strong{grid-column:2;color:var(--text);font-size:.9rem;font-family:'Space Grotesk',sans-serif;}
-.gmb-dot{grid-row:span 2;width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal);}
-.gmb-visual__marker{position:absolute;width:10px;height:10px;border:2px solid var(--blue);border-radius:50%;background:var(--bg);box-shadow:0 0 10px rgba(76,141,255,.55);}.marker-one{top:87px;left:20%;}.marker-two{top:222px;right:18%;}.marker-three{bottom:70px;left:31%;}
-.gmb-visual__caption{position:absolute;right:18px;bottom:18px;left:18px;padding:10px 12px;border:1px solid var(--border-soft);border-radius:8px;background:rgba(10,14,20,.8);color:var(--text-muted);font: .66rem 'JetBrains Mono',monospace;text-align:center;text-transform:uppercase;letter-spacing:.03em;}.gmb-visual__caption span{color:var(--teal);padding:0 4px;}
 .gmb-benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.gmb-benefits div{position:relative;padding:12px 12px 12px 29px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);color:var(--text-muted);font-size:.84rem;}.gmb-benefits div::before{content:"";position:absolute;left:12px;top:22px;width:7px;height:2px;background:var(--teal);}.gmb-cta{margin-top:36px;}
 
 /* ---------- Process steps ---------- */
@@ -674,7 +666,6 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
   .footer-grid{grid-template-columns:1fr 1fr;}
   .contact-grid{grid-template-columns:1fr;}
   .about-hero-grid{grid-template-columns:1fr;}
-  .gmb-layout{grid-template-columns:1fr;}
 }
 
 @media(max-width:760px){
@@ -703,6 +694,6 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
   .sheet-preview .row{grid-template-columns:1.6fr 1fr 1fr;}
   .sheet-preview .row span:nth-child(4){display:none;}
   .wrap{padding:0 20px;}.leadership-card{grid-template-columns:1fr;padding:26px;gap:24px;}.founder-photo{max-width:260px;width:100%;margin:0 auto;}
-  .gmb-visual{min-height:310px;}.gmb-visual__search{left:20px;right:20px;}.gmb-benefits{grid-template-columns:1fr;}
+  .gmb-benefits{grid-template-columns:1fr;}
   .order-modal{padding:12px;}.order-modal__dialog{max-height:calc(100vh - 24px);padding:28px 22px;}
 }
