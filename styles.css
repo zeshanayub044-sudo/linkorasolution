@@ -496,7 +496,7 @@ footer{
 
 /* ---------- Leadership ---------- */
 .leadership-card{display:grid;grid-template-columns:220px 1fr;gap:42px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:38px;}
-.founder-photo{aspect-ratio:1/1;display:grid;place-items:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;line-height:1.8;color:var(--text-dim);background:linear-gradient(135deg,var(--surface-2),var(--bg-elevated));border:1px dashed var(--border);border-radius:14px;}
+.founder-photo{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 20%;border:1px solid var(--border);border-radius:14px;background:var(--surface-2);}
 .leadership-card .mono{color:var(--teal);display:block;margin-bottom:12px;}.leadership-card h2{font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:12px;}.leadership-card p{max-width:680px;color:var(--text-muted);margin-top:10px;}.leadership-card .founder-name{color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600;}.leadership-card .founder-name span{color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;}.founder-vision strong{color:var(--teal);}
 
 /* ---------- Page hero (inner pages) ---------- */

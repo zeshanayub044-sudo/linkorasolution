@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (main && !document.querySelector('.leadership-section')) {
     var leadership = document.createElement('section');
     leadership.className = 'leadership-section border-top';
-    leadership.innerHTML = '<div class="wrap"><div class="leadership-card reveal in"><div class="founder-photo" role="img" aria-label="Founder photograph placeholder">FOUNDER<br>PHOTO</div><div><span class="mono">Leadership</span><h2>Meet the Leadership Behind LINKORA SOLUTION</h2><p class="founder-name">FOUNDER NAME <span>· Founder &amp; Managing Director</span></p><p>FOUNDER BIO — Add a concise professional biography here. Share the vision, experience and client-first approach that guide LINKORA SOLUTION.</p><p class="founder-vision"><strong>Our vision:</strong> Build sustainable search visibility through thoughtful strategy, quality work and transparent communication.</p></div></div></div>';
+    leadership.innerHTML = '<div class="wrap"><div class="leadership-card reveal in"><img class="founder-photo" src="assets/founder.jpg" alt="Muhammad Muneeb, founder of LINKORA SOLUTION" width="844" height="1266" loading="lazy"><div><span class="mono">Leadership</span><h2>Meet the Leadership Behind LINKORA SOLUTION</h2><p class="founder-name">MUHAMMAD MUNEEB <span>· Founder &amp; Managing Director</span></p><p>FOUNDER BIO — Add a concise professional biography here. Share the vision, experience and client-first approach that guide LINKORA SOLUTION.</p><p class="founder-vision"><strong>Our vision:</strong> Build sustainable search visibility through thoughtful strategy, quality work and transparent communication.</p></div></div></div>';
     main.appendChild(leadership);
   }
 
