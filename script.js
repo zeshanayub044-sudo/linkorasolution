@@ -59,6 +59,88 @@ document.addEventListener('DOMContentLoaded', function () {
     card.appendChild(link);
   });
 
+  // Service orders: collect the essentials first, then prepare a complete WhatsApp order.
+  // This runs only on the services page, so cards elsewhere keep their normal links.
+  var serviceSections = document.querySelectorAll('main > section[id]');
+  var isServicesPage = document.querySelector('nav.links a.active[href="services.html"]');
+  if (isServicesPage && serviceSections.length) {
+    var orderModal = document.createElement('div');
+    orderModal.className = 'order-modal';
+    orderModal.setAttribute('aria-hidden', 'true');
+    orderModal.innerHTML = '<div class="order-modal__backdrop" data-close-order></div><div class="order-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="order-title"><button class="order-modal__close" type="button" aria-label="Close order form" data-close-order>&times;</button><span class="mono">Start an order</span><h2 id="order-title">Order a service</h2><p class="order-modal__service" aria-live="polite"></p><form class="order-form"><input type="hidden" name="service"><div class="field"><label for="order-name">Your name</label><input id="order-name" name="name" type="text" autocomplete="name" required></div><div class="field"><label for="order-company">Business name</label><input id="order-company" name="company" type="text" autocomplete="organization"></div><div class="field"><label for="order-website">Website URL</label><input id="order-website" name="website" type="url" placeholder="https://yourwebsite.com"></div><div class="field"><label for="order-contact">WhatsApp number or email</label><input id="order-contact" name="contact" type="text" required></div><div class="field"><label for="order-notes">What do you need?</label><textarea id="order-notes" name="notes" placeholder="Tell us about your goals, niche, or quantity needed."></textarea></div><button class="btn btn-whatsapp" type="submit">Send order on WhatsApp</button></form></div>';
+    document.body.appendChild(orderModal);
+
+    var selectedService = '';
+    var lastTrigger = null;
+    var serviceLabel = orderModal.querySelector('.order-modal__service');
+    var orderForm = orderModal.querySelector('.order-form');
+
+    function openOrder(service, trigger) {
+      selectedService = service;
+      lastTrigger = trigger;
+      orderModal.querySelector('[name="service"]').value = service;
+      serviceLabel.textContent = 'Selected: ' + service;
+      orderModal.classList.add('is-open');
+      orderModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      orderModal.querySelector('#order-name').focus();
+    }
+
+    function closeOrder() {
+      orderModal.classList.remove('is-open');
+      orderModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      if (lastTrigger) lastTrigger.focus();
+    }
+
+    serviceSections.forEach(function (section) {
+      var serviceHeading = section.querySelector('.section-head h2');
+      if (!serviceHeading) return;
+      var serviceName = serviceHeading.textContent.trim();
+      var sectionHead = section.querySelector('.section-head');
+      var sectionButton = document.createElement('button');
+      sectionButton.type = 'button';
+      sectionButton.className = 'btn btn-gold order-service';
+      sectionButton.textContent = 'Order ' + serviceName;
+      sectionButton.addEventListener('click', function () { openOrder(serviceName, sectionButton); });
+      sectionHead.appendChild(sectionButton);
+
+      section.querySelectorAll('.card').forEach(function (card) {
+        var cardHeading = card.querySelector('h3');
+        var choice = cardHeading ? cardHeading.textContent.trim() : '';
+        var cardButton = document.createElement('button');
+        cardButton.type = 'button';
+        cardButton.className = 'order-card-button';
+        cardButton.textContent = 'Order on WhatsApp';
+        cardButton.addEventListener('click', function () {
+          openOrder(choice ? serviceName + ' — ' + choice : serviceName, cardButton);
+        });
+        card.appendChild(cardButton);
+      });
+    });
+
+    orderModal.addEventListener('click', function (event) {
+      if (event.target.hasAttribute('data-close-order')) closeOrder();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && orderModal.classList.contains('is-open')) closeOrder();
+    });
+    orderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!orderForm.reportValidity()) return;
+      var data = new FormData(orderForm);
+      var message = 'Hello LINKORA SOLUTION, I would like to place an order.\n\n'
+        + 'Service: ' + selectedService + '\n'
+        + 'Name: ' + data.get('name') + '\n'
+        + 'Business: ' + (data.get('company') || 'Not provided') + '\n'
+        + 'Website: ' + (data.get('website') || 'Not provided') + '\n'
+        + 'Contact: ' + data.get('contact') + '\n'
+        + 'Requirements: ' + (data.get('notes') || 'Not provided');
+      window.open('https://wa.me/923216308339?text=' + encodeURIComponent(message), '_blank', 'noopener');
+      closeOrder();
+    });
+  }
+
   var footer = document.querySelector('footer');
   if (footer) footer.innerHTML = '<div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-icon.png" alt="LINKORA SOLUTION logo"></span><span class="brandname">LINKORA SOLUTION</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="services.html#on-page-seo">On-Page SEO</a></li><li><a href="services.html#off-page-seo">Off-Page SEO</a></li><li><a href="services.html#backlinks">Backlinks</a></li><li><a href="services.html#guest-posting">Guest Posting</a></li></ul></div><div><h5>More services</h5><ul><li><a href="services.html#blog-writing">Blog Writing</a></li><li><a href="services.html#da-increase">DA Increase</a></li><li><a href="services.html#guest-post-sheet">Guest Post Sites Sheet</a></li><li><a href="services.html#technical-seo">Technical SEO</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com" target="_blank" rel="noopener noreferrer">Email us</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year">2026</span> LINKORA SOLUTION. All rights reserved.</p><div class="footer-social"><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer" aria-label="Contact LINKORA SOLUTION on WhatsApp">WA</a></div></div></div>';
 });

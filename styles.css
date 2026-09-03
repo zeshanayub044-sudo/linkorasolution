@@ -370,6 +370,36 @@ section{padding:86px 0;}
 }
 .service-card{display:flex;flex-direction:column;}
 .service-link{color:var(--teal);font-size:.86rem;font-weight:600;margin-top:auto;padding-top:8px;}.service-link:hover{color:var(--blue);}
+.order-service{margin-top:20px;}
+.order-card-button{
+  width:100%;
+  margin-top:18px;
+  padding:10px 14px;
+  border:1px solid rgba(47,212,196,.5);
+  border-radius:8px;
+  background:transparent;
+  color:var(--teal);
+  font:600 .84rem 'Inter',sans-serif;
+  cursor:pointer;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.order-card-button:hover{background:var(--teal);border-color:var(--teal);color:#06110f;}
+
+/* ---------- WhatsApp service order form ---------- */
+body.modal-open{overflow:hidden;}
+.order-modal{position:fixed;inset:0;z-index:1000;display:none;padding:20px;align-items:center;justify-content:center;}
+.order-modal.is-open{display:flex;}
+.order-modal__backdrop{position:absolute;inset:0;background:rgba(3,7,12,.76);backdrop-filter:blur(5px);}
+.order-modal__dialog{position:relative;width:min(100%,560px);max-height:calc(100vh - 40px);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:34px;box-shadow:0 24px 70px rgba(0,0,0,.45);}
+.order-modal__dialog .mono{color:var(--teal);display:block;margin-bottom:10px;}
+.order-modal__dialog h2{font-size:1.65rem;margin-bottom:6px;}
+.order-modal__service{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.75rem;margin-bottom:24px;}
+.order-modal__close{position:absolute;top:14px;right:16px;width:36px;height:36px;border:0;border-radius:50%;background:var(--surface-2);color:var(--text);font-size:1.65rem;line-height:1;cursor:pointer;}
+.order-form .field{margin-bottom:16px;}
+.order-form label{display:block;font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:7px;}
+.order-form input,.order-form textarea{width:100%;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font: .92rem 'Inter',sans-serif;}
+.order-form textarea{min-height:94px;resize:vertical;}
+.order-form input:focus,.order-form textarea:focus{outline:none;border-color:var(--teal);}
 
 /* ---------- Process steps ---------- */
 .steps{
@@ -659,4 +689,5 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
   .sheet-preview .row{grid-template-columns:1.6fr 1fr 1fr;}
   .sheet-preview .row span:nth-child(4){display:none;}
   .wrap{padding:0 20px;}.leadership-card{grid-template-columns:1fr;padding:26px;gap:24px;}.founder-photo{max-width:260px;width:100%;margin:0 auto;}
+  .order-modal{padding:12px;}.order-modal__dialog{max-height:calc(100vh - 24px);padding:28px 22px;}
 }
