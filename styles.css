@@ -44,6 +44,8 @@ h1,h2,h3,h4{
 
 a{color:inherit;text-decoration:none;}
 img{max-width:100%;display:block;}
+main{overflow:hidden;}
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{outline:3px solid var(--teal);outline-offset:3px;}
 
 .mono{
   font-family:'JetBrains Mono', monospace;
@@ -366,6 +368,8 @@ section{padding:86px 0;}
   text-transform:uppercase;
   color:var(--gold);
 }
+.service-card{display:flex;flex-direction:column;}
+.service-link{color:var(--teal);font-size:.86rem;font-weight:600;margin-top:auto;padding-top:8px;}.service-link:hover{color:var(--blue);}
 
 /* ---------- Process steps ---------- */
 .steps{
@@ -489,6 +493,11 @@ footer{
 }
 .footer-social a:hover{border-color:var(--teal);}
 .footer-social svg{width:15px;height:15px;}
+
+/* ---------- Leadership ---------- */
+.leadership-card{display:grid;grid-template-columns:220px 1fr;gap:42px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:38px;}
+.founder-photo{aspect-ratio:1/1;display:grid;place-items:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;line-height:1.8;color:var(--text-dim);background:linear-gradient(135deg,var(--surface-2),var(--bg-elevated));border:1px dashed var(--border);border-radius:14px;}
+.leadership-card .mono{color:var(--teal);display:block;margin-bottom:12px;}.leadership-card h2{font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:12px;}.leadership-card p{max-width:680px;color:var(--text-muted);margin-top:10px;}.leadership-card .founder-name{color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600;}.leadership-card .founder-name span{color:var(--text-muted);font-family:'Inter',sans-serif;font-weight:400;}.founder-vision strong{color:var(--teal);}
 
 /* ---------- Page hero (inner pages) ---------- */
 .page-hero{
@@ -649,4 +658,5 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
   .cta-band{flex-direction:column;align-items:flex-start;}
   .sheet-preview .row{grid-template-columns:1.6fr 1fr 1fr;}
   .sheet-preview .row span:nth-child(4){display:none;}
+  .wrap{padding:0 20px;}.leadership-card{grid-template-columns:1fr;padding:26px;gap:24px;}.founder-photo{max-width:260px;width:100%;margin:0 auto;}
 }
