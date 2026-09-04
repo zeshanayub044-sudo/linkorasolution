@@ -2,6 +2,13 @@
 document.addEventListener('DOMContentLoaded', function () {
   var toggle = document.querySelector('.nav-toggle');
   var links = document.querySelector('nav.links');
+  // Make the internal staff portal discoverable without changing the public-site flow.
+  if (links && !links.querySelector('a[href="attendance.html"]')) {
+    var portalLink = document.createElement('a');
+    portalLink.href = 'attendance.html';
+    portalLink.textContent = 'Staff Portal';
+    links.appendChild(portalLink);
+  }
   if (toggle && links) {
     toggle.setAttribute('aria-expanded', 'false');
     toggle.addEventListener('click', function () {
