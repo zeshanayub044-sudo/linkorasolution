@@ -25,9 +25,17 @@
   function clock(){let set=()=>{let d=new Date();let c=$('#clock'),cd=$('#clockdate');if(c)c.textContent=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(cd)cd.textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short',year:'numeric'})};set();clearInterval(window.attClock);window.attClock=setInterval(set,1000)}
   function render(){if(!session)return login();let admin=session.role==='admin';if(admin){({dashboard:adminDashboard,employees,attendance,leaves,reports}[view]||adminDashboard)()}else{({dashboard:employeeDashboard,attendance,leaves,profile}[view]||employeeDashboard)()}}(async()=>{await hydrate();render()})();
   async function manageEmployee(action, userId, employee, password){
-    const { data, error } = await sb.functions.invoke('manage-employee', { body: { action, userId, employee, password } });
-    if (error || data?.error) throw new Error(data?.error || error.message || 'Employee management request failed.');
-    return data;
+    try {
+      const { data, error } = await sb.functions.invoke('manage-employee', { body: { action, userId, employee, password } });
+      if (error || data?.error) throw new Error(data?.error || error?.message || 'Employee management request failed.');
+      return data;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '';
+      if (/failed to send a request|failed request to edge function|functionsfetcherror/i.test(message)) {
+        throw new Error('Employee service is not deployed. In Supabase, deploy the Edge Function named “manage-employee”, then try again.');
+      }
+      throw error;
+    }
   }
   employeeModal=(current=null)=>{document.body.insertAdjacentHTML('beforeend',`<div class="modal-wrap" id="modal"><form class="modal" id="empForm"><div class="modal-head"><h2>${current?'Edit employee':'Add employee'}</h2><button type="button" class="close" id="closeModal">×</button></div><div class="form-row"><div class="field"><label>FULL NAME</label><input required name="name" value="${current?.name||''}"></div><div class="field"><label>EMPLOYEE ID</label><input required name="employeeId" value="${current?.id||''}" placeholder="EMP-1027"></div></div><div class="field"><label>WORK EMAIL</label><input required type="email" name="email" value="${current?.email||''}"></div><div class="form-row"><div class="field"><label>DEPARTMENT</label><input required name="department" value="${current?.department||''}"></div><div class="field"><label>DESIGNATION</label><input required name="designation" value="${current?.designation||''}"></div></div><div class="form-row"><div class="field"><label>PHONE</label><input name="phone" value="${current?.phone||''}"></div><div class="field"><label>JOINING DATE</label><input required type="date" name="joiningDate" value="${current?.joining||today()}"></div></div><div class="field"><label>${current?'ACCOUNT STATUS':'TEMPORARY PASSWORD'}</label>${current?`<select name="active"><option value="true" ${current.active?'selected':''}>Active</option><option value="false" ${!current.active?'selected':''}>Inactive</option></select>`:`<input required name="password" type="password" minlength="8" placeholder="At least 8 characters">`}</div><div class="form-actions"><button class="primary-btn">${current?'Save employee':'Create employee account'}</button></div></form></div>`);$('#closeModal').onclick=()=>$('#modal').remove();$('#empForm').onsubmit=async e=>{e.preventDefault();let values=Object.fromEntries(new FormData(e.target));try{let employee={...values,active:values.active!=='false'};await manageEmployee(current?'update':'create',current?.authId,employee,values.password);$('#modal').remove();await hydrate();toast(current?'Employee information updated.':'Employee account created successfully.');render()}catch(error){toast(error.message,'error')}}};
   employees=()=>{
