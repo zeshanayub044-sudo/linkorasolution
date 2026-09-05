@@ -1,15 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Staff Portal | LINKORA SOLUTION</title>
-  <meta name="description" content="LINKORA SOLUTION staff attendance and leave management portal.">
-  <link rel="icon" href="assets/favicon.ico"><link rel="stylesheet" href="attendance.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff Sign In | Linkora Solutions</title>
+  <meta name="description" content="Secure Linkora Solutions staff sign-in and activity log.">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="attendance.css">
 </head>
 <body>
   <main id="app" aria-live="polite"></main>
   <div id="toast-region" class="toast-region" aria-live="polite"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="activity-config.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async></script>
   <script src="attendance.js" defer></script>
 </body>
 </html>
