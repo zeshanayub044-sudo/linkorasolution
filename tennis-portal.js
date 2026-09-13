@@ -28,7 +28,14 @@
     var result = await supabase.functions.invoke('manage-employee', {
       body: { action: action, sessionId: activitySessionId }
     });
-    if (result.error) throw result.error;
+    if (result.error) {
+      // Supabase exposes a non-2xx Function response as a generic error. Read
+      // the safe JSON error returned by the function so the employee knows
+      // that attendance was not saved instead of seeing a misleading success.
+      var detail;
+      try { detail = await result.error.context.json(); } catch (_) { /* use fallback below */ }
+      throw new Error((detail && detail.error) || 'The attendance sheet could not record this activity. Please try again or contact an administrator.');
+    }
     return result.data;
   }
   function showEmployee(profile) {
