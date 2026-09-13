@@ -507,6 +507,13 @@ footer{
 .footer-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
 .footer-grid ul li a{color:var(--text-muted);font-size:0.88rem;transition:color .2s;}
 .footer-grid ul li a:hover{color:var(--teal);}
+.footer-grid ul li a.tennis-portal-link{
+  display:inline-flex;align-items:center;gap:7px;width:max-content;
+  padding:8px 11px;border:1px solid var(--teal);border-radius:8px;
+  color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:.74rem;
+  letter-spacing:.02em;background:rgba(47,212,196,.08);
+}
+.footer-grid ul li a.tennis-portal-link:hover{color:#06110f;background:var(--teal);}
 .footer-grid p{color:var(--text-muted);font-size:0.88rem;max-width:280px;}
 .footer-bottom{
   display:flex;

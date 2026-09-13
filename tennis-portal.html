@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tennis Portal | LINKORA SOLUTION</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tennis-portal.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body class="portal-body">
+  <main class="portal-shell">
+    <a class="portal-brand" href="index.html" aria-label="Return to LINKORA SOLUTION">LINKORA <span>TENNIS PORTAL</span></a>
+    <section class="portal-card" aria-labelledby="portal-title">
+      <div class="portal-heading"><span class="mono">Employee access</span><h1 id="portal-title">Tennis Portal</h1><p>Sign in with your employee account to access your workspace.</p></div>
+      <form id="login-form" novalidate>
+        <label for="email">Employee email</label>
+        <input id="email" name="email" type="email" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="btn btn-primary" type="submit">Sign in securely</button>
+        <p id="login-message" class="form-message" aria-live="polite"></p>
+      </form>
+      <section id="employee-panel" hidden aria-live="polite">
+        <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
+        <button id="logout-button" class="btn btn-ghost" type="button">Sign out</button>
+        <p id="logout-message" class="form-message" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+  <script src="portal-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="tennis-portal.js"></script>
+</body>
+</html>
