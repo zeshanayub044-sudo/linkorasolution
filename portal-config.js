@@ -1,2 +1,2 @@
 window.TENNIS_PORTAL_CONFIG = {
-supabaseUrl: '[https://nbvylffxmjmovyfhbytu.supabase.co](https://nbvylffxmjmovyfhbytu.supabase.co)', supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5idnlsZmZ4bWptb3Z5ZmhieXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1NDk0NTMsImV4cCI6MjEwNDEyNTQ1M30.xQelaXnShnDihGzHpyThEVDFtnEhztPizCUqIAj_Hs8' };
+supabaseUrl: 'https://nbvylffxmjmovyfhbytu.supabase.co', supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5idnlsZmZ4bWptb3Z5ZmhieXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1NDk0NTMsImV4cCI6MjEwNDEyNTQ1M30.xQelaXnShnDihGzHpyThEVDFtnEhztPizCUqIAj_Hs8' };
