@@ -13,4 +13,10 @@ This static Linkora site now has a protected employee portal and an Edge Functio
 
 The login page is the same for every employee. After sign-in, only active profiles whose `role` is exactly `Co-CEO` see the executive admin panel and the latest 200 employee login/logout records. Employee accounts do not see the panel, and the Edge Function refuses report requests from them.
 
+After updating the portal, redeploy the Edge Function or the live function will return `Invalid request` for the new report action:
+
+```sh
+supabase functions deploy manage-employee --no-verify-jwt
+```
+
 The browser never calls Apps Script. The authenticated Edge Function sends the webhook server-side. A failed or rejected webhook now fails the sign-in/sign-out request, so the portal never claims a sheet entry was recorded when it was not.

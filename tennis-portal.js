@@ -75,7 +75,11 @@
       renderActivityReport(report.sessions || []);
       message(reportMessage, (report.sessions || []).length + ' most recent activity record(s).', 'success');
     } catch (error) {
-      message(reportMessage, error.message || 'The activity report could not be loaded.', 'error');
+      var reportError = error.message || 'The activity report could not be loaded.';
+      if (reportError === 'Invalid request') {
+        reportError = 'The admin report service needs to be deployed. Please deploy the updated manage-employee Edge Function.';
+      }
+      message(reportMessage, reportError, 'error');
     }
     refreshButton.disabled = false;
   }
