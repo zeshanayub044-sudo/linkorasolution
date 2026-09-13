@@ -14,13 +14,6 @@
     <a class="portal-brand" href="index.html" aria-label="Return to LINKORA SOLUTION">LINKORA <span>TENNIS PORTAL</span></a>
     <section class="portal-card" aria-labelledby="portal-title">
       <div class="portal-heading"><span class="mono">Employee access</span><h1 id="portal-title">Tennis Portal</h1><p>Sign in with your employee account to access your workspace.</p></div>
-      <section class="co-ceo-access" aria-labelledby="co-ceo-access-title">
-        <div class="access-panel-heading">
-          <div><span class="mono">Restricted access</span><h2 id="co-ceo-access-title">Co-CEO portal</h2></div>
-          <span class="access-badge">2 authorized accounts</span>
-        </div>
-        <p class="access-note">This portal is available only to the company’s two active Co-Chief Executive Officer accounts.</p>
-      </section>
       <form id="login-form" novalidate>
         <label for="email">Employee email</label>
         <input id="email" name="email" type="email" autocomplete="username" required>
@@ -31,6 +24,11 @@
       </form>
       <section id="employee-panel" hidden aria-live="polite">
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
+        <section id="ceo-panel" class="ceo-panel" hidden aria-labelledby="ceo-panel-title">
+          <span class="mono">Executive access</span>
+          <h3 id="ceo-panel-title">Co-CEO admin panel</h3>
+          <p>You are signed in with an authorized Co-CEO account.</p>
+        </section>
         <button id="logout-button" class="btn btn-ghost" type="button">Sign out</button>
         <p id="logout-message" class="form-message" aria-live="polite"></p>
       </section>

@@ -47,6 +47,7 @@
     document.getElementById('employee-id').textContent = profile.employee_id;
     document.getElementById('employee-scheme').textContent = profile.scheme;
     document.getElementById('employee-role').textContent = profile.role;
+    document.getElementById('ceo-panel').hidden = !isCoCeo(profile);
     form.hidden = true;
     panel.hidden = false;
   }
@@ -54,7 +55,7 @@
     var result = await supabase.from('employee_profiles')
       .select('full_name, employee_id, scheme, role, is_active')
       .eq('id', user.id).single();
-    if (result.error || !result.data || !result.data.is_active || !isCoCeo(result.data)) throw new Error('This portal is restricted to the two active Co-CEO accounts.');
+    if (result.error || !result.data || !result.data.is_active) throw new Error('This account is not an active employee account.');
     return result.data;
   }
   async function restoreSession() {
