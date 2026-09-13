@@ -25,9 +25,10 @@
       <section id="employee-panel" hidden aria-live="polite">
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
         <section id="ceo-panel" class="ceo-panel" hidden aria-labelledby="ceo-panel-title">
-          <span class="mono">Executive access</span>
-          <h3 id="ceo-panel-title">Co-CEO admin panel</h3>
-          <p>You are signed in with an authorized Co-CEO account.</p>
+          <div class="admin-panel-heading"><div><span class="mono">Executive access</span><h3 id="ceo-panel-title">Co-CEO admin panel</h3></div><button id="report-refresh" class="btn btn-ghost" type="button">Refresh report</button></div>
+          <p class="admin-panel-intro">Employee login and logout activity. Only Co-CEO accounts can view this report.</p>
+          <p id="report-message" class="form-message" aria-live="polite"></p>
+          <div class="report-table-wrap"><table class="report-table"><thead><tr><th>Employee</th><th>ID</th><th>Login</th><th>Logout</th><th>Status</th></tr></thead><tbody id="report-table-body"></tbody></table></div>
         </section>
         <button id="logout-button" class="btn btn-ghost" type="button">Sign out</button>
         <p id="logout-message" class="form-message" aria-live="polite"></p>

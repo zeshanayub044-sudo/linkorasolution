@@ -11,6 +11,6 @@ This static Linkora site now has a protected employee portal and an Edge Functio
 
 ## Co-CEO admin panel
 
-The login page is the same for every employee. After sign-in, only active profiles whose `role` is exactly `Co-CEO` see the executive admin panel; employee accounts do not see it.
+The login page is the same for every employee. After sign-in, only active profiles whose `role` is exactly `Co-CEO` see the executive admin panel and the latest 200 employee login/logout records. Employee accounts do not see the panel, and the Edge Function refuses report requests from them.
 
 The browser never calls Apps Script. The authenticated Edge Function sends the webhook server-side. A failed or rejected webhook now fails the sign-in/sign-out request, so the portal never claims a sheet entry was recorded when it was not.

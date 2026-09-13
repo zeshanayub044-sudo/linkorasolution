@@ -42,12 +42,51 @@
     }
     return result.data;
   }
+  function formatActivityTime(value) {
+    if (!value) return '—';
+    return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
+  }
+  function renderActivityReport(sessions) {
+    var body = document.getElementById('report-table-body');
+    body.textContent = '';
+    if (!sessions.length) {
+      var emptyRow = document.createElement('tr');
+      var emptyCell = document.createElement('td');
+      emptyCell.colSpan = 5;
+      emptyCell.className = 'report-empty';
+      emptyCell.textContent = 'No employee activity has been recorded yet.';
+      emptyRow.appendChild(emptyCell); body.appendChild(emptyRow); return;
+    }
+    sessions.forEach(function (session) {
+      var profile = session.employee_profiles || {};
+      var values = [profile.full_name || 'Unknown employee', profile.employee_id || '—', formatActivityTime(session.login_at), formatActivityTime(session.logout_at), session.status || '—'];
+      var row = document.createElement('tr');
+      values.forEach(function (value, index) { var cell = document.createElement('td'); cell.textContent = value; if (index === 4) cell.className = 'report-status'; row.appendChild(cell); });
+      body.appendChild(row);
+    });
+  }
+  async function loadActivityReport() {
+    var reportMessage = document.getElementById('report-message');
+    var refreshButton = document.getElementById('report-refresh');
+    refreshButton.disabled = true;
+    message(reportMessage, 'Loading employee activity…');
+    try {
+      var report = await invokeActivity('get-activity-report');
+      renderActivityReport(report.sessions || []);
+      message(reportMessage, (report.sessions || []).length + ' most recent activity record(s).', 'success');
+    } catch (error) {
+      message(reportMessage, error.message || 'The activity report could not be loaded.', 'error');
+    }
+    refreshButton.disabled = false;
+  }
   function showEmployee(profile) {
     document.getElementById('employee-name').textContent = profile.full_name;
     document.getElementById('employee-id').textContent = profile.employee_id;
     document.getElementById('employee-scheme').textContent = profile.scheme;
     document.getElementById('employee-role').textContent = profile.role;
-    document.getElementById('ceo-panel').hidden = !isCoCeo(profile);
+    var isExecutive = isCoCeo(profile);
+    document.getElementById('ceo-panel').hidden = !isExecutive;
+    if (isExecutive) loadActivityReport();
     form.hidden = true;
     panel.hidden = false;
   }
@@ -72,7 +111,12 @@
     message(loginMessage, 'Signing in…');
     var data = new FormData(form);
     var result = await supabase.auth.signInWithPassword({ email: data.get('email'), password: data.get('password') });
-    if (result.error) { message(loginMessage, 'Unable to sign in. Check your email and password.', 'error'); button.disabled = false; return; }
+    if (result.error) {
+      var detail = result.error.message === 'Email not confirmed'
+        ? 'Please confirm this account’s email address in Supabase before signing in.'
+        : 'Unable to sign in: ' + (result.error.message || 'check your email and password.');
+      message(loginMessage, detail, 'error'); button.disabled = false; return;
+    }
     try {
       var profile = await loadProfile(result.data.user);
       var activitySessionId = crypto.randomUUID();
@@ -101,5 +145,6 @@
     } catch (error) { message(logoutMessage, error.message || 'Sign-out could not be recorded. Please try again.', 'error'); }
     button.disabled = false;
   });
+  document.getElementById('report-refresh').addEventListener('click', loadActivityReport);
   restoreSession();
 }());
