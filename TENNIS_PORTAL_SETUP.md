@@ -9,4 +9,8 @@ This static Linkora site now has a protected employee portal and an Edge Functio
 5. Copy `supabase/.env.example` to `supabase/.env`, replace `GOOGLE_SHEETS_WEBHOOK_SECRET` with the exact secret configured in Apps Script, and deploy: `supabase secrets set --env-file supabase/.env` then `supabase functions deploy manage-employee --no-verify-jwt`. JWT verification is implemented inside the function so it can return an appropriate browser response. The local project has no `supabase/.env`, so these real secrets still need to be set in the deployed Supabase project.
 6. Copy `portal-config.example.js` to `portal-config.js`, add the project URL and anon key, and deploy that file with the website. The anon key is public by design; the service-role key and Apps Script webhook secret remain Edge Function secrets.
 
+## Co-CEO login panel
+
+The portal includes a "Who can log in today?" panel. In `portal-config.js`, add the `coCeoLoginSchedule` block shown in `portal-config.example.js`, replacing the two placeholder names and setting their `activeDays` (Sunday is `0`, Saturday is `6`). The panel uses the configured `timeZone` to select today's on-duty co-CEO. If no schedule is configured, it uses the placeholder alternating schedule so the panel remains visible while it is being set up.
+
 The browser never calls Apps Script. The authenticated Edge Function sends the webhook server-side. A failed or rejected webhook now fails the sign-in/sign-out request, so the portal never claims a sheet entry was recorded when it was not.

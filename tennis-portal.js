@@ -8,6 +8,47 @@
   var logoutMessage = document.getElementById('logout-message');
   var sessionKey = 'linkora.tennisPortal.activitySessionId';
 
+  // Days use JavaScript's numbering: Sunday is 0 and Saturday is 6. These
+  // defaults keep the panel useful until the two leaders are named in config.
+  var defaultCoCeoSchedule = {
+    timeZone: 'Asia/Karachi',
+    leaders: [
+      { name: 'Co-CEO 1', activeDays: [1, 3, 5] },
+      { name: 'Co-CEO 2', activeDays: [0, 2, 4, 6] }
+    ]
+  };
+
+  function currentDayIn(timeZone) {
+    var parts = new Intl.DateTimeFormat('en-US', { timeZone: timeZone, weekday: 'short' }).formatToParts(new Date());
+    var weekday = parts.filter(function (part) { return part.type === 'weekday'; })[0].value;
+    return { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[weekday];
+  }
+  function initials(name) {
+    return name.split(/\s+/).filter(Boolean).map(function (word) { return word[0]; }).slice(0, 2).join('').toUpperCase();
+  }
+  function renderCoCeoAccess() {
+    var schedule = (config && config.coCeoLoginSchedule) || defaultCoCeoSchedule;
+    var timezone = schedule.timeZone || defaultCoCeoSchedule.timeZone;
+    var date = new Date();
+    var dateElement = document.getElementById('co-ceo-access-date');
+    var statusElement = document.getElementById('co-ceo-access-status');
+    var noteElement = document.getElementById('co-ceo-access-note');
+    dateElement.textContent = new Intl.DateTimeFormat('en-US', { timeZone: timezone, weekday: 'short', month: 'short', day: 'numeric' }).format(date);
+    var onDuty = (schedule.leaders || []).filter(function (leader) { return (leader.activeDays || []).indexOf(currentDayIn(timezone)) !== -1; })[0];
+    if (!onDuty) {
+      statusElement.className = 'access-status empty';
+      statusElement.textContent = 'No co-CEO is scheduled for login today.';
+      noteElement.textContent = 'Please contact the leadership team if access is required.';
+      return;
+    }
+    statusElement.className = 'access-status';
+    statusElement.innerHTML = '<span class="access-avatar" aria-hidden="true"></span><span><strong class="access-person"></strong><span class="access-role">Co-Chief Executive Officer</span></span><span class="access-badge">Can log in</span>';
+    statusElement.querySelector('.access-avatar').textContent = initials(onDuty.name);
+    statusElement.querySelector('.access-person').textContent = onDuty.name;
+    noteElement.textContent = 'Today\'s scheduled leadership login. Schedule time zone: ' + timezone.replace(/_/g, ' ') + '.';
+  }
+  renderCoCeoAccess();
+
   function message(element, text, type) {
     element.textContent = text;
     element.className = 'form-message' + (type ? ' ' + type : '');
