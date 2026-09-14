@@ -21,7 +21,19 @@
         <input id="password" name="password" type="password" autocomplete="current-password" required>
         <button class="btn btn-primary" type="submit">Sign in securely</button>
         <p id="login-message" class="form-message" aria-live="polite"></p>
+        <button id="forgot-password-button" class="text-button" type="button">Forgot password?</button>
       </form>
+      <section id="reset-password-panel" hidden aria-labelledby="reset-password-title">
+        <div class="portal-heading"><span class="mono">Account recovery</span><h2 id="reset-password-title">Set a new password</h2><p>Choose a new password for your portal account.</p></div>
+        <form id="reset-password-form" novalidate>
+          <label for="new-password">New password</label>
+          <input id="new-password" name="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+          <label for="confirm-password">Confirm new password</label>
+          <input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+          <button class="btn btn-primary" type="submit">Save new password</button>
+          <p id="reset-password-message" class="form-message" aria-live="polite"></p>
+        </form>
+      </section>
       <section id="employee-panel" hidden aria-live="polite">
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
         <section id="ceo-panel" class="ceo-panel" hidden aria-labelledby="ceo-panel-title">

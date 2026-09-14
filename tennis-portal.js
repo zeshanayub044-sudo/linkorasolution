@@ -4,7 +4,9 @@
   var config = window.TENNIS_PORTAL_CONFIG;
   var form = document.getElementById('login-form');
   var panel = document.getElementById('employee-panel');
+  var resetPanel = document.getElementById('reset-password-panel');
   var loginMessage = document.getElementById('login-message');
+  var resetPasswordMessage = document.getElementById('reset-password-message');
   var logoutMessage = document.getElementById('logout-message');
   var sessionKey = 'linkora.tennisPortal.activitySessionId';
 
@@ -83,6 +85,17 @@
     }
     refreshButton.disabled = false;
   }
+  function showLogin() {
+    resetPanel.hidden = true;
+    panel.hidden = true;
+    form.hidden = false;
+  }
+  function showPasswordReset() {
+    form.hidden = true;
+    panel.hidden = true;
+    resetPanel.hidden = false;
+    document.getElementById('new-password').focus();
+  }
   function showEmployee(profile) {
     document.getElementById('employee-name').textContent = profile.full_name;
     document.getElementById('employee-id').textContent = profile.employee_id;
@@ -107,6 +120,33 @@
     try { showEmployee(await loadProfile(result.data.user)); }
     catch (error) { await supabase.auth.signOut(); message(loginMessage, error.message, 'error'); }
   }
+  document.getElementById('forgot-password-button').addEventListener('click', async function () {
+    var email = document.getElementById('email').value.trim();
+    if (!email) { message(loginMessage, 'Enter your email address first, then select Forgot password.', 'error'); document.getElementById('email').focus(); return; }
+    var button = document.getElementById('forgot-password-button');
+    button.disabled = true;
+    message(loginMessage, 'Sending password reset email…');
+    var result = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+    if (result.error) message(loginMessage, 'Could not send a reset email: ' + result.error.message, 'error');
+    else message(loginMessage, 'Password reset email sent. Open the link in that email to choose a new password.', 'success');
+    button.disabled = false;
+  });
+  document.getElementById('reset-password-form').addEventListener('submit', async function (event) {
+    event.preventDefault();
+    var resetForm = event.currentTarget;
+    if (!resetForm.reportValidity()) return;
+    var newPassword = document.getElementById('new-password').value;
+    if (newPassword !== document.getElementById('confirm-password').value) { message(resetPasswordMessage, 'The passwords do not match.', 'error'); return; }
+    var button = resetForm.querySelector('button');
+    button.disabled = true;
+    message(resetPasswordMessage, 'Saving new password…');
+    var result = await supabase.auth.updateUser({ password: newPassword });
+    if (result.error) { message(resetPasswordMessage, result.error.message || 'Could not update password.', 'error'); button.disabled = false; return; }
+    await supabase.auth.signOut();
+    resetForm.reset(); showLogin();
+    message(loginMessage, 'Password updated. You can now sign in with your new password.', 'success');
+    button.disabled = false;
+  });
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
     if (!form.reportValidity()) return;
@@ -139,8 +179,10 @@
     button.disabled = true;
     message(logoutMessage, 'Recording sign-out…');
     try {
-      var activitySessionId = sessionStorage.getItem(sessionKey);
-      if (!activitySessionId) throw new Error('This browser session has no activity record. Please contact an administrator.');
+      // A Supabase session can be restored after a refresh or on another tab,
+      // while sessionStorage is intentionally browser-tab scoped. In that case
+      // the server safely closes this employee's most recent active session.
+      var activitySessionId = sessionStorage.getItem(sessionKey) || null;
       await invokeActivity('end-session', activitySessionId);
       sessionStorage.removeItem(sessionKey);
       await supabase.auth.signOut();
@@ -150,5 +192,8 @@
     button.disabled = false;
   });
   document.getElementById('report-refresh').addEventListener('click', loadActivityReport);
+  supabase.auth.onAuthStateChange(function (event) {
+    if (event === 'PASSWORD_RECOVERY') showPasswordReset();
+  });
   restoreSession();
 }());

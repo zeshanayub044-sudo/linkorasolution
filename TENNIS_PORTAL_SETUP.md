@@ -13,6 +13,10 @@ This static Linkora site now has a protected employee portal and an Edge Functio
 
 The login page is the same for every employee. After sign-in, only active profiles whose `role` is exactly `Co-CEO` see the executive admin panel and the latest 200 employee login/logout records. Employee accounts do not see the panel, and the Edge Function refuses report requests from them.
 
+## Password reset
+
+The portal includes a **Forgot password?** button. In Supabase Dashboard, add the deployed portal URL (for example, `https://linkorasolution.com/tennis-portal.html`) to **Authentication → URL Configuration → Redirect URLs**. This lets the password-reset email return the user to the portal's secure new-password screen.
+
 After updating the portal, redeploy the Edge Function or the live function will return `Invalid request` for the new report action:
 
 ```sh
