@@ -119,7 +119,7 @@ header.site-header{
 nav.links{
   display:flex;
   align-items:center;
-  gap:34px;
+  gap:23px;
 }
 
 nav.links a{
@@ -664,6 +664,13 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
 .reveal.in{opacity:1;transform:translateY(0);}
 
 /* ---------- Responsive ---------- */
+@media(min-width:761px) and (max-width:1120px){
+  nav.links{position:fixed;top:81px;left:0;right:0;background:var(--bg-elevated);border-bottom:1px solid var(--border-soft);flex-direction:column;align-items:flex-start;padding:20px 28px 26px;gap:18px;transform:translateY(-150%);transition:transform .25s ease;z-index:99}
+  nav.links.open{transform:translateY(0)}
+  nav.links a.active::after{display:none}
+  .nav-toggle{display:flex}
+  .header-actions .btn-ghost{display:none}
+}
 @media(max-width:940px){
   .hero-grid{grid-template-columns:1fr;}
   .graph-wrap{max-width:360px;order:-1;}
