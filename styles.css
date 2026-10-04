@@ -407,6 +407,26 @@ body.modal-open{overflow:hidden;}
 .gmb-layout h3{font-size:1.5rem;margin-bottom:20px;}
 .gmb-benefits{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.gmb-benefits div{position:relative;padding:12px 12px 12px 29px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);color:var(--text-muted);font-size:.84rem;}.gmb-benefits div::before{content:"";position:absolute;left:12px;top:22px;width:7px;height:2px;background:var(--teal);}.gmb-cta{margin-top:36px;}
 
+/* ---------- Web development and multi-site SEO ---------- */
+.service-feature-panel,.multi-site-plan{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:38px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:36px;}
+.service-feature-panel h3,.multi-site-plan h3{font-size:1.35rem;margin-bottom:14px;}
+.service-feature-panel p,.multi-site-plan p{color:var(--text-muted);font-size:.91rem;}
+.service-feature-panel ul,.multi-site-plan ul{list-style:none;display:grid;gap:12px;}
+.service-feature-panel li,.multi-site-plan li{position:relative;padding-left:19px;color:var(--text-muted);font-size:.88rem;}
+.service-feature-panel li::before,.multi-site-plan li::before{content:"";position:absolute;left:0;top:.68em;width:7px;height:2px;background:var(--teal);}
+.multi-site-plan{border-color:rgba(47,212,196,.33);background:linear-gradient(130deg,rgba(47,212,196,.07),rgba(76,141,255,.035) 48%,var(--surface) 80%);}
+.multi-site-plan__value{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;border-right:1px solid var(--border);padding-right:32px;}
+.multi-site-plan__value .mono{color:var(--teal);margin-bottom:14px;}
+.multi-site-plan__price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.85rem,3vw,2.7rem);line-height:1.12;letter-spacing:-.025em;margin-bottom:12px;}
+.multi-site-plan__price span{font-size:.48em;color:var(--text-muted);white-space:nowrap;}
+.multi-site-plan__value strong{color:var(--gold);margin-bottom:16px;}
+.multi-site-plan__details ul{margin:17px 0 19px;}
+.featured-offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px;}
+.featured-offer{display:flex;flex-direction:column;align-items:flex-start;gap:11px;padding:26px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);transition:border-color .2s,transform .2s;}
+.featured-offer:hover{border-color:var(--teal);transform:translateY(-3px);}
+.featured-offer .mono{color:var(--teal);}.featured-offer h3{font-size:1.2rem;}.featured-offer p{color:var(--text-muted);font-size:.88rem;flex:1;}.featured-offer strong{color:var(--gold);}.featured-offer__link{color:var(--teal);font-size:.86rem;font-weight:600;}
+@media(max-width:760px){.service-feature-panel,.multi-site-plan,.featured-offers{grid-template-columns:1fr;}.service-feature-panel,.multi-site-plan{gap:25px;padding:25px;}.multi-site-plan__value{border-right:0;border-bottom:1px solid var(--border);padding:0 0 25px;}}
+
 /* ---------- Process steps ---------- */
 .steps{
   display:grid;
