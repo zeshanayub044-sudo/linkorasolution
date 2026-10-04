@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Editor | LINKORA SOLUTIONS</title>
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0a0e14">
+<link rel="stylesheet" href="styles.css?v=2"><link rel="stylesheet" href="blog.css?v=3">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=2">
+</head><body>
+<header class="site-header"><div class="wrap nav">
+  <a href="index.html" class="logo"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTIONS logo"></span><span class="brandname">LINKORA SOLUTIONS<span class="sub">Digital Growth &amp; SEO Partners</span></span></a>
+  <nav class="links"><a href="index.html">Home</a><a href="blog.html" class="active">Blog</a><a href="contact.html">Contact</a></nav>
+  <div class="header-actions"><a href="blog.html" class="btn btn-ghost">View Blog</a></div>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</div></header>
+<main class="blog-admin"><div class="wrap">
+  <div class="blog-admin__header"><div><span class="eyebrow mono">LINKORA CMS</span><h1>Blog Editor</h1><p>Create and manage articles for the Linkora website.</p></div><button id="blog-signout" type="button" class="btn btn-ghost" hidden>Sign out</button></div>
+  <p id="blog-admin-notice" class="blog-admin__notice" role="status" aria-live="polite">Checking access…</p>
+  <section id="blog-login" class="blog-admin__panel blog-admin__auth" hidden><h2>Editor sign in</h2><form id="blog-login-form">
+    <label>Email<input name="email" type="email" autocomplete="username" required></label>
+    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+    <button class="btn btn-whatsapp" type="submit">Sign in</button>
+  </form><p class="blog-admin__hint" style="margin-top:16px">Only approved Blog Admin and Blog Editor accounts can use this page.</p></section>
+  <div id="blog-dashboard" hidden>
+    <div class="blog-admin__stats"><div class="blog-admin__stat"><strong id="stat-total">0</strong><span>Total articles</span></div><div class="blog-admin__stat"><strong id="stat-published">0</strong><span>Published</span></div><div class="blog-admin__stat"><strong id="stat-drafts">0</strong><span>Drafts</span></div><div class="blog-admin__stat"><strong id="stat-views">0</strong><span>Total views</span></div></div>
+    <section class="blog-admin__panel"><div class="blog-admin__header"><div><h2>Articles</h2><p id="blog-role-label"></p></div><button id="blog-new" type="button" class="btn btn-whatsapp">New article</button></div>
+      <div class="blog-admin__grid" style="margin-bottom:18px"><label>Search<input id="blog-admin-search" type="search" placeholder="Title, slug, or category"></label><label>Status<select id="blog-admin-filter"><option value="">All statuses</option><option value="published">Published</option><option value="draft">Draft</option><option value="archived">Archived</option></select></label></div>
+      <div class="blog-admin__table-wrap"><table><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Status</th><th>Updated</th><th>Views</th><th>Actions</th></tr></thead><tbody id="blog-admin-rows"></tbody></table></div>
+    </section>
+    <section id="blog-edit-panel" class="blog-admin__panel" hidden><h2 id="blog-form-title">New article</h2><form id="blog-post-form"><input type="hidden" name="id"><input type="hidden" name="featured_image_url">
+      <div class="blog-admin__grid">
+        <label>Title *<input name="title" maxlength="200" required></label>
+        <label>Slug *<input name="slug" maxlength="140" pattern="[a-z0-9]+(-[a-z0-9]+)*" required><span class="blog-admin__hint">Used in the article URL; changing it changes existing links.</span></label>
+        <label>Category *<input name="category" maxlength="80" value="Insights" required></label>
+        <label>Status<select name="status"><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></label>
+        <label class="blog-admin__wide">Excerpt (required to publish)<textarea name="excerpt" maxlength="700" rows="3"></textarea></label>
+        <label class="blog-admin__wide">Article content (required to publish)<textarea name="content" maxlength="200000"></textarea><span class="blog-admin__hint">Use plain text. Start a line with # for headings or - for lists; leave a blank line between sections.</span></label>
+        <label>Featured image<input id="blog-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif"><span class="blog-admin__hint">JPEG, PNG, WebP or AVIF, up to 5 MB.</span></label>
+        <div><label>Current image<input id="blog-image-url" type="text" readonly placeholder="No image uploaded"></label><button id="blog-image-clear" type="button" class="btn btn-ghost" style="margin-top:10px">Remove image</button></div>
+        <label>SEO title<input name="seo_title" maxlength="200" placeholder="Defaults to article title"></label>
+        <label>SEO description<input name="seo_description" maxlength="500" placeholder="Defaults to excerpt"></label>
+        <label class="blog-admin__wide">Canonical URL<input name="canonical_url" type="url" placeholder="Optional HTTPS URL for republished content"></label>
+      </div>
+      <div class="blog-admin__actions"><button id="blog-save" type="submit" class="btn btn-whatsapp">Save article</button><button id="blog-preview" type="button" class="btn btn-ghost">Preview content</button><button id="blog-cancel" type="button" class="btn btn-ghost">Cancel</button></div>
+    </form></section>
+  </div>
+</div></main>
+<dialog id="blog-preview-dialog" class="blog-admin__panel" style="max-width:760px;width:calc(100% - 30px);max-height:90vh;overflow:auto;background:var(--surface);color:var(--text)"><article><h2 id="blog-preview-title"></h2><p id="blog-preview-excerpt" class="blog-article__lead"></p><div id="blog-preview-content" class="blog-article__content"></div></article><form method="dialog"><button class="btn btn-ghost">Close preview</button></form></dialog>
+<footer><div class="wrap"><div class="footer-bottom"><p>© 2026 LINKORA SOLUTIONS. All rights reserved.</p></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="blog-config.js"></script><script src="blog-common.js"></script><script src="blog-admin.js"></script>
+</body></html>

@@ -6,6 +6,7 @@
 <title>SEO Insights | LINKORA SOLUTIONS Blog</title>
 <meta name="description" content="Practical SEO, link building and digital growth insights from LINKORA SOLUTIONS.">
 <link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="blog.css?v=3">
 <script src="intro-init.js"></script>
 <link rel="canonical" href="https://linkorasolution.com/blog.html">
 <meta property="og:type" content="website">
@@ -59,23 +60,21 @@
     </div>
   </section>
 
-  <section>
+  <section class="blog-list-section">
     <div class="wrap">
-      <!-- Add new posts here. Duplicate an article block and replace the placeholder copy and link. -->
-      <div class="grid">
-        <article class="card reveal">
-          <span class="mono" style="color:var(--teal);">Coming soon</span>
-          <h2 style="font-size:1.35rem;margin:12px 0;">Your first SEO article</h2>
-          <p>Publish your first guide, case study or SEO update here. Only the site owner can add posts by editing this page and uploading it to the website.</p>
-        </article>
-      </div>
-      <div class="cta-band reveal" style="margin-top:28px;">
-        <div>
-          <h2>Want to publish your blog?</h2>
-          <p>Send your article to us by email and we’ll review it for publication on the Linkora blog.</p>
+      <div class="blog-toolbar">
+        <div class="blog-toolbar__filters">
+          <label class="blog-search-label" for="blog-search">Search articles
+            <input id="blog-search" type="search" placeholder="Title, topic, or category" autocomplete="off">
+          </label>
+          <label class="blog-category-label" for="blog-category">Category
+            <select id="blog-category"><option value="">All categories</option></select>
+          </label>
         </div>
-        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com&amp;su=Blog%20Submission%20for%20LINKORA%20SOLUTION" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-lg">Send Your Article</a>
+        <a class="blog-editor-link" href="blog-admin.html">Editor sign in <span aria-hidden="true">↗</span></a>
       </div>
+      <p id="blog-status" class="blog-status" role="status" aria-live="polite">Loading articles…</p>
+      <div id="blog-grid" class="blog-grid" aria-live="polite"></div>
     </div>
   </section>
 
@@ -107,6 +106,10 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
+<script src="blog-config.js"></script>
+<script src="blog-common.js"></script>
+<script src="blog-list.js?v=2"></script>
 <script src="script.js?v=2"></script>
 </body>
 </html>
