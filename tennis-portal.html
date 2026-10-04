@@ -41,14 +41,44 @@
           <p class="admin-panel-intro">Employee login and logout activity. Only Co-CEO accounts can view this report.</p>
           <p id="report-message" class="form-message" aria-live="polite"></p>
           <div class="report-table-wrap"><table class="report-table"><thead><tr><th>Employee</th><th>ID</th><th>Login</th><th>Logout</th><th>Status</th></tr></thead><tbody id="report-table-body"></tbody></table></div>
+          <section class="user-management" aria-labelledby="user-management-title">
+            <div class="admin-panel-heading"><div><span class="mono">People & access</span><h3 id="user-management-title">User Management</h3></div><button id="add-user-button" class="btn btn-primary" type="button">Add New User</button></div>
+            <p class="admin-panel-intro">Manage portal accounts and attendance. Disabled users retain their full history.</p>
+            <div class="user-filters">
+              <label>Search name or employee ID<input id="user-search" type="search" placeholder="Search users"></label>
+              <label>Attendance<select id="user-attendance-filter"><option value="">All</option><option value="in">Signed In</option><option value="out">Signed Out</option></select></label>
+              <label>Account<select id="user-account-filter"><option value="">All</option><option value="active">Active</option><option value="disabled">Disabled</option></select></label>
+              <label>Role<select id="user-role-filter"><option value="">All roles</option></select></label>
+              <label>Department / scheme<select id="user-scheme-filter"><option value="">All schemes</option></select></label>
+            </div>
+            <p id="users-message" class="form-message" role="status" aria-live="polite"></p>
+            <div class="report-table-wrap"><table class="report-table user-table"><thead><tr><th>Full name</th><th>Employee ID</th><th>Email</th><th>Role</th><th>Scheme</th><th>Attendance</th><th>Last sign-in</th><th>Last sign-out</th><th>Account</th><th>Actions</th></tr></thead><tbody id="users-table-body"></tbody></table></div>
+            <div class="admin-panel-heading audit-heading"><h3>Admin activity</h3><button id="audit-refresh" class="btn btn-ghost" type="button">Refresh log</button></div>
+            <p id="audit-message" class="form-message" aria-live="polite"></p>
+            <div class="report-table-wrap"><table class="report-table audit-table"><thead><tr><th>When</th><th>Admin</th><th>Action</th><th>User</th><th>Details</th></tr></thead><tbody id="audit-table-body"></tbody></table></div>
+          </section>
         </section>
         <button id="logout-button" class="btn btn-ghost" type="button">Sign out</button>
         <p id="logout-message" class="form-message" aria-live="polite"></p>
       </section>
     </section>
   </main>
+  <dialog id="user-form-dialog" class="portal-dialog" aria-labelledby="user-form-title"><form id="user-form" novalidate>
+    <div class="dialog-heading"><h2 id="user-form-title">Add New User</h2><button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button></div>
+    <label>Full Name<input name="fullName" maxlength="160" required></label>
+    <label>Employee ID<input name="employeeId" maxlength="80" required></label>
+    <label>Login Email<input name="email" type="email" maxlength="320" autocomplete="off" required></label>
+    <label id="user-password-label">Temporary Password<input name="password" type="password" minlength="8" autocomplete="new-password"></label>
+    <label>Role<select name="role"><option value="Employee">Employee</option><option value="Co-CEO">Co-CEO</option></select></label>
+    <label>Department / Scheme<input name="scheme" maxlength="120" required></label>
+    <label>Account Status<select name="isActive"><option value="active">Active</option><option value="disabled">Disabled</option></select></label>
+    <p id="user-form-message" class="form-message" role="status" aria-live="polite"></p>
+    <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close-dialog>Cancel</button><button id="user-form-submit" class="btn btn-primary" type="submit">Create user</button></div>
+  </form></dialog>
+  <dialog id="user-history-dialog" class="portal-dialog history-dialog" aria-labelledby="user-history-title"><div class="dialog-heading"><h2 id="user-history-title">Attendance history</h2><button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button></div><p id="history-message" class="form-message" aria-live="polite"></p><div class="report-table-wrap"><table class="report-table history-table"><thead><tr><th>Sign-in date</th><th>Time</th><th>Sign-out date</th><th>Time</th><th>Duration</th><th>Recorded by</th></tr></thead><tbody id="history-table-body"></tbody></table></div><div class="dialog-actions"><button id="history-more" class="btn btn-ghost" type="button" hidden>Load more</button><button class="btn btn-ghost" type="button" data-close-dialog>Close</button></div></dialog>
   <script src="portal-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="tennis-admin.js"></script>
   <script src="tennis-portal.js"></script>
 </body>
 </html>

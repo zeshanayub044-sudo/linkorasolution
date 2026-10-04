@@ -89,6 +89,7 @@
     resetPanel.hidden = true;
     panel.hidden = true;
     form.hidden = false;
+    document.querySelector('.portal-shell').classList.remove('admin-shell');
   }
   function showPasswordReset() {
     form.hidden = true;
@@ -103,7 +104,11 @@
     document.getElementById('employee-role').textContent = profile.role;
     var isExecutive = isCoCeo(profile);
     document.getElementById('ceo-panel').hidden = !isExecutive;
-    if (isExecutive) loadActivityReport();
+    document.querySelector('.portal-shell').classList.toggle('admin-shell', isExecutive);
+    if (isExecutive) {
+      loadActivityReport();
+      if (window.TennisAdmin) window.TennisAdmin.init(supabase);
+    }
     form.hidden = true;
     panel.hidden = false;
   }
@@ -186,7 +191,7 @@
       await invokeActivity('end-session', activitySessionId);
       sessionStorage.removeItem(sessionKey);
       await supabase.auth.signOut();
-      panel.hidden = true; form.hidden = false; form.reset();
+      showLogin(); form.reset();
       message(loginMessage, 'You have been signed out.', 'success');
     } catch (error) { message(logoutMessage, error.message || 'Sign-out could not be recorded. Please try again.', 'error'); }
     button.disabled = false;

@@ -26,7 +26,7 @@ Deno.serve(async (request) => {
     if (action === 'start-session' && !/^[0-9a-f-]{36}$/i.test(sessionId || '')) return json({ error: "Invalid request" }, 400);
     if (action === 'end-session' && sessionId && !/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid request" }, 400);
     const { data: employee, error: employeeError } = await service.from("employee_profiles").select("id, employee_id, full_name, scheme, role, is_active").eq("id", auth.user.id).single();
-    if (employeeError || !employee?.is_active) return json({ error: "Employee account is not active" }, 403);
+    if (employeeError || !employee || (!employee.is_active && action !== 'end-session')) return json({ error: "Employee account is not active" }, 403);
     if (action === 'get-activity-report') {
       if (employee.role.trim().toLowerCase() !== 'co-ceo') return json({ error: "Only Co-CEO accounts can view the activity report" }, 403);
       const { data: sessions, error: reportError } = await service.from("employee_activity_sessions").select("login_at, logout_at, status, employee_profiles(full_name, employee_id)").order("login_at", { ascending: false }).limit(200);
@@ -44,10 +44,22 @@ Deno.serve(async (request) => {
     if (sessionId) activityQuery = activityQuery.eq("session_id", sessionId);
     else activityQuery = activityQuery.order("login_at", { ascending: false }).limit(1);
     const { data: activity, error: activityError } = await activityQuery.maybeSingle();
-    if (activityError || !activity || activity.status !== "Logged In") return json({ error: "Active session not found" }, 404);
+    if (activityError) throw new Error("Could not load activity session");
+    if (!activity) {
+      // An admin may have already closed this exact session. Let the employee
+      // finish signing out without altering the preserved attendance record.
+      if (sessionId) {
+        const { data: closed } = await service.from("employee_activity_sessions")
+          .select("session_id").eq("employee_id", employee.id).eq("session_id", sessionId)
+          .eq("status", "Logged Out").maybeSingle();
+        if (closed) return json({ ok: true, alreadyClosed: true });
+      }
+      if (!sessionId) return json({ ok: true, alreadyClosed: true });
+      return json({ error: "Active session not found" }, 404);
+    }
     const logoutAt = new Date().toISOString();
     await notifyAppsScript({ action: "logout", sessionId: activity.session_id });
-    const { error } = await service.from("employee_activity_sessions").update({ logout_at: logoutAt, status: "Logged Out" }).eq("session_id", activity.session_id).eq("employee_id", employee.id);
+    const { error } = await service.from("employee_activity_sessions").update({ logout_at: logoutAt, status: "Logged Out", logout_source: "user" }).eq("session_id", activity.session_id).eq("employee_id", employee.id).eq("status", "Logged In");
     if (error) throw new Error("Could not close activity session");
     return json({ ok: true });
   } catch (error) {
