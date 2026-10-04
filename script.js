@@ -50,6 +50,38 @@ document.addEventListener('DOMContentLoaded', function () {
     'Web Development': 'web-development',
     '12-Website Monthly SEO Plan': 'multi-site-seo'
   };
+
+  // The desktop submenu shares the same destinations as the service cards.
+  var servicesLink = links && links.querySelector('a[href="services.html"]');
+  if (servicesLink) {
+    var servicesNav = document.createElement('div');
+    servicesNav.className = 'services-nav';
+    servicesLink.parentNode.insertBefore(servicesNav, servicesLink);
+    servicesNav.appendChild(servicesLink);
+
+    var servicesDropdown = document.createElement('div');
+    servicesDropdown.className = 'services-dropdown';
+    servicesDropdown.setAttribute('role', 'group');
+    servicesDropdown.setAttribute('aria-label', 'Explore services');
+    var servicesPanel = document.createElement('div');
+    servicesPanel.className = 'services-dropdown__panel';
+    var servicesTitle = document.createElement('span');
+    servicesTitle.className = 'mono services-dropdown__title';
+    servicesTitle.textContent = 'Explore services';
+    servicesPanel.appendChild(servicesTitle);
+    var servicesGrid = document.createElement('div');
+    servicesGrid.className = 'services-dropdown__grid';
+    Object.keys(serviceAnchors).forEach(function (service) {
+      var serviceLink = document.createElement('a');
+      serviceLink.href = 'services.html#' + serviceAnchors[service];
+      serviceLink.textContent = service;
+      servicesGrid.appendChild(serviceLink);
+    });
+    servicesPanel.appendChild(servicesGrid);
+    servicesDropdown.appendChild(servicesPanel);
+    servicesNav.appendChild(servicesDropdown);
+  }
+
   document.querySelectorAll('.card').forEach(function (card) {
     var heading = card.querySelector('h3');
     if (!heading || !serviceAnchors[heading.textContent.trim()] || card.querySelector('.service-link')) return;
