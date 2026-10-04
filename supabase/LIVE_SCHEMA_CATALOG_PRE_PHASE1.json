@@ -1,0 +1,1256 @@
+{
+  "project_ref": "nbvylffxmjmovyfhbytu",
+  "captured_at_utc": "2026-09-30 20:32:00 UTC",
+  "source": "Supabase execute_sql read-only pg_catalog/information_schema queries; schema metadata only",
+  "catalog": {
+    "tables": [
+      {
+        "table_name": "attendance_records",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "audit_log",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "company_settings",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "employee_profiles",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "employee_profilesss",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "leave_requests",
+        "rls_enabled": true
+      },
+      {
+        "table_name": "profiles",
+        "rls_enabled": true
+      }
+    ],
+    "columns": [
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": "gen_random_uuid()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 2,
+        "column_name": "employee_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 3,
+        "column_name": "attendance_date",
+        "data_type": "date",
+        "udt_name": "date",
+        "is_nullable": "NO",
+        "column_default": "CURRENT_DATE",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 4,
+        "column_name": "check_in",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 5,
+        "column_name": "check_out",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 6,
+        "column_name": "status",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": "'Present'::text",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 7,
+        "column_name": "working_minutes",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "ALWAYS",
+        "generation_expression": "\nCASE\n    WHEN ((check_in IS NOT NULL) AND (check_out IS NOT NULL)) THEN GREATEST(0, (floor((EXTRACT(epoch FROM (check_out - check_in)) / (60)::numeric)))::integer)\n    ELSE NULL::integer\nEND"
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 8,
+        "column_name": "corrected_by",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 9,
+        "column_name": "corrected_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 10,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "attendance_records",
+        "ordinal_position": 11,
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "bigint",
+        "udt_name": "int8",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "YES",
+        "identity_generation": "ALWAYS",
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 2,
+        "column_name": "actor_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 3,
+        "column_name": "target_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 4,
+        "column_name": "action",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 5,
+        "column_name": "metadata",
+        "data_type": "jsonb",
+        "udt_name": "jsonb",
+        "is_nullable": "NO",
+        "column_default": "'{}'::jsonb",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "audit_log",
+        "ordinal_position": 6,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "boolean",
+        "udt_name": "bool",
+        "is_nullable": "NO",
+        "column_default": "true",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 2,
+        "column_name": "company_name",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": "'Linkora Solutions'::text",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 3,
+        "column_name": "timezone",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": "'Asia/Karachi'::text",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 4,
+        "column_name": "workday_start",
+        "data_type": "time without time zone",
+        "udt_name": "time",
+        "is_nullable": "NO",
+        "column_default": "'09:00:00'::time without time zone",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 5,
+        "column_name": "late_after_minutes",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "NO",
+        "column_default": "15",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "company_settings",
+        "ordinal_position": 6,
+        "column_name": "workdays",
+        "data_type": "ARRAY",
+        "udt_name": "_int4",
+        "is_nullable": "NO",
+        "column_default": "ARRAY[1, 2, 3, 4, 5]",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 1,
+        "column_name": "session_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 2,
+        "column_name": "employee_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 3,
+        "column_name": "login_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 4,
+        "column_name": "logout_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 5,
+        "column_name": "status",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "ordinal_position": 6,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 2,
+        "column_name": "employee_id",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 3,
+        "column_name": "full_name",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 4,
+        "column_name": "scheme",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 5,
+        "column_name": "role",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 6,
+        "column_name": "is_active",
+        "data_type": "boolean",
+        "udt_name": "bool",
+        "is_nullable": "NO",
+        "column_default": "true",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 7,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profiles",
+        "ordinal_position": 8,
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profilesss",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "bigint",
+        "udt_name": "int8",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "YES",
+        "identity_generation": "BY DEFAULT",
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "employee_profilesss",
+        "ordinal_position": 2,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": "gen_random_uuid()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 2,
+        "column_name": "employee_id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 3,
+        "column_name": "leave_type",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 4,
+        "column_name": "start_date",
+        "data_type": "date",
+        "udt_name": "date",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 5,
+        "column_name": "end_date",
+        "data_type": "date",
+        "udt_name": "date",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 6,
+        "column_name": "reason",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 7,
+        "column_name": "status",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": "'Pending'::text",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 8,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "leave_requests",
+        "ordinal_position": 9,
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 1,
+        "column_name": "id",
+        "data_type": "uuid",
+        "udt_name": "uuid",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 2,
+        "column_name": "employee_id",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 3,
+        "column_name": "full_name",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 4,
+        "column_name": "email",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 5,
+        "column_name": "department",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 6,
+        "column_name": "designation",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 7,
+        "column_name": "phone",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 8,
+        "column_name": "joining_date",
+        "data_type": "date",
+        "udt_name": "date",
+        "is_nullable": "YES",
+        "column_default": null,
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 9,
+        "column_name": "active",
+        "data_type": "boolean",
+        "udt_name": "bool",
+        "is_nullable": "NO",
+        "column_default": "true",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 10,
+        "column_name": "role",
+        "data_type": "text",
+        "udt_name": "text",
+        "is_nullable": "NO",
+        "column_default": "'employee'::text",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 11,
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      },
+      {
+        "table_name": "profiles",
+        "ordinal_position": 12,
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO",
+        "column_default": "now()",
+        "is_identity": "NO",
+        "identity_generation": null,
+        "is_generated": "NEVER",
+        "generation_expression": null
+      }
+    ],
+    "constraints": [
+      {
+        "table_name": "attendance_records",
+        "name": "attendance_records_corrected_by_fkey",
+        "definition": "FOREIGN KEY (corrected_by) REFERENCES profiles(id)"
+      },
+      {
+        "table_name": "attendance_records",
+        "name": "attendance_records_employee_id_attendance_date_key",
+        "definition": "UNIQUE (employee_id, attendance_date)"
+      },
+      {
+        "table_name": "attendance_records",
+        "name": "attendance_records_employee_id_fkey",
+        "definition": "FOREIGN KEY (employee_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "attendance_records",
+        "name": "attendance_records_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "attendance_records",
+        "name": "attendance_records_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['Working'::text, 'Present'::text, 'Completed'::text, 'Late'::text, 'Half Day'::text, 'Leave'::text, 'Absent'::text, 'Holiday'::text, 'Weekend'::text])))"
+      },
+      {
+        "table_name": "audit_log",
+        "name": "audit_log_actor_id_fkey",
+        "definition": "FOREIGN KEY (actor_id) REFERENCES profiles(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "audit_log",
+        "name": "audit_log_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "audit_log",
+        "name": "audit_log_target_id_fkey",
+        "definition": "FOREIGN KEY (target_id) REFERENCES profiles(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "company_settings",
+        "name": "company_settings_id_check",
+        "definition": "CHECK (id)"
+      },
+      {
+        "table_name": "company_settings",
+        "name": "company_settings_late_after_minutes_check",
+        "definition": "CHECK (((late_after_minutes >= 0) AND (late_after_minutes <= 240)))"
+      },
+      {
+        "table_name": "company_settings",
+        "name": "company_settings_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "name": "employee_activity_sessions_employee_id_fkey",
+        "definition": "FOREIGN KEY (employee_id) REFERENCES employee_profiles(id) ON DELETE RESTRICT"
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "name": "employee_activity_sessions_pkey",
+        "definition": "PRIMARY KEY (session_id)"
+      },
+      {
+        "table_name": "employee_activity_sessions",
+        "name": "employee_activity_sessions_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['Logged In'::text, 'Logged Out'::text])))"
+      },
+      {
+        "table_name": "employee_profiles",
+        "name": "employee_profiles_employee_id_key",
+        "definition": "UNIQUE (employee_id)"
+      },
+      {
+        "table_name": "employee_profiles",
+        "name": "employee_profiles_id_fkey",
+        "definition": "FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "employee_profiles",
+        "name": "employee_profiles_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "employee_profilesss",
+        "name": "employee_profilesss_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "leave_requests",
+        "name": "leave_requests_check",
+        "definition": "CHECK ((end_date >= start_date))"
+      },
+      {
+        "table_name": "leave_requests",
+        "name": "leave_requests_employee_id_fkey",
+        "definition": "FOREIGN KEY (employee_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "leave_requests",
+        "name": "leave_requests_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "leave_requests",
+        "name": "leave_requests_status_check",
+        "definition": "CHECK ((status = ANY (ARRAY['Pending'::text, 'Approved'::text, 'Rejected'::text])))"
+      },
+      {
+        "table_name": "profiles",
+        "name": "profiles_email_key",
+        "definition": "UNIQUE (email)"
+      },
+      {
+        "table_name": "profiles",
+        "name": "profiles_employee_id_key",
+        "definition": "UNIQUE (employee_id)"
+      },
+      {
+        "table_name": "profiles",
+        "name": "profiles_id_fkey",
+        "definition": "FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "profiles",
+        "name": "profiles_pkey",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "profiles",
+        "name": "profiles_role_check",
+        "definition": "CHECK ((role = ANY (ARRAY['employee'::text, 'admin'::text])))"
+      }
+    ],
+    "indexes": [
+      {
+        "tablename": "attendance_records",
+        "indexname": "attendance_date_idx",
+        "indexdef": "CREATE INDEX attendance_date_idx ON public.attendance_records USING btree (attendance_date)"
+      },
+      {
+        "tablename": "attendance_records",
+        "indexname": "attendance_employee_date_idx",
+        "indexdef": "CREATE INDEX attendance_employee_date_idx ON public.attendance_records USING btree (employee_id, attendance_date DESC)"
+      },
+      {
+        "tablename": "attendance_records",
+        "indexname": "attendance_records_employee_id_attendance_date_key",
+        "indexdef": "CREATE UNIQUE INDEX attendance_records_employee_id_attendance_date_key ON public.attendance_records USING btree (employee_id, attendance_date)"
+      },
+      {
+        "tablename": "attendance_records",
+        "indexname": "attendance_records_pkey",
+        "indexdef": "CREATE UNIQUE INDEX attendance_records_pkey ON public.attendance_records USING btree (id)"
+      },
+      {
+        "tablename": "audit_log",
+        "indexname": "audit_log_pkey",
+        "indexdef": "CREATE UNIQUE INDEX audit_log_pkey ON public.audit_log USING btree (id)"
+      },
+      {
+        "tablename": "company_settings",
+        "indexname": "company_settings_pkey",
+        "indexdef": "CREATE UNIQUE INDEX company_settings_pkey ON public.company_settings USING btree (id)"
+      },
+      {
+        "tablename": "employee_activity_sessions",
+        "indexname": "employee_activity_sessions_pkey",
+        "indexdef": "CREATE UNIQUE INDEX employee_activity_sessions_pkey ON public.employee_activity_sessions USING btree (session_id)"
+      },
+      {
+        "tablename": "employee_profiles",
+        "indexname": "employee_profiles_employee_id_key",
+        "indexdef": "CREATE UNIQUE INDEX employee_profiles_employee_id_key ON public.employee_profiles USING btree (employee_id)"
+      },
+      {
+        "tablename": "employee_profiles",
+        "indexname": "employee_profiles_pkey",
+        "indexdef": "CREATE UNIQUE INDEX employee_profiles_pkey ON public.employee_profiles USING btree (id)"
+      },
+      {
+        "tablename": "employee_profilesss",
+        "indexname": "employee_profilesss_pkey",
+        "indexdef": "CREATE UNIQUE INDEX employee_profilesss_pkey ON public.employee_profilesss USING btree (id)"
+      },
+      {
+        "tablename": "leave_requests",
+        "indexname": "leave_requests_pkey",
+        "indexdef": "CREATE UNIQUE INDEX leave_requests_pkey ON public.leave_requests USING btree (id)"
+      },
+      {
+        "tablename": "leave_requests",
+        "indexname": "leaves_employee_dates_idx",
+        "indexdef": "CREATE INDEX leaves_employee_dates_idx ON public.leave_requests USING btree (employee_id, start_date, end_date)"
+      },
+      {
+        "tablename": "profiles",
+        "indexname": "profiles_email_key",
+        "indexdef": "CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)"
+      },
+      {
+        "tablename": "profiles",
+        "indexname": "profiles_employee_id_key",
+        "indexdef": "CREATE UNIQUE INDEX profiles_employee_id_key ON public.profiles USING btree (employee_id)"
+      },
+      {
+        "tablename": "profiles",
+        "indexname": "profiles_pkey",
+        "indexdef": "CREATE UNIQUE INDEX profiles_pkey ON public.profiles USING btree (id)"
+      }
+    ],
+    "policies": [
+      {
+        "tablename": "attendance_records",
+        "policyname": "attendance_admin",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "DELETE",
+        "qual": "is_admin()",
+        "with_check": null
+      },
+      {
+        "tablename": "attendance_records",
+        "policyname": "attendance_insert",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "INSERT",
+        "qual": null,
+        "with_check": "(employee_id = auth.uid())"
+      },
+      {
+        "tablename": "attendance_records",
+        "policyname": "attendance_read",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "((employee_id = auth.uid()) OR is_admin())",
+        "with_check": null
+      },
+      {
+        "tablename": "attendance_records",
+        "policyname": "attendance_update",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "UPDATE",
+        "qual": "((employee_id = auth.uid()) OR is_admin())",
+        "with_check": "((employee_id = auth.uid()) OR is_admin())"
+      },
+      {
+        "tablename": "audit_log",
+        "policyname": "audit_read",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "is_admin()",
+        "with_check": null
+      },
+      {
+        "tablename": "company_settings",
+        "policyname": "settings_admin",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "UPDATE",
+        "qual": "is_admin()",
+        "with_check": "is_admin()"
+      },
+      {
+        "tablename": "company_settings",
+        "policyname": "settings_read",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "true",
+        "with_check": null
+      },
+      {
+        "tablename": "employee_profiles",
+        "policyname": "employees can read their own profile",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "((id = auth.uid()) AND (is_active = true))",
+        "with_check": null
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_admin",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "DELETE",
+        "qual": "is_admin()",
+        "with_check": null
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_admin_update",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "UPDATE",
+        "qual": "is_admin()",
+        "with_check": "is_admin()"
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_create",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "INSERT",
+        "qual": null,
+        "with_check": "(employee_id = auth.uid())"
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_insert",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "INSERT",
+        "qual": null,
+        "with_check": "(employee_id = auth.uid())"
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_read",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "((employee_id = auth.uid()) OR is_admin())",
+        "with_check": null
+      },
+      {
+        "tablename": "leave_requests",
+        "policyname": "leave_update",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "UPDATE",
+        "qual": "((employee_id = auth.uid()) OR is_admin())",
+        "with_check": "((employee_id = auth.uid()) OR is_admin())"
+      },
+      {
+        "tablename": "profiles",
+        "policyname": "profiles_admin",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "ALL",
+        "qual": "is_admin()",
+        "with_check": "is_admin()"
+      },
+      {
+        "tablename": "profiles",
+        "policyname": "profiles_read",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "((id = auth.uid()) OR is_admin())",
+        "with_check": null
+      },
+      {
+        "tablename": "profiles",
+        "policyname": "profiles_select",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "SELECT",
+        "qual": "((id = auth.uid()) OR is_admin())",
+        "with_check": null
+      },
+      {
+        "tablename": "profiles",
+        "policyname": "profiles_update",
+        "permissive": "PERMISSIVE",
+        "roles": "{authenticated}",
+        "cmd": "UPDATE",
+        "qual": "is_admin()",
+        "with_check": "is_admin()"
+      }
+    ],
+    "functions": [
+      {
+        "signature": "check_in()",
+        "definition": "CREATE OR REPLACE FUNCTION public.check_in()\n RETURNS attendance_records\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\r\ndeclare r public.attendance_records; s public.company_settings; local_day date; local_time time; is_late boolean;\r\nbegin\r\n  if not exists(select 1 from public.profiles where id=auth.uid() and active) then raise exception 'Your account is inactive.' using errcode='42501'; end if;\r\n  select * into s from public.company_settings where id=true; local_day := (now() at time zone s.timezone)::date; local_time := (now() at time zone s.timezone)::time;\r\n  if extract(isodow from local_day)::int <> all(s.workdays) then raise exception 'Today is not a configured working day.'; end if;\r\n  if exists(select 1 from public.leave_requests where employee_id=auth.uid() and status='Approved' and local_day between start_date and end_date) then raise exception 'You have approved leave for today.'; end if;\r\n  is_late := local_time > s.workday_start + make_interval(mins=>s.late_after_minutes);\r\n  insert into public.attendance_records(employee_id,attendance_date,check_in,status) values(auth.uid(),local_day,now(),case when is_late then 'Late' else 'Working' end) returning * into r;\r\n  return r;\r\nexception when unique_violation then raise exception 'Today''s attendance record already exists.' using errcode='23505'; end $function$\n"
+      },
+      {
+        "signature": "check_out()",
+        "definition": "CREATE OR REPLACE FUNCTION public.check_out()\n RETURNS attendance_records\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\r\ndeclare r public.attendance_records; s public.company_settings; local_day date;\r\nbegin select * into s from public.company_settings where id=true; local_day := (now() at time zone s.timezone)::date;\r\n  update public.attendance_records set check_out=now(),status='Completed' where employee_id=auth.uid() and attendance_date=local_day and check_in is not null and check_out is null returning * into r;\r\n  if r.id is null then raise exception 'There is no open attendance record to check out.'; end if; return r; end $function$\n"
+      },
+      {
+        "signature": "correct_attendance(uuid,timestamp with time zone,timestamp with time zone,text)",
+        "definition": "CREATE OR REPLACE FUNCTION public.correct_attendance(record_id uuid, corrected_check_in timestamp with time zone, corrected_check_out timestamp with time zone, corrected_status text)\n RETURNS attendance_records\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$\r\ndeclare r public.attendance_records;\r\nbegin\r\n  if not public.is_admin() then raise exception 'Administrator access is required.' using errcode='42501'; end if;\r\n  if corrected_check_in is null or (corrected_check_out is not null and corrected_check_out < corrected_check_in) then raise exception 'Check-out must be after check-in.'; end if;\r\n  update public.attendance_records set check_in=corrected_check_in, check_out=corrected_check_out, status=corrected_status, corrected_by=auth.uid(), corrected_at=now()\r\n  where id=record_id returning * into r;\r\n  if r.id is null then raise exception 'Attendance record was not found.'; end if;\r\n  insert into public.audit_log(actor_id,target_id,action,metadata) values(auth.uid(),r.employee_id,'attendance_corrected',jsonb_build_object('record_id',record_id));\r\n  return r;\r\nend $function$\n"
+      },
+      {
+        "signature": "employee_login_email(text)",
+        "definition": "CREATE OR REPLACE FUNCTION public.employee_login_email(lookup_employee_id text)\n RETURNS text\n LANGUAGE sql\n SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$ select email from public.profiles where upper(employee_id)=upper(trim(lookup_employee_id)) and active limit 1 $function$\n"
+      },
+      {
+        "signature": "is_admin()",
+        "definition": "CREATE OR REPLACE FUNCTION public.is_admin()\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'public'\nAS $function$ select exists(select 1 from public.profiles where id=auth.uid() and role='admin' and active) $function$\n"
+      },
+      {
+        "signature": "set_updated_at()",
+        "definition": "CREATE OR REPLACE FUNCTION public.set_updated_at()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$ begin new.updated_at=now(); return new; end $function$\n"
+      }
+    ],
+    "triggers": [
+      {
+        "table_name": "attendance_records",
+        "trigger_name": "attendance_updated_at",
+        "action_timing": "BEFORE",
+        "event_manipulation": "UPDATE",
+        "action_statement": "EXECUTE FUNCTION set_updated_at()"
+      },
+      {
+        "table_name": "leave_requests",
+        "trigger_name": "leaves_updated_at",
+        "action_timing": "BEFORE",
+        "event_manipulation": "UPDATE",
+        "action_statement": "EXECUTE FUNCTION set_updated_at()"
+      },
+      {
+        "table_name": "profiles",
+        "trigger_name": "profiles_updated_at",
+        "action_timing": "BEFORE",
+        "event_manipulation": "UPDATE",
+        "action_statement": "EXECUTE FUNCTION set_updated_at()"
+      }
+    ],
+    "migrations": [
+      {
+        "version": "20260912000000",
+        "name": "tennis_portal"
+      }
+    ]
+  }
+}
