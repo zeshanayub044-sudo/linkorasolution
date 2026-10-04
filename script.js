@@ -46,7 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     'On-Page SEO': 'on-page-seo', 'Off-Page SEO': 'off-page-seo', Backlinks: 'backlinks',
     'Guest Posting': 'guest-posting', 'Blog Writing': 'blog-writing', 'DA Increase': 'da-increase',
     'Guest Post Sites Sheet': 'guest-post-sheet', 'Technical SEO': 'technical-seo',
-    'GMB / Google Business Profile': 'gmb-optimization'
+    'GMB / Google Business Profile': 'gmb-optimization',
+    'Web Development': 'web-development',
+    '12-Website Monthly SEO Plan': 'multi-site-seo'
   };
   document.querySelectorAll('.card').forEach(function (card) {
     var heading = card.querySelector('h3');
@@ -98,12 +100,13 @@ document.addEventListener('DOMContentLoaded', function () {
       var serviceHeading = section.querySelector('.section-head h2');
       if (!serviceHeading) return;
       var serviceName = serviceHeading.textContent.trim();
+      var orderName = section.getAttribute('data-order-service') || serviceName;
       var sectionHead = section.querySelector('.section-head');
       var sectionButton = document.createElement('button');
       sectionButton.type = 'button';
       sectionButton.className = 'btn btn-gold order-service';
       sectionButton.textContent = 'Order ' + serviceName;
-      sectionButton.addEventListener('click', function () { openOrder(serviceName, sectionButton); });
+      sectionButton.addEventListener('click', function () { openOrder(orderName, sectionButton); });
       sectionHead.appendChild(sectionButton);
 
       section.querySelectorAll('.card').forEach(function (card) {
@@ -114,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cardButton.className = 'order-card-button';
         cardButton.textContent = 'Order on WhatsApp';
         cardButton.addEventListener('click', function () {
-          openOrder(choice ? serviceName + ' — ' + choice : serviceName, cardButton);
+          openOrder(choice ? orderName + ' — ' + choice : orderName, cardButton);
         });
         card.appendChild(cardButton);
       });
@@ -149,5 +152,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   var footer = document.querySelector('footer');
-  if (footer) footer.innerHTML = '<div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTIONS logo"></span><span class="brandname">LINKORA SOLUTIONS</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="services.html#on-page-seo">On-Page SEO</a></li><li><a href="services.html#off-page-seo">Off-Page SEO</a></li><li><a href="services.html#backlinks">Backlinks</a></li><li><a href="services.html#guest-posting">Guest Posting</a></li><li><a href="services.html#gmb-optimization">GMB / Google Business Profile</a></li></ul></div><div><h5>More services</h5><ul><li><a href="services.html#blog-writing">Blog Writing</a></li><li><a href="services.html#da-increase">DA Increase</a></li><li><a href="services.html#guest-post-sheet">Guest Post Sites Sheet</a></li><li><a href="services.html#technical-seo">Technical SEO</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="careers.html">Careers</a></li><li><a href="contact.html">Contact</a></li><li><a class="tennis-portal-link" href="tennis-portal.html">Tennis Portal <span aria-hidden="true">↗</span></a></li><li><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com" target="_blank" rel="noopener noreferrer">Email us</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year">2026</span> LINKORA SOLUTIONS. All rights reserved.</p><div class="footer-social"><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer" aria-label="Contact LINKORA SOLUTIONS on WhatsApp">WA</a></div></div></div>';
+  if (footer) footer.innerHTML = '<div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTIONS logo"></span><span class="brandname">LINKORA SOLUTIONS</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="services.html#on-page-seo">On-Page SEO</a></li><li><a href="services.html#off-page-seo">Off-Page SEO</a></li><li><a href="services.html#backlinks">Backlinks</a></li><li><a href="services.html#guest-posting">Guest Posting</a></li><li><a href="services.html#gmb-optimization">GMB / Google Business Profile</a></li></ul></div><div><h5>More services</h5><ul><li><a href="services.html#blog-writing">Blog Writing</a></li><li><a href="services.html#da-increase">DA Increase</a></li><li><a href="services.html#guest-post-sheet">Guest Post Sites Sheet</a></li><li><a href="services.html#technical-seo">Technical SEO</a></li><li><a href="services.html#web-development">Web Development</a></li><li><a href="services.html#multi-site-seo">12-Website SEO Plan</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="careers.html">Careers</a></li><li><a href="contact.html">Contact</a></li><li><a class="tennis-portal-link" href="tennis-portal.html">Tennis Portal <span aria-hidden="true">↗</span></a></li><li><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com" target="_blank" rel="noopener noreferrer">Email us</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year">2026</span> LINKORA SOLUTIONS. All rights reserved.</p><div class="footer-social"><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer" aria-label="Contact LINKORA SOLUTIONS on WhatsApp">WA</a></div></div></div>';
 });
