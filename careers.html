@@ -8,7 +8,7 @@
 <meta property="og:title" content="Careers at LINKORA SOLUTIONS"><meta property="og:description" content="Explore open roles and apply to join our digital growth and SEO team.">
 <meta property="og:url" content="https://linkorasolution.com/careers.html"><meta property="og:image" content="https://linkorasolution.com/assets/linkora-logo.png">
 <meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://linkorasolution.com/assets/linkora-logo.png">
-<link rel="stylesheet" href="styles.css?v=4"><link rel="stylesheet" href="careers.css?v=1">
+<link rel="stylesheet" href="styles.css?v=4"><link rel="stylesheet" href="careers.css?v=2">
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=2"><link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=2"><link rel="manifest" href="site.webmanifest?v=2"><meta name="theme-color" content="#0a0e14">
 <script src="intro-init.js"></script>
@@ -27,7 +27,18 @@
     <div class="career-filters"><label>Search positions<input id="career-search" type="search" placeholder="Role, location, or keyword" autocomplete="off"></label><label>Department<select id="career-department"><option value="">All departments</option></select></label></div>
     <p id="career-list-status" class="career-list-status" role="status" aria-live="polite">Loading open roles…</p><div id="career-jobs" class="career-grid" aria-live="polite"></div>
   </div></section>
+  <section class="career-general" id="upload-resume"><div class="wrap career-general__grid"><div><span class="mono">Stay in touch</span><h2>Upload Your Resume</h2><p>Don't see the right opening? Share your experience with our recruitment team. This is a general submission and is not an application for a specific job.</p></div>
+    <div class="career-apply-panel"><form id="career-general-form" enctype="multipart/form-data"><input type="hidden" name="submission_type" value="general_resume"><div class="career-form-grid">
+      <label>Full name *<input name="full_name" maxlength="160" autocomplete="name" required></label><label>Email *<input name="email" type="email" maxlength="320" autocomplete="email" required></label>
+      <label>Phone *<input name="phone" type="tel" maxlength="40" autocomplete="tel" required></label><label>Primary skill *<input name="primary_skill" maxlength="120" placeholder="e.g. SEO strategy" required></label>
+      <label>City (optional)<input name="city" maxlength="120" autocomplete="address-level2"></label><label>Country (optional)<input name="country" maxlength="120" autocomplete="country-name"></label>
+      <label>Current role (optional)<input name="current_role" maxlength="160"></label><label>Years of experience (optional)<input name="years_experience" type="number" min="0" max="60" step="0.1"></label>
+      <label>LinkedIn URL (optional)<input name="linkedin_url" type="url" maxlength="500" placeholder="https://linkedin.com/in/..."></label><label>Portfolio URL (optional)<input name="portfolio_url" type="url" maxlength="500" placeholder="https://..."></label>
+      <label class="career-form-wide">A short note (optional)<textarea name="message" rows="4" maxlength="5000" placeholder="Tell us what kind of work interests you."></textarea></label>
+      <label class="career-form-wide">Resume / CV *<input name="resume" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required><span class="career-hint">PDF, DOC or DOCX, up to 8 MB.</span></label>
+    </div><label class="career-trap" aria-hidden="true">Website<input name="website_confirm" tabindex="-1" autocomplete="off"></label><label class="career-consent"><input name="consent" type="checkbox" value="yes" required><span>I agree to LINKORA SOLUTIONS using my details and resume for recruitment purposes.</span></label><button type="submit" class="btn btn-whatsapp">Send resume</button><p id="career-general-message" class="career-form-message" role="status" aria-live="polite"></p></form></div>
+  </div></section>
 </main>
 <footer><div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTIONS logo"></span><span class="brandname">LINKORA SOLUTIONS</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="services.html#on-page-seo">On-Page SEO</a></li><li><a href="services.html#off-page-seo">Off-Page SEO</a></li><li><a href="services.html#web-development">Web Development</a></li><li><a href="services.html#multi-site-seo">12-Website SEO Plan</a></li></ul></div><div><h5>More</h5><ul><li><a href="blog.html">Blog</a></li><li><a href="careers.html">Careers</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year"></span> LINKORA SOLUTIONS. All rights reserved.</p></div></div></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="careers-config.js"></script><script src="careers-common.js"></script><script src="careers-list.js"></script><script src="script.js?v=5"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="careers-config.js"></script><script src="careers-common.js"></script><script src="careers-list.js?v=2"></script><script src="script.js?v=5"></script>
 </body></html>

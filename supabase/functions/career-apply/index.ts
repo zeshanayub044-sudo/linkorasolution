@@ -35,7 +35,7 @@ class InputError extends Error {
 function value(form: FormData, name: string, max: number, required = false) {
   const raw = form.get(name);
   const text = typeof raw === 'string' ? raw.trim() : '';
-  if (text.length > max || (required && !text)) throw new InputError('Please check the application fields.');
+  if (text.length > max || (required && !text)) throw new InputError('Please check the form fields.');
   return text;
 }
 function optionalUrl(form: FormData, name: string, linkedin = false) {
@@ -93,8 +93,9 @@ Deno.serve(async (request) => {
   try {
     const form = await request.formData();
     if (value(form, 'website_confirm', 200)) throw new InputError('Invalid submission.');
-    const jobId = value(form, 'job_id', 36, true);
-    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(jobId)) {
+    const isGeneral = value(form, 'submission_type', 30) === 'general_resume';
+    const jobId = isGeneral ? '' : value(form, 'job_id', 36, true);
+    if (!isGeneral && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(jobId)) {
       throw new InputError('This job is unavailable.');
     }
     const fullName = value(form, 'full_name', 160, true);
@@ -103,29 +104,49 @@ Deno.serve(async (request) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new InputError('Enter a valid email.');
     const phone = value(form, 'phone', 40, true);
     if (phone.length < 7) throw new InputError('Enter a valid phone number.');
-    const city = value(form, 'city', 120, true);
-    const country = value(form, 'country', 120, true);
-    if (city.length < 2 || country.length < 2) throw new InputError('Enter your city and country.');
+    const city = value(form, 'city', 120, !isGeneral);
+    const country = value(form, 'country', 120, !isGeneral);
+    if (!isGeneral && (city.length < 2 || country.length < 2)) throw new InputError('Enter your city and country.');
     const linkedin = optionalUrl(form, 'linkedin_url', true);
-    if (!linkedin) throw new InputError('Enter your LinkedIn profile URL.');
+    if (!isGeneral && !linkedin) throw new InputError('Enter your LinkedIn profile URL.');
     const portfolio = optionalUrl(form, 'portfolio_url');
-    const experienceText = value(form, 'years_experience', 5, true);
-    if (!/^\d{1,2}(?:\.\d)?$/.test(experienceText) || Number(experienceText) > 60) {
+    const experienceText = value(form, 'years_experience', 5, !isGeneral);
+    if ((experienceText || !isGeneral) && (!/^\d{1,2}(?:\.\d)?$/.test(experienceText) || Number(experienceText) > 60)) {
       throw new InputError('Enter years of experience between 0 and 60.');
     }
-    const currentRole = value(form, 'current_role', 160, true);
-    if (currentRole.length < 2) throw new InputError('Enter your current role.');
-    const currentCompany = value(form, 'current_company', 160);
-    const expectedSalary = value(form, 'expected_salary', 100);
-    const noticePeriod = value(form, 'notice_period', 120, true);
-    if (noticePeriod.length < 2) throw new InputError('Enter your notice period.');
-    const coverLetter = value(form, 'cover_letter', 10000, true);
-    if (coverLetter.length < 20) throw new InputError('Your cover letter needs at least 20 characters.');
+    const currentRole = value(form, 'current_role', 160, !isGeneral);
+    if (!isGeneral && currentRole.length < 2) throw new InputError('Enter your current role.');
+    const currentCompany = isGeneral ? '' : value(form, 'current_company', 160);
+    const expectedSalary = isGeneral ? '' : value(form, 'expected_salary', 100);
+    const noticePeriod = isGeneral ? '' : value(form, 'notice_period', 120, true);
+    if (!isGeneral && noticePeriod.length < 2) throw new InputError('Enter your notice period.');
+    const coverLetter = isGeneral ? '' : value(form, 'cover_letter', 10000, true);
+    if (!isGeneral && coverLetter.length < 20) throw new InputError('Your cover letter needs at least 20 characters.');
+    const primarySkill = isGeneral ? value(form, 'primary_skill', 120, true) : '';
+    if (isGeneral && primarySkill.length < 2) throw new InputError('Enter your primary skill.');
+    const message = isGeneral ? value(form, 'message', 5000) : '';
     if (value(form, 'consent', 10) !== 'yes') throw new InputError('Please consent to recruitment data processing.');
     const file = form.get('resume');
     const extension = await validateResume(file);
 
     service = serviceClient();
+    if (isGeneral) {
+      uploadedPath = 'general/' + crypto.randomUUID() + '.' + extension;
+      const upload = await service.storage.from('career-resumes').upload(uploadedPath, file, {
+        contentType: types[extension], upsert: false,
+      });
+      if (upload.error) throw upload.error;
+      rpcAttempted = true;
+      const submitted = await service.rpc('career_submit_resume', {
+        p_full_name: fullName, p_email: email, p_phone: phone, p_primary_skill: primarySkill,
+        p_city: city || null, p_country: country || null, p_current_role: currentRole || null,
+        p_years_experience: experienceText ? Number(experienceText) : null,
+        p_linkedin_url: linkedin, p_portfolio_url: portfolio, p_message: message,
+        p_resume_path: uploadedPath, p_consent: true,
+      });
+      if (submitted.error) throw submitted.error;
+      return json(origin, { success: true, message: 'Thank you for sharing your profile with LINKORA SOLUTIONS. Your resume has been received for future opportunities.' }, 201);
+    }
     const job = await service.from('career_jobs').select('id,status,closes_at').eq('id', jobId).maybeSingle();
     if (job.error) throw job.error;
     if (!job.data || job.data.status !== 'open' ||
@@ -156,13 +177,13 @@ Deno.serve(async (request) => {
       // A network failure after commit must not delete an attached CV.
       try {
         const existing = rpcAttempted
-          ? await service.from('career_applications').select('id').eq('resume_path', uploadedPath).maybeSingle()
+          ? await service.from(uploadedPath.startsWith('general/') ? 'career_resume_submissions' : 'career_applications').select('id').eq('resume_path', uploadedPath).maybeSingle()
           : { data: null, error: null };
-        if (existing.data) return json(origin, { success: true, message: 'Application received. Thank you for applying.' }, 201);
+        if (existing.data) return json(origin, { success: true, message: uploadedPath.startsWith('general/') ? 'Thank you for sharing your profile with LINKORA SOLUTIONS. Your resume has been received for future opportunities.' : 'Application received. Thank you for applying.' }, 201);
         if (!existing.error) await service.storage.from('career-resumes').remove([uploadedPath]);
       } catch { /* The private file is retained if commit status cannot be verified. */ }
     }
-    if (failure.code === '23505') return json(origin, { error: 'You have already applied for this job.' }, 409);
+    if (failure.code === '23505') return json(origin, { error: uploadedPath.startsWith('general/') ? 'You have already sent a resume recently. Please wait before trying again.' : 'You have already applied for this job.' }, 409);
     if (error instanceof InputError) return json(origin, { error: error.message }, error.status);
     if (failure.code === '22023') return json(origin, { error: 'This job is no longer accepting applications.' }, 410);
     console.error('Career application failed', failure.code || 'unknown');

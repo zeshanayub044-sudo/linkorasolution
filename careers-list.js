@@ -36,7 +36,9 @@
     });
     grid.replaceChildren();
     if (!filtered.length) {
-      grid.appendChild(career.node('div', 'career-empty', jobs.length ? 'No roles match your search.' : 'There are no open roles right now. Please check back soon.'));
+      var empty = career.node('div', 'career-empty', jobs.length ? 'No roles match your search.' : 'There are no open roles right now. You can still share your resume with us.');
+      if (!jobs.length) { var link = career.node('a', 'btn btn-ghost', 'Upload Your Resume'); link.href = '#upload-resume'; empty.appendChild(link); }
+      grid.appendChild(empty);
     } else {
       var fragment = document.createDocumentFragment();
       filtered.forEach(function (job) { fragment.appendChild(card(job)); });
@@ -77,5 +79,26 @@
   }
   search.addEventListener('input', render);
   department.addEventListener('change', render);
+  var generalForm = document.getElementById('career-general-form');
+  generalForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    var feedback = document.getElementById('career-general-message');
+    var button = generalForm.querySelector('button[type=submit]');
+    var file = generalForm.elements.namedItem('resume').files[0];
+    if (!generalForm.reportValidity()) return;
+    if (!file || file.size === 0 || file.size > 8 * 1024 * 1024 || !/\.(pdf|doc|docx)$/i.test(file.name)) {
+      feedback.textContent = 'Attach a PDF, DOC or DOCX resume under 8 MB.'; feedback.dataset.kind = 'error'; return;
+    }
+    button.disabled = true; feedback.textContent = 'Sending your resume…'; feedback.dataset.kind = '';
+    try {
+      var response = await fetch(career.config.url + '/functions/v1/career-apply', {
+        method: 'POST', headers: { apikey: career.config.publishableKey }, body: new FormData(generalForm)
+      });
+      var result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Your resume could not be sent.');
+      generalForm.reset(); feedback.textContent = result.message || 'Thank you for sharing your profile. Your resume has been received for future opportunities.'; feedback.dataset.kind = 'success';
+    } catch (error) { feedback.textContent = error.message || 'Your resume could not be sent. Please try again.'; feedback.dataset.kind = 'error'; }
+    finally { button.disabled = false; }
+  });
   load();
 }());
