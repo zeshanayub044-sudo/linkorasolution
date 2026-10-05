@@ -34,7 +34,7 @@
   }
   function errorText(error) {
     if (error && error.code === '23505') return 'This job slug is already in use.';
-    if (error && error.code === '42501') return 'Your Careers Admin access does not allow this action.';
+    if (error && error.code === '42501') return 'Access denied. Co-CEO authorization required.';
     return error && error.message || 'The action could not be completed. Please try again.';
   }
   function localDatetime(value) {
@@ -149,7 +149,7 @@
       var role = await client.rpc('career_current_role');
       if (role.error) throw role.error;
       if (role.data !== 'careers_admin') {
-        hidePrivate(); login.hidden = false; show('Access denied. This account is not an authorized Careers Admin.', 'error'); return;
+        hidePrivate(); login.hidden = false; show('Access denied. Co-CEO authorization required.', 'error'); return;
       }
       account = result.data.user; login.hidden = true; dashboard.hidden = false;
       document.getElementById('career-signout').hidden = false;
