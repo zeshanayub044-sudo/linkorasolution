@@ -117,7 +117,13 @@
   async function restoreSession() {
     var result = await supabase.auth.getUser();
     if (!result.data.user) return;
-    try { showEmployee(await loadProfile(result.data.user)); }
+    try {
+      var profile = await loadProfile(result.data.user);
+      var started = await invokeActivity('start-session', crypto.randomUUID());
+      sessionStorage.setItem(sessionKey, started.sessionId);
+      showEmployee(profile);
+      if (started.warning) message(logoutMessage, started.warning, 'success');
+    }
     catch (error) { await supabase.auth.signOut(); message(loginMessage, error.message, 'error'); }
   }
   document.getElementById('forgot-password-button').addEventListener('click', async function () {
@@ -164,10 +170,10 @@
     try {
       var profile = await loadProfile(result.data.user);
       var activitySessionId = crypto.randomUUID();
-      await invokeActivity('start-session', activitySessionId);
-      sessionStorage.setItem(sessionKey, activitySessionId);
+      var started = await invokeActivity('start-session', activitySessionId);
+      sessionStorage.setItem(sessionKey, started.sessionId || activitySessionId);
       showEmployee(profile);
-      message(logoutMessage, 'Your login has been recorded.', 'success');
+      message(logoutMessage, started.warning || 'Your login has been recorded.', 'success');
     } catch (error) {
       await supabase.auth.signOut();
       message(loginMessage, error.message || 'Could not start the employee session.', 'error');
@@ -183,11 +189,11 @@
       // while sessionStorage is intentionally browser-tab scoped. In that case
       // the server safely closes this employee's most recent active session.
       var activitySessionId = sessionStorage.getItem(sessionKey) || null;
-      await invokeActivity('end-session', activitySessionId);
+      var ended = await invokeActivity('end-session', activitySessionId);
       sessionStorage.removeItem(sessionKey);
       await supabase.auth.signOut();
       panel.hidden = true; form.hidden = false; form.reset();
-      message(loginMessage, 'You have been signed out.', 'success');
+      message(loginMessage, ended.warning || 'You have been signed out.', 'success');
     } catch (error) { message(logoutMessage, error.message || 'Sign-out could not be recorded. Please try again.', 'error'); }
     button.disabled = false;
   });

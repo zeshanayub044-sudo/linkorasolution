@@ -1,3 +1,7 @@
+# Historical integration note
+
+Google Sheets is now a secondary mirror of Supabase attendance. See [ATTENDANCE_ADMIN_SETUP.md](ATTENDANCE_ADMIN_SETUP.md) for the current queue and retry flow. Do not deploy the older Google-only `attendance.html` instructions below as the primary attendance route.
+
 # Linkora simple activity log
 
 This replaces Supabase with:
@@ -27,3 +31,6 @@ The spreadsheet remains private to its owner. The public website contains only a
 ## Day-to-day management
 
 Open the Google Sheet to view active and completed sessions. To add or remove a staff member, edit only the `ALLOWED_EMAILS` Script Property. Normal logout updates the existing session row. Browser close/navigation sends a best-effort logout signal; a row marked **Active** indicates that the browser closed before logout could be confirmed.
+# Historical integration note
+
+Google Sheets is now a secondary mirror of Supabase attendance. See [ATTENDANCE_ADMIN_SETUP.md](ATTENDANCE_ADMIN_SETUP.md) for the current queue and retry flow. Do not deploy the older Google-only `attendance.html` instructions below as the primary attendance route.
