@@ -20,22 +20,25 @@ const validUuid = (value: unknown): value is string =>
   typeof value === "string" &&
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 
+class SheetError extends Error {}
+
 async function notifySheet(payload: Record<string, string>) {
-  const response = await fetch(required("GOOGLE_APPS_SCRIPT_URL"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ secret: required("GOOGLE_SHEETS_WEBHOOK_SECRET"), ...payload }),
-    signal: AbortSignal.timeout(6000),
-  });
-  if (!response.ok) throw new Error("Attendance sheet sync failed");
-  const body = await response.text();
+  let response: Response;
   try {
-    const result = JSON.parse(body);
-    if (result.success === false || result.ok === false)
-      throw new Error("Attendance sheet sync failed");
-  } catch (error) {
-    if (!(error instanceof SyntaxError)) throw error;
-  }
+    response = await fetch(required("GOOGLE_APPS_SCRIPT_URL"), {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({ secret: required("GOOGLE_SHEETS_WEBHOOK_SECRET"), ...payload }),
+      signal: AbortSignal.timeout(12000),
+    });
+  } catch (_) { throw new SheetError("Google Sheets is unavailable."); }
+  let result: Record<string, unknown>;
+  try {
+    result = await response.json();
+  } catch (_) { throw new SheetError("Google Sheets returned an invalid response."); }
+  if (!response.ok || result.ok !== true)
+    throw new SheetError("Google Sheets rejected the attendance request.");
+  return result;
 }
 
 type Service = ReturnType<typeof createClient>;
@@ -54,32 +57,28 @@ async function flushSheetQueue(service: Service, limit = 5) {
     try {
       const { data: session, error: sessionError } = await service
         .from("employee_activity_sessions")
-        .select("session_id, employee_id")
+        .select("session_id, employee_id, login_at")
         .eq("session_id", item.session_id).single();
       if (sessionError || !session)
         throw new Error(sessionError?.message || "Attendance session is unavailable");
-      if (item.action === "login") {
-        const { data: account, error: accountError } =
-          await service.auth.admin.getUserById(session.employee_id);
-        if (accountError || !account.user) throw new Error("Employee account is unavailable");
-        const { data: profile, error: profileError } = await service.from("employee_profiles")
-          .select("full_name, employee_id, scheme, role").eq("id", session.employee_id).single();
-        if (profileError || !profile) throw new Error("Employee profile is unavailable");
-        await notifySheet({
-          action: "login", sessionId: item.session_id,
-          email: account.user.email || "", employeeName: profile.full_name,
-          employeeId: profile.employee_id, scheme: profile.scheme, role: profile.role,
-        });
-      } else {
-        await notifySheet({ action: "logout", sessionId: item.session_id });
-      }
+      const { data: account, error: accountError } =
+        await service.auth.admin.getUserById(session.employee_id);
+      if (accountError || !account.user) throw new Error("Employee account is unavailable");
+      const { data: profile, error: profileError } = await service.from("employee_profiles")
+        .select("full_name, employee_id, scheme, role").eq("id", session.employee_id).single();
+      if (profileError || !profile) throw new Error("Employee profile is unavailable");
+      await notifySheet({
+        action: item.action, sessionId: item.session_id, loginAt: session.login_at,
+        email: account.user.email || "", employeeName: profile.full_name,
+        employeeId: profile.employee_id, scheme: profile.scheme, role: profile.role,
+      });
       const { error: updateError } = await service.from("attendance_sheet_sync_queue")
         .update({ synced_at: new Date().toISOString(), attempts: item.attempts + 1, last_error: null })
         .eq("id", item.id);
       if (updateError) throw updateError;
     } catch (cause) {
       failed++;
-      console.error("Secondary attendance sheet sync failed", item.id, cause);
+      console.error("Attendance sheet sync failed", item.id, cause);
       const retryMinutes = Math.min(60, 2 ** Math.min(item.attempts, 6));
       await service.from("attendance_sheet_sync_queue").update({
         attempts: item.attempts + 1,
@@ -92,8 +91,7 @@ async function flushSheetQueue(service: Service, limit = 5) {
 }
 
 function scheduleSheetFlush(service: Service) {
-  // The queue row is committed with the session. Webhook latency must never
-  // hold the employee's attendance response open.
+  // The queue is a retry safety net after the synchronous Sheet write.
   if (typeof EdgeRuntime !== "undefined") {
     EdgeRuntime.waitUntil(flushSheetQueue(service).catch((error) => {
       console.error("Background attendance sheet sync failed", error);
@@ -134,12 +132,23 @@ Deno.serve(async (request) => {
           .select("id", { count: "exact", head: true }).is("synced_at", null);
         return response({ ok: true, pending: count || 0, ...outcome });
       }
-      const { data: sessions, error: reportError } = await service
-        .from("employee_activity_sessions")
-        .select("login_at, logout_at, status, employee_profiles(full_name, employee_id)")
-        .order("login_at", { ascending: false }).limit(200);
-      if (reportError) throw reportError;
-      return response({ sessions: sessions || [] });
+      const report = await notifySheet({
+        action: "report",
+        limit: String(Math.min(500, Math.max(1, Number(body.limit) || 200))),
+        offset: String(Math.max(0, Number(body.offset) || 0)),
+        from: typeof body.from === "string" ? body.from : "",
+        to: typeof body.to === "string" ? body.to : "",
+        employeeId: typeof body.employeeId === "string" ? body.employeeId : "",
+      });
+      if (!Array.isArray(report.sessions) || !Number.isFinite(Number(report.total)))
+        throw new SheetError("Google Sheets returned an invalid report.");
+      return response({ source: "google_sheet", total: report.total,
+        sessions: report.sessions.map((row: Record<string, unknown>) => ({
+          ...row, login_at: row.loginAt || null, logout_at: row.logoutAt || null,
+          status: row.status || "Unknown",
+          employee_profiles: { full_name: row.employeeName || "",
+            employee_id: row.employeeId || "", role: row.role || "", scheme: row.scheme || "" },
+        })) });
     }
 
     if (action === "start-session") {
@@ -148,6 +157,11 @@ Deno.serve(async (request) => {
         p_user_id: employee.id, p_session_id: body.sessionId,
       });
       if (error) throw error;
+      await notifySheet({
+        action: "login", sessionId: data.sessionId,
+        email: auth.user.email || "", employeeName: employee.full_name,
+        employeeId: employee.employee_id, scheme: employee.scheme, role: employee.role,
+      });
       scheduleSheetFlush(service);
       return response({ ok: true, sessionId: data.sessionId, alreadyOpen: data.alreadyOpen,
         warning: null });
@@ -159,6 +173,17 @@ Deno.serve(async (request) => {
       p_user_id: employee.id, p_session_id: body.sessionId || null,
     });
     if (error) throw error;
+    if (!data.flaggedForReview) {
+      const { data: session, error: sessionError } = await service
+        .from("employee_activity_sessions").select("login_at")
+        .eq("session_id", data.sessionId).single();
+      if (sessionError || !session) throw sessionError || new Error("Attendance session unavailable");
+      await notifySheet({
+        action: "logout", sessionId: data.sessionId, loginAt: session.login_at,
+        email: auth.user.email || "", employeeName: employee.full_name,
+        employeeId: employee.employee_id, scheme: employee.scheme, role: employee.role,
+      });
+    }
     scheduleSheetFlush(service);
     return response({ ok: true, sessionId: data.sessionId, alreadyClosed: data.alreadyClosed,
       warning: data.flaggedForReview
@@ -166,6 +191,8 @@ Deno.serve(async (request) => {
         : null });
   } catch (error) {
     console.error("Attendance service failed", error);
+    if (error instanceof SheetError)
+      return response({ error: "Unable to load or save attendance in Google Sheets. Please check the backend connection." }, 502);
     return response({ error: "Attendance could not be recorded. Please try again." }, 500);
   }
 });

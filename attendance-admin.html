@@ -42,7 +42,7 @@
         <button type="button" data-view="audit"><span>☷</span> Audit Log</button>
         <button type="button" data-view="settings"><span>⚙</span> Settings</button>
       </nav>
-      <div class="sidebar-foot"><span class="status-pulse"></span> Supabase is the source of truth<br><a href="tennis-portal.html">Employee portal ↗</a></div>
+      <div class="sidebar-foot"><span class="status-pulse"></span> Attendance log: Google Sheets<br><a href="tennis-portal.html">Employee portal ↗</a></div>
     </aside>
 
     <div class="workspace">
@@ -57,6 +57,7 @@
 
         <section id="view-dashboard" class="view">
           <div id="summary-grid" class="summary-grid" aria-live="polite"></div>
+          <section class="panel"><div class="panel-head"><div><span class="eyebrow">GOOGLE SHEETS ATTENDANCE</span><h2>Latest sign-ins and sign-outs</h2></div><button type="button" class="text-action" data-go="reports">View all →</button></div><p id="dashboard-sheet-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p><div id="dashboard-sheet" class="mini-list"></div></section>
           <div class="dashboard-columns">
             <section class="panel"><div class="panel-head"><div><span class="eyebrow">WEEKLY PULSE</span><h2>Workforce presence</h2></div><span id="trend-label" class="muted"></span></div><div id="trend-chart" class="trend-chart" role="img" aria-label="Attendance trend"></div></section>
             <section class="panel focus-panel"><span class="eyebrow">RIGHT NOW</span><strong id="live-number">0</strong><h2>People currently present</h2><p>Today's valid open sessions only. Older sessions needing review are excluded.</p><button type="button" class="text-action" data-go="live">View live attendance →</button></section>
@@ -102,6 +103,12 @@
 
         <section id="view-reports" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">EXPORT &amp; INSIGHT</span><h2>Reports</h2><p>Download a focused CSV for payroll and management review.</p></div></div>
+          <section class="panel">
+            <div class="panel-head"><div><h3>Google Sheets attendance log</h3><p>Existing and new employee sign-ins and sign-outs from Tennis Portal Logs.</p></div><button id="sheet-report-refresh" type="button" class="quiet">↻ Refresh Sheet</button></div>
+            <p id="sheet-report-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p>
+            <div class="table-wrap"><table><thead><tr><th>Employee</th><th>ID</th><th>Role / scheme</th><th>Sign-in date</th><th>Sign-in time</th><th>Sign-out date</th><th>Sign-out time</th><th>Worked</th><th>Status</th></tr></thead><tbody id="sheet-report-body"></tbody></table></div>
+            <button id="sheet-report-more" type="button" class="quiet" hidden>Load more records</button>
+          </section>
           <div class="toolbar"><label>Employee for individual report<select id="report-employee"><option value="">Choose an employee</option></select></label></div>
           <div class="report-grid">
             <button type="button" data-report="daily"><span>▤</span><strong>Daily Attendance</strong><small>Today's status by employee</small></button>
@@ -142,7 +149,7 @@
             <fieldset><legend>Scheduled workdays</legend><div id="workdays" class="weekday-grid"><label><input type="checkbox" value="1"> Mon</label><label><input type="checkbox" value="2"> Tue</label><label><input type="checkbox" value="3"> Wed</label><label><input type="checkbox" value="4"> Thu</label><label><input type="checkbox" value="5"> Fri</label><label><input type="checkbox" value="6"> Sat</label><label><input type="checkbox" value="7"> Sun</label></div></fieldset>
             <div class="form-actions"><button type="submit" class="primary">Save attendance policy</button></div>
           </form>
-          <div class="panel sync-panel"><div><h2>Google Sheets mirror</h2><p>Attendance succeeds in Supabase even when the spreadsheet is unavailable. Pending deliveries retry through the attendance service.</p></div><button id="retry-sheet" type="button" class="quiet">Retry pending sync</button><span id="sheet-status" class="muted"></span></div>
+          <div class="panel sync-panel"><div><h2>Google Sheets delivery</h2><p>New attendance is confirmed by the spreadsheet before the portal reports success. Retry older pending deliveries here.</p></div><button id="retry-sheet" type="button" class="quiet">Retry pending sync</button><span id="sheet-status" class="muted"></span></div>
         </section>
       </main>
     </div>
@@ -168,6 +175,6 @@
   <dialog id="confirm-dialog" class="dialog confirm-dialog"><div class="dialog-head"><h2 id="confirm-title">Confirm change</h2></div><p id="confirm-description"></p><div class="form-actions"><button id="confirm-cancel" type="button" class="quiet">Cancel</button><button id="confirm-accept" type="button" class="primary">Confirm</button></div></dialog>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="portal-config.js"></script>
-  <script src="attendance-admin.js?v=3"></script>
+  <script src="attendance-admin.js?v=4"></script>
 </body>
 </html>

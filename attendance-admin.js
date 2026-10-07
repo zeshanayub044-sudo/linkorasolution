@@ -32,6 +32,8 @@
   let reportRows = [];
   let reportHeaders = [];
   let reportName = '';
+  let sheetReportRows = [];
+  let sheetReportTotal = 0;
   let detailUser = null;
   const pageSize = 50;
 
@@ -56,8 +58,8 @@
     body.appendChild(tr);
   }
   function statusBadge(value) {
-    const klass = value === 'Signed In' || value === 'Present' || value === 'Active' ? 'good'
-      : value === 'Signed Out' ? 'blue'
+    const klass = value === 'Signed In' || value === 'Logged In' || value === 'Present' || value === 'Active' ? 'good'
+      : value === 'Signed Out' || value === 'Logged Out' ? 'blue'
       : value === 'Absent' || value === 'Inactive' ? 'bad'
       : value === 'Incomplete' || value === 'Needs Review' || value === 'Late' ? 'warn' : 'neutral';
     return node('span', value, 'badge ' + klass);
@@ -138,6 +140,72 @@
     if (value == null) return '—';
     const n = Math.max(0, Math.floor(Number(value) || 0));
     return Math.floor(n / 60) + 'h ' + String(n % 60).padStart(2, '0') + 'm';
+  }
+  async function loadDashboardSheet() {
+    const list = $('dashboard-sheet');
+    const status = $('dashboard-sheet-message');
+    list.replaceChildren();
+    status.textContent = 'Loading attendance records from Google Sheets…';
+    try {
+      const report = await activity({ action: 'get-activity-report', limit: 8 });
+      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions) ||
+          !Number.isFinite(Number(report.total)))
+        throw new Error('Invalid attendance report response.');
+      status.textContent = report.total
+        ? report.total + ' attendance record(s) in Google Sheets.'
+        : 'No attendance records found in Google Sheets.';
+      report.sessions.forEach((session) => {
+        const line = node('div', null, 'mini-row');
+        line.append(node('span', (session.employeeName || 'Unknown employee') + ' · ' +
+          (session.employeeId || '—') + ' · ' + (session.loginDate || '—') + ' ' +
+          (session.loginTime || '—')),
+        node('span', session.status || 'Unknown'));
+        list.append(line);
+      });
+    } catch (error) {
+      status.textContent = 'Unable to load attendance records. Please check the backend connection. ' + errorText(error);
+    }
+  }
+  async function loadSheetReport(reset = true) {
+    const body = $('sheet-report-body');
+    const status = $('sheet-report-message');
+    const more = $('sheet-report-more');
+    if (reset) { sheetReportRows = []; sheetReportTotal = 0; body.replaceChildren(); }
+    more.disabled = true;
+    status.textContent = 'Loading attendance records from Google Sheets…';
+    try {
+      const report = await activity({
+        action: 'get-activity-report', limit: 200, offset: sheetReportRows.length,
+      });
+      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions) ||
+          !Number.isFinite(Number(report.total)))
+        throw new Error('Invalid attendance report response.');
+      sheetReportTotal = Number(report.total);
+      sheetReportRows.push(...report.sessions);
+      report.sessions.forEach((session) => {
+        const row = node('tr');
+        const profile = session.employee_profiles || {};
+        [
+          profile.full_name || session.employeeName || 'Unknown employee',
+          profile.employee_id || session.employeeId || '—',
+          [session.role || profile.role, session.scheme || profile.scheme].filter(Boolean).join(' / ') || '—',
+          session.loginDate || '—', session.loginTime || '—',
+          session.logoutDate || '—', session.logoutTime || '—',
+          minutes(session.workedMinutes),
+        ].forEach((value) => cell(row, value));
+        attachBadge(cell(row, ''), session.status || 'Unknown');
+        body.append(row);
+      });
+      if (!sheetReportRows.length) empty(body, 9, 'No attendance records found in Google Sheets.');
+      status.textContent = sheetReportRows.length
+        ? sheetReportRows.length + ' of ' + sheetReportTotal + ' Google Sheets records loaded.'
+        : 'No attendance records found in Google Sheets.';
+      more.hidden = sheetReportRows.length >= sheetReportTotal;
+    } catch (error) {
+      status.textContent = 'Unable to load attendance records. Please check the backend connection. ' + errorText(error);
+      more.hidden = true;
+      if (!sheetReportRows.length) empty(body, 9, 'Attendance records could not be loaded.');
+    } finally { more.disabled = false; }
   }
   function sessionSource(row) {
     if (row.corrected_at) return 'Admin correction';
@@ -269,7 +337,7 @@
     }
   }
   async function refreshCore() {
-    notice('Loading attendance from Supabase…');
+    notice('Loading the admin dashboard…');
     const day = companyDay();
     const [userResult, todayRows, weekRows, issueRows, liveRows] = await Promise.all([
       adminUsers({ action: 'list' }),
@@ -289,6 +357,7 @@
     renderEmployees();
     renderToday();
     renderIssues();
+    await loadDashboardSheet();
     $('local-clock').textContent = 'Company time · ' + timestamp(new Date());
     notice('Updated ' + timeOnly(new Date()) + ' · ' + tz(), 'success');
   }
@@ -594,6 +663,7 @@
     $('sidebar').classList.remove('open'); $('mobile-nav').setAttribute('aria-expanded','false');
     if (view==='monthly') loadMonthly().catch(fail);
     if (view==='history') loadHistory().catch(fail);
+    if (view==='reports') loadSheetReport().catch(fail);
     if (view==='audit') loadAudit().catch(fail);
     if (view==='settings') renderSettings();
   }
@@ -934,10 +1004,12 @@
     $('retry-sheet').disabled=true;
     try {const result=await activity({action:'sheet-sync'});
       $('sheet-status').textContent=result.pending+' pending · '+result.attempted+' attempted · '+result.failed+' failed';
-      notice('Secondary sheet sync checked. Supabase records are unaffected.','success');
+      notice('Pending sheet deliveries checked.','success');
     }catch(error){notice(errorText(error),'error');}
     $('retry-sheet').disabled=false;
   });
+  $('sheet-report-refresh').addEventListener('click',()=>loadSheetReport());
+  $('sheet-report-more').addEventListener('click',()=>loadSheetReport(false));
   document.querySelectorAll('[data-close]').forEach((item)=>
     item.addEventListener('click',()=>closeDialog(item.dataset.close)));
   const day=new Date().toISOString().slice(0,10);
