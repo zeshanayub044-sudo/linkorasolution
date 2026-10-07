@@ -26,7 +26,7 @@
   }
   function errorMessage(error) {
     if (error && error.code === '23505') return 'This slug already exists. Choose another one.';
-    if (error && error.code === '42501') return 'Your Blog role does not allow that action.';
+    if (error && error.code === '42501') return 'Access denied. Co-CEO authorization required.';
     return (error && error.message) || 'Something went wrong. Please try again.';
   }
   function resetEditor() {
@@ -51,8 +51,8 @@
     formPanel.hidden = false;
     formPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  function canEdit(post) { return role === 'blog_admin' || post.author_id === user.id; }
-  function canDelete(post) { return role === 'blog_admin' || (post.author_id === user.id && post.status === 'draft'); }
+  function canEdit() { return role === 'blog_admin'; }
+  function canDelete() { return role === 'blog_admin'; }
   function action(label, handler, dangerous) {
     var button = document.createElement('button');
     button.type = 'button'; button.textContent = label;
@@ -118,20 +118,23 @@
     document.getElementById('blog-signout').hidden = !user;
     if (!user) {
       login.hidden = false;
-      show('Sign in with an approved Blog account.');
+      show('Sign in with an active Co-CEO account.');
       return;
     }
     var roleResult = await client.rpc('blog_current_role');
     if (roleResult.error) throw roleResult.error;
     role = roleResult.data;
-    if (role !== 'blog_admin' && role !== 'blog_editor') {
+    if (role !== 'blog_admin') {
+      posts = [];
+      rows.replaceChildren();
+      formPanel.hidden = true;
       login.hidden = true;
-      show('This account does not have access to the Blog Editor.', 'error');
+      show('Access denied. Co-CEO authorization required.', 'error');
       return;
     }
     login.hidden = true;
     dashboard.hidden = false;
-    document.getElementById('blog-role-label').textContent = user.email + ' · ' + (role === 'blog_admin' ? 'Blog Admin' : 'Blog Editor');
+    document.getElementById('blog-role-label').textContent = user.email + ' · Blog Admin';
     await loadPosts();
     show('Blog Editor ready.', 'success');
   }

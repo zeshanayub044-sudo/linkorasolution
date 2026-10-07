@@ -15,11 +15,11 @@
 <main class="blog-admin"><div class="wrap">
   <div class="blog-admin__header"><div><span class="eyebrow mono">LINKORA CMS</span><h1>Blog Editor</h1><p>Create and manage articles for the Linkora website.</p></div><button id="blog-signout" type="button" class="btn btn-ghost" hidden>Sign out</button></div>
   <p id="blog-admin-notice" class="blog-admin__notice" role="status" aria-live="polite">Checking access…</p>
-  <section id="blog-login" class="blog-admin__panel blog-admin__auth" hidden><h2>Editor sign in</h2><form id="blog-login-form">
+  <section id="blog-login" class="blog-admin__panel blog-admin__auth" hidden><h2>Admin sign in</h2><form id="blog-login-form">
     <label>Email<input name="email" type="email" autocomplete="username" required></label>
     <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
     <button class="btn btn-whatsapp" type="submit">Sign in</button>
-  </form><p class="blog-admin__hint" style="margin-top:16px">Only approved Blog Admin and Blog Editor accounts can use this page.</p></section>
+  </form><p class="blog-admin__hint" style="margin-top:16px">Only active Co-CEO accounts can use this page.</p></section>
   <div id="blog-dashboard" hidden>
     <div class="blog-admin__stats"><div class="blog-admin__stat"><strong id="stat-total">0</strong><span>Total articles</span></div><div class="blog-admin__stat"><strong id="stat-published">0</strong><span>Published</span></div><div class="blog-admin__stat"><strong id="stat-drafts">0</strong><span>Drafts</span></div><div class="blog-admin__stat"><strong id="stat-views">0</strong><span>Total views</span></div></div>
     <section class="blog-admin__panel"><div class="blog-admin__header"><div><h2>Articles</h2><p id="blog-role-label"></p></div><button id="blog-new" type="button" class="btn btn-whatsapp">New article</button></div>
@@ -46,5 +46,5 @@
 </div></main>
 <dialog id="blog-preview-dialog" class="blog-admin__panel" style="max-width:760px;width:calc(100% - 30px);max-height:90vh;overflow:auto;background:var(--surface);color:var(--text)"><article><h2 id="blog-preview-title"></h2><p id="blog-preview-excerpt" class="blog-article__lead"></p><div id="blog-preview-content" class="blog-article__content"></div></article><form method="dialog"><button class="btn btn-ghost">Close preview</button></form></dialog>
 <footer><div class="wrap"><div class="footer-bottom"><p>© 2026 LINKORA SOLUTIONS. All rights reserved.</p></div></div></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="blog-config.js"></script><script src="blog-common.js"></script><script src="blog-admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="blog-config.js"></script><script src="blog-common.js"></script><script src="blog-admin.js?v=2"></script>
 </body></html>

@@ -5,7 +5,9 @@
   var account = null;
   var jobs = [];
   var applications = [];
+  var resumes = [];
   var activeApplication = null;
+  var activeResume = null;
   var notice = document.getElementById('career-admin-notice');
   var login = document.getElementById('career-login');
   var dashboard = document.getElementById('career-dashboard');
@@ -15,6 +17,9 @@
   var dialog = document.getElementById('career-app-dialog');
   var jobRows = document.getElementById('career-job-rows');
   var appRows = document.getElementById('career-app-rows');
+  var resumeRows = document.getElementById('career-resume-rows');
+  var generalDialog = document.getElementById('career-general-dialog');
+  var generalForm = document.getElementById('career-general-edit-form');
   var jobFields = ['title','slug','department','location','employment_type','workplace_type','experience_level',
     'salary_min','salary_max','salary_currency','summary','description','responsibilities','requirements',
     'preferred_qualifications','benefits','status','closes_at'];
@@ -29,7 +34,7 @@
   }
   function errorText(error) {
     if (error && error.code === '23505') return 'This job slug is already in use.';
-    if (error && error.code === '42501') return 'Your Careers Admin access does not allow this action.';
+    if (error && error.code === '42501') return 'Access denied. Co-CEO authorization required.';
     return error && error.message || 'The action could not be completed. Please try again.';
   }
   function localDatetime(value) {
@@ -39,12 +44,14 @@
     return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
   }
   function hidePrivate() {
-    jobs = []; applications = []; account = null; activeApplication = null;
-    jobRows.replaceChildren(); appRows.replaceChildren();
+    jobs = []; applications = []; resumes = []; account = null; activeApplication = null; activeResume = null;
+    jobRows.replaceChildren(); appRows.replaceChildren(); resumeRows.replaceChildren();
     dashboard.hidden = true; editor.hidden = true;
     document.getElementById('career-signout').hidden = true;
     if (dialog.open) dialog.close();
+    if (generalDialog.open) generalDialog.close();
     document.getElementById('career-resume-link').removeAttribute('href');
+    document.getElementById('career-general-link').removeAttribute('href');
   }
   async function allRows(table, order) {
     var rows = [], offset = 0;
@@ -60,18 +67,22 @@
     jobRows.replaceChildren();
     jobs.forEach(function (job) {
       var tr = document.createElement('tr');
-      [job.title,job.department,job.location,job.status,career.formatDate(job.updated_at)].forEach(function (value) { tr.appendChild(cell(value)); });
+      [job.title,job.department,job.location,job.published_at ? career.formatDate(job.published_at) : '—',
+        applications.filter(function (app) { return app.job_id === job.id; }).length,job.status].forEach(function (value) { tr.appendChild(cell(value)); });
       var actions = cell('');
       actions.appendChild(action('Edit', function () { openEditor(job); }));
       if (job.status === 'open') actions.appendChild(action('Close', function () { changeJobStatus(job, 'closed'); }));
       else actions.appendChild(action('Publish', function () { changeJobStatus(job, 'open'); }));
+      if (job.status === 'closed') actions.appendChild(action('Archive', function () { changeJobStatus(job, 'archived'); }));
       if (job.status === 'draft' && !applications.some(function (app) { return app.job_id === job.id; })) {
         actions.appendChild(action('Delete', function () { deleteJob(job); }, true));
       }
       tr.appendChild(actions); jobRows.appendChild(tr);
     });
-    if (!jobs.length) { var tr = document.createElement('tr'); var td = cell('No jobs yet. Add a job to get started.'); td.colSpan = 6; tr.appendChild(td); jobRows.appendChild(tr); }
+    if (!jobs.length) { var tr = document.createElement('tr'); var td = cell('No jobs yet. Add a job to get started.'); td.colSpan = 7; tr.appendChild(td); jobRows.appendChild(tr); }
     document.getElementById('career-stat-open').textContent = jobs.filter(function (job) { return job.status === 'open'; }).length;
+    document.getElementById('career-stat-draft').textContent = jobs.filter(function (job) { return job.status === 'draft'; }).length;
+    document.getElementById('career-stat-closed').textContent = jobs.filter(function (job) { return job.status === 'closed'; }).length;
   }
   function renderApplications() {
     var term = document.getElementById('career-app-search').value.trim().toLowerCase();
@@ -86,26 +97,49 @@
     }).forEach(function (app) {
       var tr = document.createElement('tr');
       [app.full_name, (jobs.find(function (job) { return job.id === app.job_id; }) || {}).title || 'Removed job',
-        career.formatDate(app.created_at), app.application_status].forEach(function (value) { tr.appendChild(cell(value)); });
+        app.email,app.phone,app.years_experience + ' years',career.formatDate(app.created_at), app.application_status].forEach(function (value) { tr.appendChild(cell(value)); });
       var actions = cell(''); actions.appendChild(action('View', function () { openApplication(app); }));
       tr.appendChild(actions); appRows.appendChild(tr);
     });
-    if (!appRows.children.length) { var empty = document.createElement('tr'); var message = cell('No applicants match these filters.'); message.colSpan = 5; empty.appendChild(message); appRows.appendChild(empty); }
+    if (!appRows.children.length) { var empty = document.createElement('tr'); var message = cell('No applicants match these filters.'); message.colSpan = 8; empty.appendChild(message); appRows.appendChild(empty); }
     document.getElementById('career-stat-applications').textContent = applications.length;
     document.getElementById('career-stat-new').textContent = applications.filter(function (app) { return app.application_status === 'new'; }).length;
+  }
+  function renderResumes() {
+    var term = document.getElementById('career-resume-search').value.trim().toLowerCase();
+    var status = document.getElementById('career-resume-filter').value;
+    resumeRows.replaceChildren();
+    resumes.filter(function (resume) {
+      return (!status || resume.status === status) &&
+        (!term || [resume.full_name,resume.email,resume.primary_skill,resume.current_role || ''].join(' ').toLowerCase().includes(term));
+    }).forEach(function (resume) {
+      var tr = document.createElement('tr');
+      [resume.full_name,resume.email,resume.phone,resume.primary_skill,resume.current_role || '—',
+        resume.years_experience == null ? '—' : resume.years_experience + ' years',career.formatDate(resume.created_at),resume.status]
+        .forEach(function (value) { tr.appendChild(cell(value)); });
+      var actions = cell(''); actions.appendChild(action('View', function () { openResume(resume); }));
+      tr.appendChild(actions); resumeRows.appendChild(tr);
+    });
+    if (!resumeRows.children.length) { var empty = document.createElement('tr'); var message = cell('No resumes match these filters.'); message.colSpan = 9; empty.appendChild(message); resumeRows.appendChild(empty); }
+    document.getElementById('career-stat-resumes').textContent = resumes.length;
+    document.getElementById('career-stat-resumes-new').textContent = resumes.filter(function (resume) { return resume.status === 'new'; }).length;
+    [['shortlisted','career-stat-shortlisted'],['interview','career-stat-interview'],['hired','career-stat-hired']].forEach(function (pair) {
+      document.getElementById(pair[1]).textContent = applications.filter(function (app) { return app.application_status === pair[0]; }).length +
+        resumes.filter(function (resume) { return resume.status === pair[0]; }).length;
+    });
   }
   async function refresh() {
     if (!account) return;
     try {
-      show('Loading jobs and applications…');
-      var results = await Promise.all([allRows('career_jobs', 'updated_at'), allRows('career_applications', 'created_at')]);
+      show('Loading jobs and candidates…');
+      var results = await Promise.all([allRows('career_jobs', 'updated_at'), allRows('career_applications', 'created_at'), allRows('career_resume_submissions', 'created_at')]);
       if (!account) return;
-      jobs = results[0]; applications = results[1];
+      jobs = results[0]; applications = results[1]; resumes = results[2];
       var filter = document.getElementById('career-app-job-filter'); var current = filter.value;
       var first = career.node('option', '', 'All jobs'); first.value = ''; filter.replaceChildren(first);
       jobs.forEach(function (job) { var item = career.node('option', '', job.title); item.value = job.id; filter.appendChild(item); });
       filter.value = current;
-      renderJobs(); renderApplications(); show('Dashboard is up to date.', 'success');
+      renderJobs(); renderApplications(); renderResumes(); show('Dashboard is up to date.', 'success');
     } catch (error) { show(errorText(error), 'error'); }
   }
   async function checkAccess() {
@@ -115,7 +149,7 @@
       var role = await client.rpc('career_current_role');
       if (role.error) throw role.error;
       if (role.data !== 'careers_admin') {
-        hidePrivate(); login.hidden = false; show('This account is not an authorized Careers Admin.', 'error'); return;
+        hidePrivate(); login.hidden = false; show('Access denied. Co-CEO authorization required.', 'error'); return;
       }
       account = result.data.user; login.hidden = true; dashboard.hidden = false;
       document.getElementById('career-signout').hidden = false;
@@ -140,11 +174,11 @@
     return data;
   }
   async function changeJobStatus(job, status) {
-    if (!confirm((status === 'closed' ? 'Close this job to new applications?' : 'Publish this job publicly?'))) return;
+    if (!confirm(status === 'closed' ? 'Close this job to new applications?' : status === 'archived' ? 'Archive this closed job?' : 'Publish this job publicly?')) return;
     var result = await client.from('career_jobs').update({ status: status }).eq('id', job.id).select('id');
     if (result.error) { show(errorText(result.error), 'error'); return; }
     if (!result.data.length) { show('Job update was not permitted.', 'error'); return; }
-    await refresh(); show('Job ' + (status === 'open' ? 'published.' : 'closed.'), 'success');
+    await refresh(); show('Job ' + (status === 'open' ? 'published.' : status === 'archived' ? 'archived.' : 'closed.'), 'success');
   }
   async function deleteJob(job) {
     if (!confirm('Permanently delete this draft job? This cannot be undone.')) return;
@@ -188,6 +222,61 @@
       document.getElementById('career-resume-status').textContent = 'Private link expires in 60 seconds.';
     }
   }
+  async function openResume(resume) {
+    activeResume = resume;
+    document.getElementById('career-general-title').textContent = resume.full_name;
+    var list = document.getElementById('career-general-details'); list.replaceChildren();
+    [['Email',resume.email],['Phone',resume.phone],['Primary skill',resume.primary_skill],
+      ['City',resume.city],['Country',resume.country],['Current role',resume.current_role],
+      ['Experience',resume.years_experience == null ? null : resume.years_experience + ' years'],
+      ['LinkedIn',resume.linkedin_url],['Portfolio',resume.portfolio_url],
+      ['Received',new Date(resume.created_at).toLocaleString()],
+      ['Consent recorded',new Date(resume.consented_at).toLocaleString()]]
+      .forEach(function (pair) {
+        list.appendChild(career.node('dt', '', pair[0]));
+        var dd = career.node('dd');
+        if (typeof pair[1] === 'string' && /^https:\/\//i.test(pair[1])) {
+          var link = career.node('a', '', pair[1]); link.href = pair[1]; link.target = '_blank'; link.rel = 'noopener noreferrer'; dd.appendChild(link);
+        } else dd.textContent = pair[1] == null || pair[1] === '' ? '—' : String(pair[1]);
+        list.appendChild(dd);
+      });
+    document.getElementById('career-general-note').textContent = resume.message || 'No note provided.';
+    generalForm.elements.namedItem('status').value = resume.status;
+    generalForm.elements.namedItem('admin_notes').value = resume.admin_notes || '';
+    document.getElementById('career-general-review-message').textContent = '';
+    var link = document.getElementById('career-general-link'); link.hidden = true; link.removeAttribute('href');
+    document.getElementById('career-general-link-status').textContent = 'Creating a private resume link…';
+    generalDialog.showModal();
+    var signed = await client.storage.from('career-resumes').createSignedUrl(resume.resume_path, 60);
+    if (activeResume !== resume || !generalDialog.open) return;
+    if (signed.error || !signed.data || !signed.data.signedUrl) {
+      document.getElementById('career-general-link-status').textContent = 'The resume could not be opened. Please close and reopen this candidate.';
+    } else {
+      link.href = signed.data.signedUrl; link.hidden = false;
+      document.getElementById('career-general-link-status').textContent = 'Private link expires in 60 seconds.';
+    }
+  }
+  document.getElementById('career-close-general').addEventListener('click', function () { generalDialog.close(); });
+  generalDialog.addEventListener('close', function () {
+    activeResume = null; var link = document.getElementById('career-general-link'); link.hidden = true; link.removeAttribute('href');
+  });
+  generalForm.addEventListener('submit', async function (event) {
+    event.preventDefault(); if (!activeResume) return;
+    var button = generalForm.querySelector('button[type=submit]'); button.disabled = true;
+    try {
+      var result = await client.from('career_resume_submissions').update({
+        status: generalForm.elements.namedItem('status').value,
+        admin_notes: generalForm.elements.namedItem('admin_notes').value.trim()
+      }).eq('id', activeResume.id).select('id');
+      if (result.error) throw result.error;
+      if (!result.data.length) throw new Error('Resume update was not permitted.');
+      generalDialog.close(); await refresh(); show('Resume review saved.', 'success');
+    } catch (error) {
+      var feedback = document.getElementById('career-general-review-message');
+      feedback.textContent = errorText(error); feedback.dataset.kind = 'error';
+      show(errorText(error), 'error');
+    } finally { button.disabled = false; }
+  });
   document.getElementById('career-close-dialog').addEventListener('click', function () { dialog.close(); });
   dialog.addEventListener('close', function () { activeApplication = null; var link = document.getElementById('career-resume-link'); link.hidden = true; link.removeAttribute('href'); });
   document.getElementById('career-login-form').addEventListener('submit', async function (event) {
@@ -235,6 +324,9 @@
   ['career-app-search','career-app-job-filter','career-app-status-filter','career-app-date-filter'].forEach(function (id) {
     var input = document.getElementById(id); input.addEventListener(id === 'career-app-search' ? 'input' : 'change', renderApplications);
   });
+  document.getElementById('career-resume-search').addEventListener('input', renderResumes);
+  document.getElementById('career-resume-filter').addEventListener('change', renderResumes);
+  document.getElementById('career-resume-refresh').addEventListener('click', refresh);
   document.getElementById('career-refresh').addEventListener('click', refresh);
   var toggle = document.querySelector('.nav-toggle'), links = document.querySelector('nav.links');
   toggle.addEventListener('click', function () { links.classList.toggle('open'); toggle.setAttribute('aria-expanded', String(links.classList.contains('open'))); });
