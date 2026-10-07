@@ -1,3 +1,7 @@
+# Historical setup note
+
+The current Supabase-backed employee and Co-CEO attendance flows are documented in [ATTENDANCE_ADMIN_SETUP.md](ATTENDANCE_ADMIN_SETUP.md). The instructions below describe an earlier attendance implementation and should not be used for a new deployment.
+
 # Linkora Attendance Portal setup
 
 1. In Supabase SQL Editor, run `supabase-attendance-setup.sql` in full.
@@ -19,3 +23,6 @@
 - Employees can only read their own profile, attendance, and leave records through RLS.
 - An administrator can create accounts, reset passwords, approve leave, export CSV, configure timezone/late rule, and correct attendance with an audit entry.
 - Test the Edge Function after deployment by creating one employee. A `Failed request to Edge Function` response means the function has not been deployed to the same Supabase project, is missing its managed service-role secret, or the caller is not an active admin profile.
+# Historical setup note
+
+The current Supabase-backed employee and Co-CEO attendance flows are documented in [ATTENDANCE_ADMIN_SETUP.md](ATTENDANCE_ADMIN_SETUP.md). The instructions below describe an earlier attendance implementation and should not be used for a new deployment.

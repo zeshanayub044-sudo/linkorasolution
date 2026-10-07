@@ -1,29 +1,25 @@
-# Linkora simple activity log
+# Tennis Portal Google Sheets attendance
 
-This replaces Supabase with:
+The active attendance log is the **Tennis Portal Logs** tab in the existing Google Sheet. Its bound Apps Script project handles employee login/logout writes and Co-CEO report reads. Do not create a new Sheet or use the older `attendance.html` / `activity-config.js` route; `attendance.html` redirects to `tennis-portal.html`.
 
-`Google work account → Google Apps Script → private Login Activity Google Sheet`
+The current flow is Supabase Auth → `manage-employee` (active-profile check) → session RPC (concurrency and audit support) → authenticated Apps Script `doPost()` → Google Sheet. The portal reports a successful employee sign-in or sign-out only after the Sheet confirms the write. The Co-CEO report in the portal and the Google Sheets attendance log in `attendance-admin.html` read this same Sheet through `manage-employee`. Other established admin analytics still use the Supabase session tables; those records are retained for compatibility and history.
 
-The spreadsheet remains private to its owner. The public website contains only a Google OAuth Client ID and an Apps Script URL; these are not secrets. Apps Script validates each Google ID token before it writes or closes a session row.
+## Existing Sheet contract
 
-## Sheet columns
+Tab: `Tennis Portal Logs`
 
-`Record ID | User Name | User Email | Login Date | Login Time | Logout Date | Logout Time | Session Status | Created At | Updated At`
+Columns, in order: `Email`, `Employee Name`, `Employee ID`, `Scheme`, `Role`, `Login Date`, `Login Time`, `Logout Date`, `Logout Time`, `Status`, `Session ID`.
 
-## One-time setup
+Dates and times use `Asia/Karachi`. The script checks these headers before reading or writing. It deduplicates by Session ID, updates the original row on sign-out, and can recover a missing login row using its original login timestamp. It never rewrites existing historical rows during deployment.
 
-1. Create a Google Sheet named **Linkora Login Activity**.
-2. In the Sheet, click **Extensions**, then **Apps Script**.
-3. Delete the editor contents and paste `google-apps-script/Code.gs`.
-4. In the left sidebar click **Project Settings**, then under **Script properties** click **Add script property**. Add these three entries:
-   - `GOOGLE_CLIENT_ID`: the client ID created in step 8
-   - `TIMEZONE`: `Asia/Karachi`
-   - `ALLOWED_EMAILS`: approved staff Gmail/Google Workspace emails separated by commas. This is required; only listed accounts can write activity rows.
-5. At the top of Apps Script select the function named `setup`, click **Run**, and approve the Google permission prompt. The Sheet receives its formatted headers.
-6. Click **Deploy → New deployment**. Click the gear beside **Select type**, choose **Web app**, select **Execute as: Me** and **Who has access: Anyone**, then click **Deploy**. Copy the URL ending in `/exec`.
-7. Open [Google Cloud Console credentials](https://console.cloud.google.com/apis/credentials), click **Create credentials → OAuth client ID → Web application**. Under **Authorized JavaScript origins**, click **Add URI**, enter `https://linkorasolution.com`, and click **Create**. Copy the generated Client ID.
-8. In `activity-config.js`, paste the `/exec` URL after `apiUrl` and the Client ID after `googleClientId`. Upload `attendance.html`, `attendance.js`, `attendance.css`, and `activity-config.js` to the website.
+The Apps Script web app keeps its existing deployment ID when a new version is deployed. `doGet()` is a health check that returns no attendance data. `doPost()` requires the existing `GOOGLE_SHEETS_WEBHOOK_SECRET` Script Property for `login`, `logout`, and `report`. The matching secret and `GOOGLE_APPS_SCRIPT_URL` belong only in Supabase Edge Function secrets. Never put the secret or a service-role key in website files, this document, or a migration.
 
-## Day-to-day management
+## Updating the existing deployment
 
-Open the Google Sheet to view active and completed sessions. To add or remove a staff member, edit only the `ALLOWED_EMAILS` Script Property. Normal logout updates the existing session row. Browser close/navigation sends a best-effort logout signal; a row marked **Active** indicates that the browser closed before logout could be confirmed.
+1. Open the Apps Script project bound to the existing spreadsheet. Confirm the `Tennis Portal Logs` tab and its eleven headers.
+2. Update `Code.gs` from `google-apps-script/Code.gs` and save.
+3. Choose **Deploy → Manage deployments**, edit the active web app, select **New version**, and deploy. Keep the same deployment ID and access settings. The current production deployment is Version 4 (7 October 2026).
+4. Confirm the configured Edge Function URL still points to that deployment. Deploy `supabase/functions/manage-employee/index.ts` with its existing custom bearer verification setting (`verify_jwt=false`); the function itself checks Supabase Auth and the active Co-CEO role before allowing reports.
+5. Test an employee sign-in/sign-out, then check the Sheet row and both Co-CEO report views. A backend failure must show an error, not an empty-record message.
+
+The existing `attendance_sheet_sync_queue` is a retry safety net for interrupted deliveries and admin attendance changes. Use Admin → Settings → **Retry pending sync** for any queued rows; its writes are idempotent by Session ID.

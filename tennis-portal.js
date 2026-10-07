@@ -8,6 +8,7 @@
   var loginMessage = document.getElementById('login-message');
   var resetPasswordMessage = document.getElementById('reset-password-message');
   var logoutMessage = document.getElementById('logout-message');
+  var adminEntry = document.querySelector('.portal-admin-entry');
   var sessionKey = 'linkora.tennisPortal.activitySessionId';
 
   function isCoCeo(profile) {
@@ -40,13 +41,14 @@
       // that attendance was not saved instead of seeing a misleading success.
       var detail;
       try { detail = await result.error.context.json(); } catch (_) { /* use fallback below */ }
-      throw new Error((detail && detail.error) || 'The attendance sheet could not record this activity. Please try again or contact an administrator.');
+      throw new Error((detail && detail.error) || 'The attendance service is unavailable. Please try again or contact an administrator.');
     }
     return result.data;
   }
-  function formatActivityTime(value) {
-    if (!value) return '—';
-    return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
+  function workedTime(value) {
+    if (value == null || !Number.isFinite(Number(value))) return '—';
+    var minutes = Math.max(0, Math.floor(Number(value)));
+    return Math.floor(minutes / 60) + 'h ' + String(minutes % 60).padStart(2, '0') + 'm';
   }
   function renderActivityReport(sessions) {
     var body = document.getElementById('report-table-body');
@@ -54,16 +56,23 @@
     if (!sessions.length) {
       var emptyRow = document.createElement('tr');
       var emptyCell = document.createElement('td');
-      emptyCell.colSpan = 5;
+      emptyCell.colSpan = 9;
       emptyCell.className = 'report-empty';
-      emptyCell.textContent = 'No employee activity has been recorded yet.';
+      emptyCell.textContent = 'No attendance records found in Google Sheets.';
       emptyRow.appendChild(emptyCell); body.appendChild(emptyRow); return;
     }
     sessions.forEach(function (session) {
       var profile = session.employee_profiles || {};
-      var values = [profile.full_name || 'Unknown employee', profile.employee_id || '—', formatActivityTime(session.login_at), formatActivityTime(session.logout_at), session.status || '—'];
+      var values = [
+        profile.full_name || session.employeeName || 'Unknown employee',
+        profile.employee_id || session.employeeId || '—',
+        [session.role || profile.role, session.scheme || profile.scheme].filter(Boolean).join(' / ') || '—',
+        session.loginDate || '—', session.loginTime || '—',
+        session.logoutDate || '—', session.logoutTime || '—',
+        workedTime(session.workedMinutes), session.status || '—'
+      ];
       var row = document.createElement('tr');
-      values.forEach(function (value, index) { var cell = document.createElement('td'); cell.textContent = value; if (index === 4) cell.className = 'report-status'; row.appendChild(cell); });
+      values.forEach(function (value, index) { var cell = document.createElement('td'); cell.textContent = value; if (index === 8) cell.className = 'report-status'; row.appendChild(cell); });
       body.appendChild(row);
     });
   }
@@ -74,8 +83,12 @@
     message(reportMessage, 'Loading employee activity…');
     try {
       var report = await invokeActivity('get-activity-report');
-      renderActivityReport(report.sessions || []);
-      message(reportMessage, (report.sessions || []).length + ' most recent activity record(s).', 'success');
+      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions))
+        throw new Error('Unable to load attendance records. Please check the backend connection.');
+      renderActivityReport(report.sessions);
+      message(reportMessage, report.sessions.length
+        ? report.sessions.length + ' latest Google Sheets attendance record(s).'
+        : 'No attendance records found in Google Sheets.', report.sessions.length ? 'success' : '');
     } catch (error) {
       var reportError = error.message || 'The activity report could not be loaded.';
       if (reportError === 'Invalid request') {
@@ -89,11 +102,13 @@
     resetPanel.hidden = true;
     panel.hidden = true;
     form.hidden = false;
+    adminEntry.hidden = false;
   }
   function showPasswordReset() {
     form.hidden = true;
     panel.hidden = true;
     resetPanel.hidden = false;
+    adminEntry.hidden = true;
     document.getElementById('new-password').focus();
   }
   function showEmployee(profile) {
@@ -106,6 +121,7 @@
     if (isExecutive) loadActivityReport();
     form.hidden = true;
     panel.hidden = false;
+    adminEntry.hidden = true;
   }
   async function loadProfile(user) {
     var result = await supabase.from('employee_profiles')
@@ -117,7 +133,13 @@
   async function restoreSession() {
     var result = await supabase.auth.getUser();
     if (!result.data.user) return;
-    try { showEmployee(await loadProfile(result.data.user)); }
+    try {
+      var profile = await loadProfile(result.data.user);
+      var started = await invokeActivity('start-session', crypto.randomUUID());
+      sessionStorage.setItem(sessionKey, started.sessionId);
+      showEmployee(profile);
+      if (started.warning) message(logoutMessage, started.warning, 'success');
+    }
     catch (error) { await supabase.auth.signOut(); message(loginMessage, error.message, 'error'); }
   }
   document.getElementById('forgot-password-button').addEventListener('click', async function () {
@@ -164,10 +186,10 @@
     try {
       var profile = await loadProfile(result.data.user);
       var activitySessionId = crypto.randomUUID();
-      await invokeActivity('start-session', activitySessionId);
-      sessionStorage.setItem(sessionKey, activitySessionId);
+      var started = await invokeActivity('start-session', activitySessionId);
+      sessionStorage.setItem(sessionKey, started.sessionId || activitySessionId);
       showEmployee(profile);
-      message(logoutMessage, 'Your login has been recorded.', 'success');
+      message(logoutMessage, started.warning || 'Your login has been recorded.', 'success');
     } catch (error) {
       await supabase.auth.signOut();
       message(loginMessage, error.message || 'Could not start the employee session.', 'error');
@@ -183,11 +205,12 @@
       // while sessionStorage is intentionally browser-tab scoped. In that case
       // the server safely closes this employee's most recent active session.
       var activitySessionId = sessionStorage.getItem(sessionKey) || null;
-      await invokeActivity('end-session', activitySessionId);
+      var ended = await invokeActivity('end-session', activitySessionId);
       sessionStorage.removeItem(sessionKey);
       await supabase.auth.signOut();
       panel.hidden = true; form.hidden = false; form.reset();
-      message(loginMessage, 'You have been signed out.', 'success');
+      adminEntry.hidden = false;
+      message(loginMessage, ended.warning || 'You have been signed out.', 'success');
     } catch (error) { message(logoutMessage, error.message || 'Sign-out could not be recorded. Please try again.', 'error'); }
     button.disabled = false;
   });
