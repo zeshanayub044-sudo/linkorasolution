@@ -46,7 +46,7 @@
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
         <section id="ceo-panel" class="ceo-panel" hidden aria-labelledby="ceo-panel-title">
           <div class="admin-panel-heading"><div><span class="mono">Executive access</span><h3 id="ceo-panel-title">Co-CEO admin panel</h3></div><div class="admin-panel-actions"><a class="btn btn-primary" href="attendance-admin.html">Admin Panel</a><button id="report-refresh" class="btn btn-ghost" type="button">Refresh report</button></div></div>
-          <p class="admin-panel-intro">Google Sheets login and logout activity. Only Co-CEO accounts can view this report.</p>
+          <p class="admin-panel-intro">Supabase login and logout activity. Only Co-CEO accounts can view this report.</p>
           <p id="report-message" class="form-message" aria-live="polite"></p>
           <div class="report-table-wrap"><table class="report-table"><thead><tr><th>Employee</th><th>ID</th><th>Role / Scheme</th><th>Sign-in date</th><th>Sign-in time</th><th>Sign-out date</th><th>Sign-out time</th><th>Worked</th><th>Status</th></tr></thead><tbody id="report-table-body"></tbody></table></div>
         </section>
@@ -57,6 +57,6 @@
   </main>
   <script src="portal-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="tennis-portal.js?v=5"></script>
+  <script src="tennis-portal.js?v=6"></script>
 </body>
 </html>

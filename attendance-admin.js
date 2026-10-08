@@ -8,6 +8,7 @@
     employees: ['Employees', 'Accounts, access and attendance history.'],
     today: ["Today's attendance", 'The complete workforce picture for the current company day.'],
     monthly: ['Monthly attendance', 'Presence, absences, late arrivals and hours.'],
+    leaves: ['Employee leaves', 'Approve and review time away with a full audit trail.'],
     history: ['Attendance history', 'Search the authoritative session timeline.'],
     reports: ['Reports', 'Focused exports for management review.'],
     issues: ['Attendance issues', 'Reconcile old and incomplete sessions safely.'],
@@ -23,6 +24,7 @@
   let liveSessions = [];
   let weekly = [];
   let monthly = [];
+  let leaves = [];
   let history = [];
   let historyTotal = 0;
   let historyOffset = 0;
@@ -59,9 +61,10 @@
   }
   function statusBadge(value) {
     const klass = value === 'Signed In' || value === 'Logged In' || value === 'Present' || value === 'Active' ? 'good'
-      : value === 'Signed Out' || value === 'Logged Out' ? 'blue'
+      : value === 'Signed Out' || value === 'Logged Out' || value === 'On Leave' || value === 'Approved' ? 'blue'
       : value === 'Absent' || value === 'Inactive' ? 'bad'
-      : value === 'Incomplete' || value === 'Needs Review' || value === 'Late' ? 'warn' : 'neutral';
+      : value === 'Incomplete' || value === 'Needs Review' || value === 'Late' ||
+        value === 'Missing Sign-Out' || value === 'Pending' ? 'warn' : 'neutral';
     return node('span', value, 'badge ' + klass);
   }
   function attachBadge(td, value) { td.appendChild(statusBadge(value)); }
@@ -145,20 +148,20 @@
     const list = $('dashboard-sheet');
     const status = $('dashboard-sheet-message');
     list.replaceChildren();
-    status.textContent = 'Loading attendance records from Google Sheets…';
+    status.textContent = 'Loading authoritative attendance records…';
     try {
-      const report = await activity({ action: 'get-activity-report', limit: 8 });
-      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions) ||
+      const report = await activity({ action: 'get-activity-report', reportVersion: 2, limit: 8 });
+      if (report?.source !== 'supabase' || !Array.isArray(report.sessions) ||
           !Number.isFinite(Number(report.total)))
         throw new Error('Invalid attendance report response.');
       status.textContent = report.total
-        ? report.total + ' attendance record(s) in Google Sheets.'
-        : 'No attendance records found in Google Sheets.';
+        ? report.total + ' attendance record(s) in Supabase.'
+        : 'No attendance records found in Supabase.';
       report.sessions.forEach((session) => {
         const line = node('div', null, 'mini-row');
-        line.append(node('span', (session.employeeName || 'Unknown employee') + ' · ' +
-          (session.employeeId || '—') + ' · ' + (session.loginDate || '—') + ' ' +
-          (session.loginTime || '—')),
+        line.append(node('span', (session.employee_profiles?.full_name || 'Unknown employee') + ' · ' +
+          (session.employee_profiles?.employee_id || '—') + ' · ' +
+          timestamp(session.login_at)),
         node('span', session.status || 'Unknown'));
         list.append(line);
       });
@@ -172,12 +175,12 @@
     const more = $('sheet-report-more');
     if (reset) { sheetReportRows = []; sheetReportTotal = 0; body.replaceChildren(); }
     more.disabled = true;
-    status.textContent = 'Loading attendance records from Google Sheets…';
+    status.textContent = 'Loading authoritative attendance records…';
     try {
       const report = await activity({
-        action: 'get-activity-report', limit: 200, offset: sheetReportRows.length,
+        action: 'get-activity-report', reportVersion: 2, limit: 200, offset: sheetReportRows.length,
       });
-      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions) ||
+      if (report?.source !== 'supabase' || !Array.isArray(report.sessions) ||
           !Number.isFinite(Number(report.total)))
         throw new Error('Invalid attendance report response.');
       sheetReportTotal = Number(report.total);
@@ -186,20 +189,20 @@
         const row = node('tr');
         const profile = session.employee_profiles || {};
         [
-          profile.full_name || session.employeeName || 'Unknown employee',
-          profile.employee_id || session.employeeId || '—',
-          [session.role || profile.role, session.scheme || profile.scheme].filter(Boolean).join(' / ') || '—',
-          session.loginDate || '—', session.loginTime || '—',
-          session.logoutDate || '—', session.logoutTime || '—',
+          profile.full_name || 'Unknown employee',
+          profile.employee_id || '—',
+          [profile.role, profile.scheme].filter(Boolean).join(' / ') || '—',
+          companyDay(session.login_at), timeOnly(session.login_at),
+          session.logout_at ? companyDay(session.logout_at) : '—', timeOnly(session.logout_at),
           minutes(session.workedMinutes),
         ].forEach((value) => cell(row, value));
         attachBadge(cell(row, ''), session.status || 'Unknown');
         body.append(row);
       });
-      if (!sheetReportRows.length) empty(body, 9, 'No attendance records found in Google Sheets.');
+      if (!sheetReportRows.length) empty(body, 9, 'No attendance records found in Supabase.');
       status.textContent = sheetReportRows.length
-        ? sheetReportRows.length + ' of ' + sheetReportTotal + ' Google Sheets records loaded.'
-        : 'No attendance records found in Google Sheets.';
+        ? sheetReportRows.length + ' of ' + sheetReportTotal + ' Supabase records loaded.'
+        : 'No attendance records found in Supabase.';
       more.hidden = sheetReportRows.length >= sheetReportTotal;
     } catch (error) {
       status.textContent = 'Unable to load attendance records. Please check the backend connection. ' + errorText(error);
@@ -288,6 +291,7 @@
       await operation();
       notice(success, 'success');
       await refreshCore();
+      activity({action:'sheet-sync',limit:5}).catch(()=>{ /* durable queue remains for retry */ });
       if (currentView === 'monthly') await loadMonthly();
       if (currentView === 'history') await loadHistory();
       if (currentView === 'audit') await loadAudit();
@@ -339,24 +343,29 @@
   async function refreshCore() {
     notice('Loading the admin dashboard…');
     const day = companyDay();
-    const [userResult, todayRows, weekRows, issueRows, liveRows] = await Promise.all([
+    const [userResult, todayRows, weekRows, issueRows, liveRows, leaveResult] = await Promise.all([
       adminUsers({ action: 'list' }),
-      rpc('portal_attendance_daily', { p_from: day, p_to: day }),
-      rpc('portal_attendance_daily', { p_from: shiftDay(day, -6), p_to: day }),
+      rpc('portal_attendance_daily_v2', { p_from: day, p_to: day }),
+      rpc('portal_attendance_daily_v2', { p_from: shiftDay(day, -6), p_to: day }),
       rpc('portal_attendance_issues', { p_limit: 200 }),
       rpc('portal_attendance_live'),
+      client.from('leave_requests').select('id,employee_id,leave_type,start_date,end_date,reason,status,created_at')
+        .order('start_date',{ascending:false}).limit(500),
     ]);
+    if (leaveResult.error) throw leaveResult.error;
     users = userResult.users || [];
     today = todayRows || [];
     weekly = weekRows || [];
     issues = issueRows || [];
     liveSessions = liveRows || [];
+    leaves = leaveResult.data || [];
     populateEmployeeOptions();
     renderDashboard();
     renderLive();
     renderEmployees();
     renderToday();
     renderIssues();
+    renderLeaves();
     await loadDashboardSheet();
     $('local-clock').textContent = 'Company time · ' + timestamp(new Date());
     notice('Updated ' + timeOnly(new Date()) + ' · ' + tz(), 'success');
@@ -393,16 +402,25 @@
     const signedIn = today.filter(currentlyPresent).length;
     const signedOut = today.filter((r) => r.attendance_status === 'Signed Out').length;
     const absent = today.filter((r) => r.attendance_status === 'Absent').length;
+    const onLeave = today.filter((r) => r.attendance_status === 'On Leave').length;
     const late = today.filter((r) => r.is_late).length;
+    const missing = new Set(issues.filter((r) => r.status === 'Needs Review' ||
+      ['Missing sign-out','Long open session','Multiple open sessions'].includes(r.issue))
+      .map((r) => r.user_id)).size;
+    const eligible = today.filter((r) => r.scheduled && r.active_on_day &&
+      !['On Leave','Awaiting'].includes(r.attendance_status)).length;
     const items = [
-      ['Total Employees', users.length, 'All accounts'],
+      ['Active Employees', active, 'Portal access enabled'],
       ['Present Today', present, 'Recorded sessions'],
       ['Currently Signed In', signedIn, 'Valid live sessions'],
       ['Signed Out Today', signedOut, 'Completed today'],
       ['Absent Today', absent, 'Scheduled & active'],
+      ['On Leave Today', onLeave, 'Approved leave'],
       ['Late Today', late, 'After grace period'],
-      ['Active Employees', active, 'Portal access enabled'],
-      ['Inactive Employees', users.length - active, 'History preserved'],
+      ['Missing Sign-Out', missing, 'Requires review'],
+      ['Attendance Rate', eligible ? Math.round(100 * today.filter((r) =>
+        r.scheduled && r.active_on_day && r.session_count > 0).length / eligible) + '%' : '—',
+        'Approved leave excluded'],
     ];
     const grid = $('summary-grid'); grid.replaceChildren();
     for (const [label, value, sub] of items) {
@@ -463,7 +481,7 @@
   function renderLive() {
     renderPresentCards();
     const body = $('live-body'); body.replaceChildren();
-    if (!today.length) return empty(body,6,'No attendance records or employees today.');
+    if (!today.length) return empty(body,9,'No attendance records or employees today.');
     for (const row of today) {
       const tr = node('tr');
       cell(tr,row.full_name,'person').append(node('small',row.employee_id));
@@ -471,17 +489,24 @@
       cell(tr,timeOnly(row.first_sign_in)); cell(tr,timeOnly(row.last_sign_out));
        const activeSession = liveById(row.user_id);
        cell(tr,activeSession ? minutes((Date.now()-new Date(activeSession.login_at).getTime())/60000) + ' elapsed' : minutes(row.worked_minutes));
-       attachBadge(cell(tr,''),activeSession ? 'Signed In' : row.open_count ? 'Incomplete' : row.attendance_status);
+       attachBadge(cell(tr,''),activeSession ? 'Signed In' : row.attendance_status);
+       cell(tr,row.leave_status === 'Approved' ? row.leave_type + ' · Approved' : '—');
+       cell(tr,issues.filter((issue)=>issue.user_id===row.user_id).map((issue)=>issue.issue).join(', ') || '—');
+       cell(tr,'').append(button('Inspect',()=>openEmployee(row.user_id)));
       body.append(tr);
     }
   }
   function renderEmployees() {
     const term = $('employee-search').value.trim().toLowerCase();
-    const status = $('employee-status-filter').value, role = $('employee-role-filter').value;
+    const status = $('employee-status-filter').value, role = $('employee-role-filter').value,
+      attendance = $('employee-attendance-filter').value;
     const list = users.filter((u) =>
       (!term || [u.fullName,u.employeeId,u.email].join(' ').toLowerCase().includes(term)) &&
       (!status || (u.isActive ? 'active' : 'inactive') === status) &&
-      (!role || u.role === role));
+      (!role || u.role === role) &&
+      (!attendance || (attendance === 'present' ? todayById(u.id)?.session_count > 0
+        : attendance === 'late' ? todayById(u.id)?.is_late
+          : todayById(u.id)?.attendance_status === attendance)));
     const body = $('employees-body'); body.replaceChildren();
     if (!list.length) return empty(body,8,'No employees match these filters.');
     for (const user of list) {
@@ -508,9 +533,7 @@
     return today.filter((row) => (!term || [row.full_name,row.employee_id].join(' ').toLowerCase().includes(term)) &&
       (!filter || (filter === 'present' ? row.session_count > 0
         : filter === 'late' ? row.is_late
-          : filter === 'Incomplete' ? row.review_count > 0 || row.open_count > 1 ||
-            (row.open_count > 0 && !currentlyPresent(row))
-            : row.attendance_status === filter)));
+          : row.attendance_status === filter)));
   }
   function renderToday() {
     $('today-date').textContent = dateLabel(companyDay()) + ' · ' + tz();
@@ -524,7 +547,7 @@
       cell(tr,minutes(row.worked_minutes));
       attachBadge(cell(tr,''),row.attendance_status);
       attachBadge(cell(tr,''),row.is_late ? 'Late' : 'On time');
-      attachBadge(cell(tr,''),row.review_count ? 'Incomplete' : row.open_count > 1 ? 'Multiple open'
+      attachBadge(cell(tr,''),row.review_count ? 'Missing Sign-Out' : row.open_count > 1 ? 'Multiple open'
         : row.open_count > 0 && !currentlyPresent(row) ? 'Long open' : 'Clear');
       cell(tr,'').append(button('Inspect',()=>openEmployee(row.user_id)));
       body.append(tr);
@@ -532,7 +555,7 @@
   }
   async function loadMonthly() {
     notice('Calculating monthly attendance…');
-    monthly = await rpc('portal_attendance_monthly', { p_month: $('month-select').value + '-01' }) || [];
+    monthly = await rpc('portal_attendance_monthly_v2', { p_month: $('month-select').value + '-01' }) || [];
     renderMonthly();
     notice('Monthly report ready.', 'success');
   }
@@ -542,7 +565,8 @@
     return monthly.filter((r) => (!scheme || r.scheme === scheme) &&
       (!term || [r.full_name,r.employee_id].join(' ').toLowerCase().includes(term)) &&
       (!status || Number(r[status === 'present' ? 'present_days' : status === 'absent'
-        ? 'absent_days' : status === 'late' ? 'late_days' : 'incomplete_days']) > 0));
+        ? 'absent_days' : status === 'leave' ? 'leave_days' : status === 'late'
+          ? 'late_days' : 'missing_sign_out_days']) > 0));
   }
   function arrival(value) {
     if (value == null) return '—';
@@ -552,16 +576,58 @@
   function renderMonthly() {
     const body = $('monthly-body'); body.replaceChildren();
     const list = filteredMonthly();
-    if (!list.length) return empty(body,9,'No monthly attendance matches these filters.');
+    if (!list.length) return empty(body,10,'No monthly attendance matches these filters.');
     for (const row of list) {
       const tr = node('tr');
       cell(tr,row.full_name,'person').append(node('small',row.employee_id));
-      cell(tr,row.present_days); cell(tr,row.absent_days); cell(tr,row.late_days);
-      cell(tr,minutes(row.worked_minutes)); cell(tr,arrival(row.average_arrival_minutes));
-      cell(tr,row.incomplete_days); cell(tr,row.attendance_percent == null ? '—' : row.attendance_percent + '%');
+      cell(tr,row.present_days); cell(tr,row.absent_days); cell(tr,row.leave_days);
+      cell(tr,row.late_days); cell(tr,row.missing_sign_out_days);
+      cell(tr,minutes(row.worked_minutes));
+      cell(tr,row.average_hours == null ? '—' : row.average_hours + 'h');
+      cell(tr,row.attendance_percent == null ? '—' : row.attendance_percent + '%');
       cell(tr,'').append(button('Breakdown',()=>openEmployee(row.user_id,$('month-select').value)));
       body.append(tr);
     }
+  }
+  function renderLeaves() {
+    const body = $('leaves-body'); body.replaceChildren();
+    const term = $('leave-search').value.trim().toLowerCase();
+    const status = $('leave-status-filter').value;
+    const list = leaves.filter((leave) => {
+      const user = userById(leave.employee_id);
+      return (!term || [user?.fullName,user?.employeeId].join(' ').toLowerCase().includes(term)) &&
+        (!status || leave.status === status);
+    });
+    if (!list.length) return empty(body,7,'No leave records match these filters.');
+    for (const leave of list) {
+      const user = userById(leave.employee_id);
+      const tr = node('tr');
+      cell(tr,user?.fullName || 'Historical employee','person')
+        .append(node('small',user?.employeeId || '—'));
+      cell(tr,leave.leave_type); cell(tr,dateLabel(leave.start_date));
+      cell(tr,dateLabel(leave.end_date));
+      attachBadge(cell(tr,''),leave.status);
+      cell(tr,leave.reason || '—');
+      cell(tr,'').append(button('Edit',()=>openLeave(leave)));
+      body.append(tr);
+    }
+  }
+  function openLeave(leave) {
+    const form = $('leave-form'); form.reset();
+    const select = form.elements.namedItem('employeeId'); select.replaceChildren();
+    users.forEach((user) => {
+      const option = node('option',user.fullName + ' · ' + user.employeeId);
+      option.value = user.id; select.append(option);
+    });
+    form.elements.namedItem('leaveId').value = leave?.id || '';
+    select.value = leave?.employee_id || users[0]?.id || '';
+    form.elements.namedItem('leaveType').value = leave?.leave_type || '';
+    form.elements.namedItem('startDate').value = leave?.start_date || companyDay();
+    form.elements.namedItem('endDate').value = leave?.end_date || companyDay();
+    form.elements.namedItem('status').value = leave?.status || 'Pending';
+    form.elements.namedItem('leaveReason').value = leave?.reason || '';
+    $('leave-dialog-title').textContent = leave ? 'Edit leave' : 'Add leave';
+    $('leave-dialog').showModal();
   }
   async function loadHistory() {
     notice('Loading session history…');
@@ -664,6 +730,7 @@
     if (view==='monthly') loadMonthly().catch(fail);
     if (view==='history') loadHistory().catch(fail);
     if (view==='reports') loadSheetReport().catch(fail);
+    if (view==='leaves') renderLeaves();
     if (view==='audit') loadAudit().catch(fail);
     if (view==='settings') renderSettings();
   }
@@ -727,10 +794,10 @@
     empty($('detail-sessions'),5,'Loading sessions…');
     try {
       const [days,sessions,summary]=await Promise.all([
-        rpc('portal_attendance_daily',{p_from:month+'-01',p_to:monthEnd(month+'-01'),p_employee:id}),
+        rpc('portal_attendance_daily_v2',{p_from:month+'-01',p_to:monthEnd(month+'-01'),p_employee:id}),
         rpc('portal_attendance_sessions',{p_from:shiftDay(companyDay(),-90),p_to:companyDay(),
           p_employee:id,p_limit:30,p_offset:0}),
-        rpc('portal_attendance_monthly',{p_month:month+'-01'}),
+        rpc('portal_attendance_monthly_v2',{p_month:month+'-01'}),
       ]);
       if (!$('detail-dialog').open || detailUser?.id!==id) return;
       const result=(summary||[]).find((row)=>row.user_id===id);
@@ -744,10 +811,12 @@
         ['Today worked',minutes(current?.worked_minutes)],
         ['Present days',result?.present_days??0],
         ['Absent days',result?.absent_days??0],
+        ['Leave days',result?.leave_days??0],
         ['Late days',result?.late_days??0],
+        ['Missing sign-outs',result?.missing_sign_out_days??0],
         ['Worked',minutes(result?.worked_minutes??0)],
-        ['Average arrival',arrival(result?.average_arrival_minutes)],
-        ['Average daily hours',minutes(Number(result?.worked_minutes||0)/completedDays)],
+        ['Average daily hours',result?.average_hours == null ? '—' : result.average_hours + 'h'],
+        ['Attendance rate',result?.attendance_percent == null ? '—' : result.attendance_percent + '%'],
       ]) {const card=node('div',null,'detail-stat');card.append(node('span',label),node('strong',value));stats.append(card);}
       const dayBody=$('detail-days'); dayBody.replaceChildren();
       if (!days?.length) empty(dayBody,5,'No daily records.');
@@ -821,14 +890,14 @@
     notice('Preparing report…');
     const month=$('month-select').value;
     if (type==='monthly' || type==='hours') {
-      const rows=await rpc('portal_attendance_monthly',{p_month:month+'-01'})||[];
+      const rows=await rpc('portal_attendance_monthly_v2',{p_month:month+'-01'})||[];
       reportHeaders=type==='hours'
-        ? ['Employee','Employee ID','Scheme','Worked minutes','Present days','Average arrival']
-        : ['Employee','Employee ID','Scheme','Present','Absent','Late','Worked minutes','Incomplete','Attendance %'];
+        ? ['Employee','Employee ID','Scheme','Worked minutes','Present days','Average hours']
+        : ['Employee','Employee ID','Scheme','Present','Absent','Leave','Late','Missing sign-out','Worked minutes','Attendance %'];
       reportRows=rows.map((r)=>type==='hours'
-        ? [r.full_name,r.employee_id,r.scheme,r.worked_minutes,r.present_days,arrival(r.average_arrival_minutes)]
-        : [r.full_name,r.employee_id,r.scheme,r.present_days,r.absent_days,r.late_days,
-          r.worked_minutes,r.incomplete_days,r.attendance_percent]);
+        ? [r.full_name,r.employee_id,r.scheme,r.worked_minutes,r.present_days,r.average_hours]
+        : [r.full_name,r.employee_id,r.scheme,r.present_days,r.absent_days,r.leave_days,r.late_days,
+          r.missing_sign_out_days,r.worked_minutes,r.attendance_percent]);
     } else if (type==='issues') {
       const rows=await rpc('portal_attendance_issues',{p_limit:500})||[];
        reportHeaders=['Employee','Employee ID','Issue','Sign in ('+tz()+')','Status','Open count'];
@@ -836,10 +905,12 @@
     } else {
       const from=type==='daily'?companyDay():month+'-01';
       const to=type==='daily'?companyDay():monthEnd(from);
-       const rows=await rpc('portal_attendance_daily',{p_from:from,p_to:to,
+       const rows=await rpc('portal_attendance_daily_v2',{p_from:from,p_to:to,
          p_employee:type==='employee' ? $('report-employee').value : null})||[];
       const selected=type==='late'?rows.filter((r)=>r.is_late)
-        :type==='absence'?rows.filter((r)=>r.attendance_status==='Absent'):rows;
+        :type==='absence'?rows.filter((r)=>r.attendance_status==='Absent')
+          :type==='leave'?rows.filter((r)=>r.attendance_status==='On Leave')
+            :type==='missing'?rows.filter((r)=>r.attendance_status==='Missing Sign-Out'):rows;
        reportHeaders=['Date','Employee','Employee ID','Scheme','Sign in ('+tz()+')','Sign out ('+tz()+')',
         'Worked minutes','Attendance','Late'];
       reportRows=selected.map((r)=>[r.attendance_date,r.full_name,r.employee_id,r.scheme,
@@ -885,12 +956,36 @@
     $('mobile-nav').setAttribute('aria-expanded',String(open));
   });
   $('refresh-view').addEventListener('click',()=>refreshCore().catch(fail));
-  ['employee-search','employee-status-filter','employee-role-filter'].forEach((id)=>
+  ['employee-search','employee-status-filter','employee-role-filter','employee-attendance-filter'].forEach((id)=>
     $(id).addEventListener(id.includes('search')?'input':'change',renderEmployees));
   ['today-search','today-status-filter'].forEach((id)=>
     $(id).addEventListener(id.includes('search')?'input':'change',renderToday));
   ['month-search','month-scheme','month-status'].forEach((id)=>
     $(id).addEventListener(id.includes('search')?'input':'change',renderMonthly));
+  ['leave-search','leave-status-filter'].forEach((id)=>
+    $(id).addEventListener(id.includes('search')?'input':'change',renderLeaves));
+  $('add-leave').addEventListener('click',()=>openLeave(null));
+  $('leave-form').addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    const form=event.currentTarget;if(!form.reportValidity())return;
+    const data=new FormData(form);
+    const payload={
+      p_leave_id:data.get('leaveId')||null,
+      p_employee_id:data.get('employeeId'),
+      p_leave_type:String(data.get('leaveType')).trim(),
+      p_start_date:data.get('startDate'),p_end_date:data.get('endDate'),
+      p_leave_reason:String(data.get('leaveReason')||'').trim(),
+      p_status:data.get('status'),
+      p_admin_reason:String(data.get('adminReason')).trim(),
+    };
+    if(payload.p_end_date<payload.p_start_date){notice('Leave end date must follow its start date.','error');return;}
+    const approved=await confirmAction('Save leave record?',
+      'Approved leave changes absence reporting. Your reason and the before/after record are audited.',
+      'Save leave');
+    if(!approved)return;
+    closeDialog('leave-dialog');
+    await actionRun(()=>rpc('portal_attendance_save_leave',payload),'Leave saved and audited.');
+  });
   $('month-select').addEventListener('change',()=>{$('month-select').dataset.touched='true';loadMonthly().catch(fail);});
   $('add-employee').addEventListener('click',()=>editEmployee(null));
   $('employee-form').addEventListener('submit',async(event)=>{
@@ -920,9 +1015,10 @@
   });
   $('monthly-export').addEventListener('click',()=>{
     downloadCsv('attendance-monthly-'+$('month-select').value+'.csv',
-      ['Employee','Employee ID','Scheme','Present','Absent','Late','Worked minutes','Incomplete','Rate'],
+      ['Employee','Employee ID','Scheme','Present','Absent','Leave','Late','Missing sign-out','Worked minutes','Average hours','Rate'],
       filteredMonthly().map((r)=>[r.full_name,r.employee_id,r.scheme,r.present_days,
-        r.absent_days,r.late_days,r.worked_minutes,r.incomplete_days,r.attendance_percent]));
+        r.absent_days,r.leave_days,r.late_days,r.missing_sign_out_days,r.worked_minutes,
+        r.average_hours,r.attendance_percent]));
   });
   $('history-apply').addEventListener('click',()=>{$('history-from').dataset.touched='true';historyOffset=0;loadHistory().catch(fail);});
   document.querySelectorAll('[data-range]').forEach((item)=>item.addEventListener('click',()=>{
@@ -1008,6 +1104,15 @@
     }catch(error){notice(errorText(error),'error');}
     $('retry-sheet').disabled=false;
   });
+  $('matrix-rebuild').addEventListener('click',async()=>{
+    const from=$('matrix-from').value,to=$('matrix-to').value;
+    if(!from||!to||to<from){notice('Choose a valid matrix date range.','error');return;}
+    $('matrix-rebuild').disabled=true;
+    try {const result=await activity({action:'matrix-sync',from,to});
+      notice(result.updated+' matrix date(s) reconciled from Supabase.','success');}
+    catch(error){notice(errorText(error),'error');}
+    $('matrix-rebuild').disabled=false;
+  });
   $('sheet-report-refresh').addEventListener('click',()=>loadSheetReport());
   $('sheet-report-more').addEventListener('click',()=>loadSheetReport(false));
   document.querySelectorAll('[data-close]').forEach((item)=>
@@ -1015,6 +1120,7 @@
   const day=new Date().toISOString().slice(0,10);
   $('month-select').value=day.slice(0,7);
   $('history-from').value=shiftDay(day,-29);$('history-to').value=day;
+  $('matrix-from').value=shiftDay(day,-29);$('matrix-to').value=day;
   setInterval(()=>{if(!$('admin-app').hidden){
     if (!document.querySelector('dialog[open]')) refreshCore().catch(fail);
     else $('local-clock').textContent='Company time · '+timestamp(new Date());

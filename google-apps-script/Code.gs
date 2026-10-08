@@ -1,6 +1,7 @@
 // Bound to the existing Tennis Portal Logs spreadsheet.
 const SHEET_NAME = 'Tennis Portal Logs';
 const TIME_ZONE = 'Asia/Karachi';
+const MATRIX_NAME = 'Attendance Matrix';
 const HEADERS = [
   'Email', 'Employee Name', 'Employee ID', 'Scheme', 'Role',
   'Login Date', 'Login Time', 'Logout Date', 'Logout Time', 'Status', 'Session ID'
@@ -16,7 +17,14 @@ function doPost(event) {
     const payload = JSON.parse((event && event.postData && event.postData.contents) || '{}');
     const secret = PropertiesService.getScriptProperties().getProperty('GOOGLE_SHEETS_WEBHOOK_SECRET');
     if (!secret || payload.secret !== secret) return response_({ok: false, error: 'Unauthorized'});
+    if (payload.action === 'capabilities') return response_({ok:true,contractVersion:5});
     if (payload.action === 'report') return report_(getLogSheet_(), payload);
+    if (payload.action === 'matrix-day') {
+      const lock = LockService.getScriptLock();
+      lock.waitLock(10000);
+      try { return updateMatrixDay_(payload); }
+      finally { lock.releaseLock(); }
+    }
     if (!payload.sessionId || !/^[0-9a-f-]{36}$/i.test(String(payload.sessionId)) ||
         !['login', 'logout'].includes(payload.action)) {
       return response_({ok: false, error: 'Invalid activity request'});
@@ -44,17 +52,27 @@ function getLogSheet_() {
 
 function recordLogin_(sheet, payload) {
   const lastRow = sheet.getLastRow();
+  let existingRow = 0;
   if (lastRow > 1) {
     const ids = sheet.getRange(2, 11, lastRow - 1, 1).getValues().flat();
-    if (ids.includes(payload.sessionId)) return response_({ok: true, duplicate: true});
+    const index = ids.lastIndexOf(payload.sessionId);
+    if (index >= 0) existingRow = index + 2;
   }
   if (!payload.email || !payload.employeeId || !payload.employeeName)
     return response_({ok: false, error: 'Employee details are required'});
-  const now = new Date();
+  const loginAt = payload.loginAt ? new Date(payload.loginAt) : new Date();
+  if (isNaN(loginAt.getTime())) return response_({ok: false, error: 'Invalid sign-in time'});
+  const zone = payload.timezone || TIME_ZONE;
+  const prefix = [safeCell_(payload.email), safeCell_(payload.employeeName),
+    safeCell_(payload.employeeId), safeCell_(payload.scheme), safeCell_(payload.role),
+    Utilities.formatDate(loginAt, zone, 'yyyy-MM-dd'),
+    Utilities.formatDate(loginAt, zone, 'HH:mm:ss')];
+  if (existingRow) {
+    sheet.getRange(existingRow, 1, 1, 7).setValues([prefix]);
+    return response_({ok:true, updated:true});
+  }
   sheet.appendRow([
-    payload.email, payload.employeeName, payload.employeeId, payload.scheme || '', payload.role || '',
-    Utilities.formatDate(now, TIME_ZONE, 'yyyy-MM-dd'),
-    Utilities.formatDate(now, TIME_ZONE, 'HH:mm:ss'),
+    ...prefix,
     '', '', 'Logged In', payload.sessionId
   ]);
   return response_({ok: true});
@@ -64,28 +82,116 @@ function recordLogout_(sheet, payload) {
   const lastRow = sheet.getLastRow();
   const ids = lastRow > 1 ? sheet.getRange(2, 11, lastRow - 1, 1).getValues().flat() : [];
   const index = ids.lastIndexOf(payload.sessionId);
-  const now = new Date();
-  const logoutDate = Utilities.formatDate(now, TIME_ZONE, 'yyyy-MM-dd');
-  const logoutTime = Utilities.formatDate(now, TIME_ZONE, 'HH:mm:ss');
+  const logoutAt = payload.logoutAt ? new Date(payload.logoutAt) : new Date();
+  if (isNaN(logoutAt.getTime())) return response_({ok: false, error: 'Invalid sign-out time'});
+  const zone = payload.timezone || TIME_ZONE;
+  const logoutDate = Utilities.formatDate(logoutAt, zone, 'yyyy-MM-dd');
+  const logoutTime = Utilities.formatDate(logoutAt, zone, 'HH:mm:ss');
   if (index < 0) {
     // A queued login may still be waiting. Use its original timestamp, never now.
     const loginAt = payload.loginAt && new Date(payload.loginAt);
     if (!loginAt || isNaN(loginAt.getTime()) || !payload.email || !payload.employeeId)
       return response_({ok: false, error: 'Session ID was not found'});
     sheet.appendRow([
-      payload.email, payload.employeeName || '', payload.employeeId, payload.scheme || '', payload.role || '',
-      Utilities.formatDate(loginAt, TIME_ZONE, 'yyyy-MM-dd'),
-      Utilities.formatDate(loginAt, TIME_ZONE, 'HH:mm:ss'),
+      safeCell_(payload.email), safeCell_(payload.employeeName), safeCell_(payload.employeeId),
+      safeCell_(payload.scheme), safeCell_(payload.role),
+      Utilities.formatDate(loginAt, zone, 'yyyy-MM-dd'),
+      Utilities.formatDate(loginAt, zone, 'HH:mm:ss'),
       logoutDate, logoutTime, 'Logged Out', payload.sessionId
     ]);
     return response_({ok: true, recovered: true});
   }
   const row = index + 2;
-  const existing = sheet.getRange(row, 8, 1, 3).getDisplayValues()[0];
-  if (existing[2] === 'Logged Out' && existing[0] && existing[1])
-    return response_({ok: true, duplicate: true});
+  const loginAt = payload.loginAt ? new Date(payload.loginAt) : null;
+  if (loginAt && !isNaN(loginAt.getTime())) {
+    sheet.getRange(row, 1, 1, 7).setValues([[
+      safeCell_(payload.email),safeCell_(payload.employeeName),safeCell_(payload.employeeId),
+      safeCell_(payload.scheme),safeCell_(payload.role),
+      Utilities.formatDate(loginAt, zone, 'yyyy-MM-dd'),
+      Utilities.formatDate(loginAt, zone, 'HH:mm:ss')]]);
+  }
   sheet.getRange(row, 8, 1, 3).setValues([[logoutDate, logoutTime, 'Logged Out']]);
   return response_({ok: true});
+}
+
+// Supabase sends one authoritative day snapshot. UUID notes keep employee groups
+// stable even when names or employee IDs change. The existing raw log is untouched.
+function updateMatrixDay_(payload) {
+  const day = String(payload.day || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day))
+    return response_({ok: false, error: 'Invalid matrix date'});
+  let people;
+  try { people = JSON.parse(payload.rows || '[]'); }
+  catch (_) { return response_({ok:false, error:'Invalid matrix rows'}); }
+  if (!Array.isArray(people) || people.length > 2000 || people.some(person =>
+      !/^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(String(person.userId || ''))))
+    return response_({ok: false, error: 'Invalid employee mapping'});
+  const book = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = book.getSheetByName(MATRIX_NAME);
+  if (!sheet) {
+    sheet = book.insertSheet(MATRIX_NAME);
+    sheet.getRange(1, 1, 2, 1).setValues([['Attendance date'], ['Date']]);
+    sheet.setFrozenRows(2);
+    sheet.setFrozenColumns(1);
+    sheet.setColumnWidth(1, 115);
+  }
+  const lastCol = sheet.getLastColumn();
+  const ids = lastCol > 1 ? sheet.getRange(1, 2, 1, lastCol - 1).getNotes()[0] : [];
+  const columns = {};
+  for (let i = 0; i < ids.length; i += 3) {
+    if (ids[i]) columns[ids[i]] = i + 2;
+  }
+  people.forEach(person => {
+    const id = String(person.userId);
+    if (!columns[id]) {
+      const col = sheet.getLastColumn() + 1;
+      if (col + 2 > sheet.getMaxColumns())
+        sheet.insertColumnsAfter(sheet.getMaxColumns(), col + 2 - sheet.getMaxColumns());
+      sheet.getRange(1, col, 1, 3).setValues([[
+        safeCell_(person.fullName) + ' (' + safeCell_(person.employeeId) + ')', '', ''
+      ]]);
+      sheet.getRange(1, col).setNote(id);
+      sheet.getRange(2, col, 1, 3).setValues([['Sign In', 'Sign Out', 'Status']]);
+      sheet.setColumnWidths(col, 3, 110);
+      sheet.setColumnWidth(col + 2, 155);
+      columns[id] = col;
+    } else {
+      sheet.getRange(1, columns[id]).setValue(
+        safeCell_(person.fullName) + ' (' + safeCell_(person.employeeId) + ')');
+    }
+  });
+  const lastRow = sheet.getLastRow();
+  const dates = lastRow > 2 ? sheet.getRange(3, 1, lastRow - 2, 1).getDisplayValues().flat() : [];
+  let row = dates.indexOf(day) + 3;
+  if (row === 2) {
+    row = lastRow + 1;
+    if (row > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), 1);
+    sheet.getRange(row, 1).setNumberFormat('@').setValue(day);
+  }
+  const zone = payload.timezone || TIME_ZONE;
+  people.forEach(person => {
+    const col = columns[String(person.userId)];
+    const signIn = person.signIn ? Utilities.formatDate(new Date(person.signIn), zone, 'HH:mm') : '—';
+    const signOut = person.signOut ? Utilities.formatDate(new Date(person.signOut), zone, 'HH:mm') : '—';
+    let status = String(person.status || '');
+    if (status === 'On Leave') status = 'Leave';
+    else if (status === 'Incomplete' || status === 'Missing Sign-Out' ||
+      (status === 'Signed In' && day < Utilities.formatDate(new Date(), zone, 'yyyy-MM-dd')))
+      status = 'Missing Sign-Out';
+    else if (status === 'Signed Out') status = person.isLate ? 'Late' : 'Present';
+    else if (status === 'Signed In') status = 'Signed In';
+    else if (status === 'Not Scheduled') status = '—';
+    sheet.getRange(row, col, 1, 3).setValues([[signIn, signOut, status]]);
+  });
+  sheet.getRange(1, 1, 2, sheet.getLastColumn()).setFontWeight('bold')
+    .setBackground('#0b1f3a').setFontColor('#ffffff');
+  sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).setWrap(true);
+  return response_({ok: true, day, employees: people.length});
+}
+
+function safeCell_(value) {
+  const text = String(value || '').trim();
+  return /^[=+@-]/.test(text) ? "'" + text : text;
 }
 
 function report_(sheet, payload) {

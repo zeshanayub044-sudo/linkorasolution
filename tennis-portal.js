@@ -33,12 +33,11 @@
 
   async function invokeActivity(action, activitySessionId) {
     var result = await supabase.functions.invoke('manage-employee', {
-      body: { action: action, sessionId: activitySessionId }
+      body: { action: action, sessionId: activitySessionId,
+        reportVersion: action === 'get-activity-report' ? 2 : undefined }
     });
     if (result.error) {
-      // Supabase exposes a non-2xx Function response as a generic error. Read
-      // the safe JSON error returned by the function so the employee knows
-      // that attendance was not saved instead of seeing a misleading success.
+      // Read the safe backend error when a Supabase attendance action fails.
       var detail;
       try { detail = await result.error.context.json(); } catch (_) { /* use fallback below */ }
       throw new Error((detail && detail.error) || 'The attendance service is unavailable. Please try again or contact an administrator.');
@@ -50,7 +49,7 @@
     var minutes = Math.max(0, Math.floor(Number(value)));
     return Math.floor(minutes / 60) + 'h ' + String(minutes % 60).padStart(2, '0') + 'm';
   }
-  function renderActivityReport(sessions) {
+  function renderActivityReport(sessions, timezone) {
     var body = document.getElementById('report-table-body');
     body.textContent = '';
     if (!sessions.length) {
@@ -58,17 +57,19 @@
       var emptyCell = document.createElement('td');
       emptyCell.colSpan = 9;
       emptyCell.className = 'report-empty';
-      emptyCell.textContent = 'No attendance records found in Google Sheets.';
+      emptyCell.textContent = 'No attendance records found in Supabase.';
       emptyRow.appendChild(emptyCell); body.appendChild(emptyRow); return;
     }
     sessions.forEach(function (session) {
       var profile = session.employee_profiles || {};
       var values = [
-        profile.full_name || session.employeeName || 'Unknown employee',
-        profile.employee_id || session.employeeId || '—',
-        [session.role || profile.role, session.scheme || profile.scheme].filter(Boolean).join(' / ') || '—',
-        session.loginDate || '—', session.loginTime || '—',
-        session.logoutDate || '—', session.logoutTime || '—',
+        profile.full_name || 'Unknown employee',
+        profile.employee_id || '—',
+        [profile.role, profile.scheme].filter(Boolean).join(' / ') || '—',
+        session.login_at ? new Date(session.login_at).toLocaleDateString('en-CA',{timeZone:timezone}) : '—',
+        session.login_at ? new Date(session.login_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
+        session.logout_at ? new Date(session.logout_at).toLocaleDateString('en-CA',{timeZone:timezone}) : '—',
+        session.logout_at ? new Date(session.logout_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
         workedTime(session.workedMinutes), session.status || '—'
       ];
       var row = document.createElement('tr');
@@ -83,12 +84,12 @@
     message(reportMessage, 'Loading employee activity…');
     try {
       var report = await invokeActivity('get-activity-report');
-      if (report?.source !== 'google_sheet' || !Array.isArray(report.sessions))
+      if (report?.source !== 'supabase' || !Array.isArray(report.sessions))
         throw new Error('Unable to load attendance records. Please check the backend connection.');
-      renderActivityReport(report.sessions);
+      renderActivityReport(report.sessions,report.timezone || 'UTC');
       message(reportMessage, report.sessions.length
-        ? report.sessions.length + ' latest Google Sheets attendance record(s).'
-        : 'No attendance records found in Google Sheets.', report.sessions.length ? 'success' : '');
+        ? report.sessions.length + ' latest Supabase attendance record(s).'
+        : 'No attendance records found in Supabase.', report.sessions.length ? 'success' : '');
     } catch (error) {
       var reportError = error.message || 'The activity report could not be loaded.';
       if (reportError === 'Invalid request') {

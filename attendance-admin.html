@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#081521">
   <title>Attendance Admin | LINKORA SOLUTIONS</title>
   <link rel="icon" href="assets/favicon.ico?v=2">
-  <link rel="stylesheet" href="attendance-admin.css?v=2">
+  <link rel="stylesheet" href="attendance-admin.css?v=3">
 </head>
 <body>
   <div id="access-screen" class="access-screen">
@@ -36,13 +36,14 @@
         <button type="button" data-view="employees"><span>♧</span> Employees</button>
         <button type="button" data-view="today"><span>▤</span> Today's Attendance</button>
         <button type="button" data-view="monthly"><span>▦</span> Monthly Attendance</button>
+        <button type="button" data-view="leaves"><span>◷</span> Leaves</button>
         <button type="button" data-view="history"><span>⌕</span> Attendance History</button>
         <button type="button" data-view="reports"><span>◫</span> Reports</button>
         <button type="button" data-view="issues"><span>⚑</span> Attendance Issues</button>
         <button type="button" data-view="audit"><span>☷</span> Audit Log</button>
         <button type="button" data-view="settings"><span>⚙</span> Settings</button>
       </nav>
-      <div class="sidebar-foot"><span class="status-pulse"></span> Attendance log: Google Sheets<br><a href="tennis-portal.html">Employee portal ↗</a></div>
+      <div class="sidebar-foot"><span class="status-pulse"></span> Attendance source: Supabase<br>Google Sheets: reporting mirror<br><a href="tennis-portal.html">Employee portal ↗</a></div>
     </aside>
 
     <div class="workspace">
@@ -57,7 +58,7 @@
 
         <section id="view-dashboard" class="view">
           <div id="summary-grid" class="summary-grid" aria-live="polite"></div>
-          <section class="panel"><div class="panel-head"><div><span class="eyebrow">GOOGLE SHEETS ATTENDANCE</span><h2>Latest sign-ins and sign-outs</h2></div><button type="button" class="text-action" data-go="reports">View all →</button></div><p id="dashboard-sheet-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p><div id="dashboard-sheet" class="mini-list"></div></section>
+          <section class="panel"><div class="panel-head"><div><span class="eyebrow">SUPABASE ATTENDANCE</span><h2>Latest sign-ins and sign-outs</h2></div><button type="button" class="text-action" data-go="reports">View all →</button></div><p id="dashboard-sheet-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p><div id="dashboard-sheet" class="mini-list"></div></section>
           <div class="dashboard-columns">
             <section class="panel"><div class="panel-head"><div><span class="eyebrow">WEEKLY PULSE</span><h2>Workforce presence</h2></div><span id="trend-label" class="muted"></span></div><div id="trend-chart" class="trend-chart" role="img" aria-label="Attendance trend"></div></section>
             <section class="panel focus-panel"><span class="eyebrow">RIGHT NOW</span><strong id="live-number">0</strong><h2>People currently present</h2><p>Today's valid open sessions only. Older sessions needing review are excluded.</p><button type="button" class="text-action" data-go="live">View live attendance →</button></section>
@@ -72,25 +73,31 @@
           <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Currently present</h2><p>Elapsed time updates while this page is open.</p></div><strong id="present-count" class="count-pill">0 present</strong></div>
           <div id="present-cards" class="present-grid"></div>
           <div class="section-heading"><div><h2>Today's live status</h2><p>Sign-ins, sign-outs and people yet to arrive.</p></div></div>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role / scheme</th><th>Sign in</th><th>Sign out</th><th>Duration</th><th>Status</th></tr></thead><tbody id="live-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role / scheme</th><th>Sign in</th><th>Sign out</th><th>Duration</th><th>Status</th><th>Leave</th><th>Issues</th><th>Action</th></tr></thead><tbody id="live-body"></tbody></table></div>
         </section>
 
         <section id="view-employees" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">PEOPLE DIRECTORY</span><h2>Employees &amp; accounts</h2><p>Accounts are managed through the existing secure Co-CEO service.</p></div><button id="add-employee" type="button" class="primary">+ Add employee</button></div>
-          <div class="toolbar"><label>Search<input id="employee-search" type="search" placeholder="Name, ID or email"></label><label>Account<select id="employee-status-filter"><option value="">All accounts</option><option value="active">Active</option><option value="inactive">Inactive</option></select></label><label>Role<select id="employee-role-filter"><option value="">All roles</option><option value="Employee">Employee</option><option value="Co-CEO">Co-CEO</option></select></label></div>
+          <div class="toolbar"><label>Search<input id="employee-search" type="search" placeholder="Name, ID or email"></label><label>Account<select id="employee-status-filter"><option value="">All accounts</option><option value="active">Active</option><option value="inactive">Inactive</option></select></label><label>Role<select id="employee-role-filter"><option value="">All roles</option><option value="Employee">Employee</option><option value="Co-CEO">Co-CEO</option></select></label><label>Today<select id="employee-attendance-filter"><option value="">Any status</option><option value="present">Present</option><option value="Absent">Absent</option><option value="On Leave">On Leave</option><option value="late">Late</option><option value="Missing Sign-Out">Missing sign-out</option></select></label></div>
           <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Email</th><th>Role / scheme</th><th>Account</th><th>Today</th><th>Created</th><th>Last sign-in</th><th>Actions</th></tr></thead><tbody id="employees-body"></tbody></table></div>
         </section>
 
         <section id="view-today" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">DAILY OPERATIONS</span><h2>Today's attendance</h2><p id="today-date"></p></div><button id="today-export" type="button" class="quiet">Export CSV ↓</button></div>
-          <div class="toolbar"><label>Find employee<input id="today-search" type="search" placeholder="Name or ID"></label><label>Status<select id="today-status-filter"><option value="">All</option><option value="present">Present</option><option value="Signed In">Signed In</option><option value="Signed Out">Signed Out</option><option value="Absent">Absent</option><option value="late">Late</option><option value="Incomplete">Incomplete</option></select></label></div>
+          <div class="toolbar"><label>Find employee<input id="today-search" type="search" placeholder="Name or ID"></label><label>Status<select id="today-status-filter"><option value="">All</option><option value="present">Present</option><option value="Signed In">Signed In</option><option value="Signed Out">Signed Out</option><option value="Absent">Absent</option><option value="On Leave">On Leave</option><option value="late">Late</option><option value="Missing Sign-Out">Missing Sign-Out</option></select></label></div>
           <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Attendance</th><th>Late</th><th>Integrity</th><th>Action</th></tr></thead><tbody id="today-body"></tbody></table></div>
         </section>
 
         <section id="view-monthly" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">MONTHLY PERFORMANCE</span><h2>Monthly attendance</h2><p>One row per employee, calculated from Supabase timestamps.</p></div><button id="monthly-export" type="button" class="quiet">Export CSV ↓</button></div>
-          <div class="toolbar"><label>Month<input id="month-select" type="month"></label><label>Scheme<select id="month-scheme"><option value="">All schemes</option></select></label><label>Status<select id="month-status"><option value="">All</option><option value="present">Present</option><option value="absent">Absent</option><option value="late">Late</option><option value="incomplete">Incomplete</option></select></label><label>Find employee<input id="month-search" type="search" placeholder="Name or ID"></label></div>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Present</th><th>Absent</th><th>Late</th><th>Worked</th><th>Avg arrival</th><th>Incomplete</th><th>Rate</th><th>Details</th></tr></thead><tbody id="monthly-body"></tbody></table></div>
+          <div class="toolbar"><label>Month<input id="month-select" type="month"></label><label>Scheme<select id="month-scheme"><option value="">All schemes</option></select></label><label>Status<select id="month-status"><option value="">All</option><option value="present">Present</option><option value="absent">Absent</option><option value="leave">Leave</option><option value="late">Late</option><option value="missing">Missing sign-out</option></select></label><label>Find employee<input id="month-search" type="search" placeholder="Name or ID"></label></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Missing sign-out</th><th>Total hours</th><th>Avg hours</th><th>Rate</th><th>Details</th></tr></thead><tbody id="monthly-body"></tbody></table></div>
+        </section>
+
+        <section id="view-leaves" class="view" hidden>
+          <div class="section-heading"><div><span class="eyebrow">TIME AWAY</span><h2>Employee leaves</h2><p>Only approved leave removes a scheduled day from absence calculations.</p></div><button id="add-leave" type="button" class="primary">+ Add leave</button></div>
+          <div class="toolbar"><label>Find employee<input id="leave-search" type="search" placeholder="Name or ID"></label><label>Status<select id="leave-status-filter"><option value="">All statuses</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select></label></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Status</th><th>Reason</th><th>Action</th></tr></thead><tbody id="leaves-body"></tbody></table></div>
         </section>
 
         <section id="view-history" class="view" hidden>
@@ -104,7 +111,7 @@
         <section id="view-reports" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">EXPORT &amp; INSIGHT</span><h2>Reports</h2><p>Download a focused CSV for payroll and management review.</p></div></div>
           <section class="panel">
-            <div class="panel-head"><div><h3>Google Sheets attendance log</h3><p>Existing and new employee sign-ins and sign-outs from Tennis Portal Logs.</p></div><button id="sheet-report-refresh" type="button" class="quiet">↻ Refresh Sheet</button></div>
+            <div class="panel-head"><div><h3>Supabase attendance log</h3><p>Authoritative employee sign-ins and sign-outs. Google Sheets is a separate mirror.</p></div><button id="sheet-report-refresh" type="button" class="quiet">↻ Refresh</button></div>
             <p id="sheet-report-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p>
             <div class="table-wrap"><table><thead><tr><th>Employee</th><th>ID</th><th>Role / scheme</th><th>Sign-in date</th><th>Sign-in time</th><th>Sign-out date</th><th>Sign-out time</th><th>Worked</th><th>Status</th></tr></thead><tbody id="sheet-report-body"></tbody></table></div>
             <button id="sheet-report-more" type="button" class="quiet" hidden>Load more records</button>
@@ -116,6 +123,8 @@
             <button type="button" data-report="employee"><span>♧</span><strong>Employee Attendance</strong><small>Selected employee, current month</small></button>
             <button type="button" data-report="late"><span>◷</span><strong>Late Arrivals</strong><small>Arrival after grace period</small></button>
             <button type="button" data-report="absence"><span>○</span><strong>Absence Report</strong><small>Scheduled days without a session</small></button>
+            <button type="button" data-report="leave"><span>◷</span><strong>Leave Report</strong><small>Approved leave days</small></button>
+            <button type="button" data-report="missing"><span>⚑</span><strong>Missing Sign-Out</strong><small>Sessions requiring review</small></button>
             <button type="button" data-report="hours"><span>⌁</span><strong>Working Hours</strong><small>Completed session durations</small></button>
             <button type="button" data-report="issues"><span>⚑</span><strong>Attendance Issues</strong><small>Open and incomplete sessions</small></button>
           </div>
@@ -149,7 +158,8 @@
             <fieldset><legend>Scheduled workdays</legend><div id="workdays" class="weekday-grid"><label><input type="checkbox" value="1"> Mon</label><label><input type="checkbox" value="2"> Tue</label><label><input type="checkbox" value="3"> Wed</label><label><input type="checkbox" value="4"> Thu</label><label><input type="checkbox" value="5"> Fri</label><label><input type="checkbox" value="6"> Sat</label><label><input type="checkbox" value="7"> Sun</label></div></fieldset>
             <div class="form-actions"><button type="submit" class="primary">Save attendance policy</button></div>
           </form>
-          <div class="panel sync-panel"><div><h2>Google Sheets delivery</h2><p>New attendance is confirmed by the spreadsheet before the portal reports success. Retry older pending deliveries here.</p></div><button id="retry-sheet" type="button" class="quiet">Retry pending sync</button><span id="sheet-status" class="muted"></span></div>
+          <div class="panel sync-panel"><div><h2>Google Sheets mirror</h2><p>Attendance succeeds in Supabase even during a Sheet outage. Retry pending raw and matrix deliveries here.</p></div><button id="retry-sheet" type="button" class="quiet">Retry pending sync</button><span id="sheet-status" class="muted"></span></div>
+          <div class="panel sync-panel"><div><h2>Rebuild matrix dates</h2><p>Reconcile a selected range from authoritative Supabase records (up to 46 days).</p><div class="toolbar"><label>From<input id="matrix-from" type="date"></label><label>To<input id="matrix-to" type="date"></label></div></div><button id="matrix-rebuild" type="button" class="quiet">Sync range</button></div>
         </section>
       </main>
     </div>
@@ -158,6 +168,9 @@
   <dialog id="employee-dialog" class="dialog"><form id="employee-form"><div class="dialog-head"><div><span class="eyebrow">ACCOUNT MANAGEMENT</span><h2 id="employee-dialog-title">Add employee</h2></div><button type="button" data-close="employee-dialog" class="icon-button" aria-label="Close">×</button></div>
     <input type="hidden" name="userId"><div class="form-grid"><label>Full name<input name="fullName" maxlength="160" required></label><label>Employee ID<input name="employeeId" maxlength="80" required></label><label>Email<input name="email" type="email" maxlength="320" required></label><label>Scheme / department<input name="scheme" maxlength="120" required></label><label>Role<select name="role"><option value="Employee">Employee</option><option value="Co-CEO">Co-CEO</option></select></label><label>Account status<select name="isActive"><option value="true">Active</option><option value="false">Inactive</option></select></label><label id="initial-password-field">Initial password<input name="password" type="password" minlength="8" autocomplete="new-password"></label></div>
     <p class="muted">Credentials are sent only to Supabase Auth. Existing passwords are never shown.</p><div class="form-actions"><button type="button" data-close="employee-dialog" class="quiet">Cancel</button><button type="submit" class="primary">Save employee</button></div></form></dialog>
+
+  <dialog id="leave-dialog" class="dialog"><form id="leave-form"><div class="dialog-head"><div><span class="eyebrow">AUDITED LEAVE</span><h2 id="leave-dialog-title">Add leave</h2></div><button type="button" data-close="leave-dialog" class="icon-button" aria-label="Close">×</button></div>
+    <input type="hidden" name="leaveId"><div class="form-grid"><label>Employee<select name="employeeId" required></select></label><label>Leave type<input name="leaveType" maxlength="80" required></label><label>Start date<input name="startDate" type="date" required></label><label>End date<input name="endDate" type="date" required></label><label>Status<select name="status"><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select></label></div><label>Leave details<textarea name="leaveReason" maxlength="500"></textarea></label><label>Admin change reason<textarea name="adminReason" minlength="5" maxlength="500" required></textarea></label><div class="form-actions"><button type="button" data-close="leave-dialog" class="quiet">Cancel</button><button type="submit" class="primary">Save leave</button></div></form></dialog>
 
   <dialog id="detail-dialog" class="dialog wide"><div class="dialog-head"><div><span class="eyebrow">EMPLOYEE PROFILE</span><h2 id="detail-name"></h2><p id="detail-meta" class="muted"></p></div><button type="button" data-close="detail-dialog" class="icon-button" aria-label="Close">×</button></div>
     <div id="detail-stats" class="detail-stats"></div><div class="section-heading"><h3>Daily breakdown</h3><button id="detail-add-session" type="button" class="quiet">+ Manual session</button></div>
@@ -175,6 +188,6 @@
   <dialog id="confirm-dialog" class="dialog confirm-dialog"><div class="dialog-head"><h2 id="confirm-title">Confirm change</h2></div><p id="confirm-description"></p><div class="form-actions"><button id="confirm-cancel" type="button" class="quiet">Cancel</button><button id="confirm-accept" type="button" class="primary">Confirm</button></div></dialog>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="portal-config.js"></script>
-  <script src="attendance-admin.js?v=4"></script>
+  <script src="attendance-admin.js?v=5"></script>
 </body>
 </html>
