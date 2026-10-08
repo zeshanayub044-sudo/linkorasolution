@@ -22,7 +22,7 @@ Session inserts/edits and leave/profile changes queue work in Supabase transacti
 
 ## Deployment order
 
-1. Apply `supabase/migrations/20261007130000_attendance_leave_and_matrix.sql`, `20261007131500_attendance_leave_audit_actions.sql`, `20261008100000_attendance_monthly_rate_fix.sql`, and `20261008103000_attendance_sync_version_guard.sql` in order. All four were applied to production; do not reset or replay them manually.
+1. Apply `supabase/migrations/20261007122917_attendance_leave_and_matrix.sql`, `20261007123343_attendance_leave_audit_actions.sql`, `20261008043809_attendance_monthly_rate_fix.sql`, and `20261008043916_attendance_sync_version_guard.sql` in order. All four were applied to production; do not reset or replay them manually.
 2. Save `google-apps-script/Code.gs` to the **existing bound project**, then deploy a new version of the existing web app. Keep the deployment URL and `GOOGLE_SHEETS_WEBHOOK_SECRET` Script Property.
 3. Deploy `supabase/functions/manage-employee/index.ts` with its current custom bearer validation (`verify_jwt=false`). Keep `GOOGLE_APPS_SCRIPT_URL`, `GOOGLE_SHEETS_WEBHOOK_SECRET`, `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as Edge secrets only.
 4. Publish the changed website files. The public `portal-config.js` should continue to contain only the Supabase URL and anon key.
