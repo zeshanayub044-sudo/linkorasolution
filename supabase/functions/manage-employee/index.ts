@@ -235,7 +235,7 @@ Deno.serve(async (request) => {
       const limit = Math.min(500, Math.max(1, Number(body.limit) || 200));
       const offset = Math.max(0, Number(body.offset) || 0);
       let query = service.from("employee_activity_sessions")
-        .select("session_id,employee_id,login_at,logout_at,status,employee_profiles(full_name,employee_id,role,scheme)", { count: "exact" })
+        .select("session_id,employee_id,login_at,logout_at,status,employee_profiles!employee_activity_sessions_employee_id_fkey(full_name,employee_id,role,scheme)", { count: "exact" })
         .order("login_at", { ascending: false }).range(offset, offset + limit - 1);
       if (typeof body.from === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.from)) query = query.gte("login_at", body.from);
       if (typeof body.to === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.to)) query = query.lt("login_at", new Date(Date.parse(body.to) + 86400000).toISOString());
