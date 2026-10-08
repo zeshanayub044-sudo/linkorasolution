@@ -4,6 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const titles = {
     dashboard: ['Executive overview', 'A clear picture of your team, right now.'],
+    workforce: ['Live Workforce', 'Portal presence and optional employee-approved screen sharing.'],
     live: ['Live attendance', 'Who is present and who needs attention.'],
     employees: ['Employees', 'Accounts, access and attendance history.'],
     today: ["Today's attendance", 'The complete workforce picture for the current company day.'],
@@ -16,6 +17,7 @@
     settings: ['Attendance settings', 'Company time, workdays and policy thresholds.'],
   };
   let client;
+  let workforce;
   let currentUser = null;
   let currentView = 'dashboard';
   let settings = null;
@@ -73,7 +75,7 @@
     if (error && error.code === '23505') return 'A matching employee, session or identifier already exists.';
     return error?.message || 'The request could not be completed. Please try again.';
   }
-  function isAuthError(error) { return error?.status === 401 || error?.code === '42501'; }
+  function isAuthError(error) { return error?.status === 401 || error?.status === 403 || error?.code === '42501'; }
   async function rpc(name, args) {
     const result = await client.rpc(name, args || {});
     if (result.error) throw result.error;
@@ -162,7 +164,7 @@
         line.append(node('span', (session.employee_profiles?.full_name || 'Unknown employee') + ' · ' +
           (session.employee_profiles?.employee_id || '—') + ' · ' +
           timestamp(session.login_at)),
-        node('span', session.status || 'Unknown'));
+        node('span', session.auto_closed ? 'Auto Closed (estimated)' : session.status || 'Unknown'));
         list.append(line);
       });
     } catch (error) {
@@ -196,10 +198,11 @@
           session.logout_at ? companyDay(session.logout_at) : '—', timeOnly(session.logout_at),
           minutes(session.workedMinutes),
         ].forEach((value) => cell(row, value));
-        attachBadge(cell(row, ''), session.status || 'Unknown');
+        attachBadge(cell(row, ''), session.auto_closed ? 'Auto Closed (estimated)' : session.status || 'Unknown');
+        cell(row, timestamp(session.last_heartbeat_at)); cell(row, sessionSource(session));
         body.append(row);
       });
-      if (!sheetReportRows.length) empty(body, 9, 'No attendance records found in Supabase.');
+      if (!sheetReportRows.length) empty(body, 11, 'No attendance records found in Supabase.');
       status.textContent = sheetReportRows.length
         ? sheetReportRows.length + ' of ' + sheetReportTotal + ' Supabase records loaded.'
         : 'No attendance records found in Supabase.';
@@ -207,11 +210,14 @@
     } catch (error) {
       status.textContent = 'Unable to load attendance records. Please check the backend connection. ' + errorText(error);
       more.hidden = true;
-      if (!sheetReportRows.length) empty(body, 9, 'Attendance records could not be loaded.');
+      if (!sheetReportRows.length) empty(body, 11, 'Attendance records could not be loaded.');
     } finally { more.disabled = false; }
   }
   function sessionSource(row) {
-    if (row.corrected_at) return 'Admin correction';
+    if (row.corrected_at || row.session_state === 'manually_closed' || row.disconnect_reason === 'manual_correction') return 'Manual correction';
+    if (row.auto_closed || row.estimated_logout) return 'Auto Closed — estimated heartbeat timeout';
+    if (row.disconnect_reason === 'portal_closed') return 'Portal closed';
+    if (row.disconnect_reason === 'manual_logout') return 'Normal logout';
     if (row.login_source === 'admin' && row.logout_source === 'admin') return 'Admin';
     if (row.login_source === 'admin') return 'Admin sign-in';
     if (row.logout_source === 'admin') return 'Employee + admin sign-out';
@@ -301,7 +307,14 @@
     }
   }
 
+  async function enrichPresence(rows) {
+    if (!rows?.length) return rows || [];
+    const metadata = await rpc('portal_attendance_presence_metadata', { p_sessions: rows.map((row) => row.session_id) });
+    const map = new Map((metadata || []).map((row) => [row.session_id, row]));
+    return rows.map((row) => ({ ...row, ...map.get(row.session_id) }));
+  }
   async function checkAccess() {
+    workforce?.stop();
     $('admin-app').hidden = true;
     $('access-screen').hidden = false;
     notice('Checking your access…', '', $('access-notice'));
@@ -332,9 +345,11 @@
       $('access-screen').hidden = true;
       $('admin-app').hidden = false;
       $('admin-login').hidden = true;
+      workforce.start();
       await refreshCore();
       showView(currentView);
     } catch (error) {
+      workforce?.stop();
       $('admin-app').hidden = true;
       $('access-screen').hidden = false;
       notice(errorText(error), 'error', $('access-notice'));
@@ -637,20 +652,21 @@
       p_status: $('history-status').value || null,
       p_limit: pageSize, p_offset: historyOffset,
     });
-    history = rows || [];
+    history = await enrichPresence(rows || []);
     historyTotal = Number(history[0]?.total_count || 0);
     renderHistory();
     notice('History ready.', 'success');
   }
   function renderHistory() {
     const body = $('history-body'); body.replaceChildren();
-    if (!history.length) empty(body,7,'No sessions in this date range.');
+    if (!history.length) empty(body,8,'No sessions in this date range.');
     for (const row of history) {
       const tr = node('tr');
       cell(tr,row.full_name,'person').append(node('small',row.employee_id));
       cell(tr,timestamp(row.login_at)); cell(tr,timestamp(row.logout_at));
       cell(tr,minutes(row.worked_minutes));
       attachBadge(cell(tr,''),row.status);
+      cell(tr,timestamp(row.last_heartbeat_at));
       cell(tr,sessionSource(row));
       cell(tr,'').append(button('Correct',()=>openCorrection(row)));
       body.append(tr);
@@ -727,6 +743,7 @@
     $('view-title').textContent=titles[view][0];
     $('view-subtitle').textContent=titles[view][1];
     $('sidebar').classList.remove('open'); $('mobile-nav').setAttribute('aria-expanded','false');
+    if (view==='workforce') workforce.refresh();
     if (view==='monthly') loadMonthly().catch(fail);
     if (view==='history') loadHistory().catch(fail);
     if (view==='reports') loadSheetReport().catch(fail);
@@ -862,13 +879,13 @@
         p_employee:$('history-employee').value||null,p_status:$('history-status').value||null,
         p_limit:200,p_offset:offset,
       })||[];
-      rows.push(...page);
+      rows.push(...await enrichPresence(page));
       if(page.length<200) break;
     }
     downloadCsv('attendance-history-'+$('history-from').value+'-to-'+$('history-to').value+'.csv',
-      ['Employee','Employee ID','Sign in ('+tz()+')','Sign out ('+tz()+')','Minutes','Status','Source','Correction reason'],
+      ['Employee','Employee ID','Sign in ('+tz()+')','Sign out ('+tz()+')','Minutes','Status','Last heartbeat ('+tz()+')','Logout type / source','Estimated logout','Correction reason'],
       rows.map((r)=>[r.full_name,r.employee_id,timestamp(r.login_at),timestamp(r.logout_at),r.worked_minutes,
-        r.status,sessionSource(r),r.correction_reason]));
+        r.status,timestamp(r.last_heartbeat_at),sessionSource(r),r.estimated_logout?'Yes':'No',r.correction_reason]));
     notice('CSV prepared from '+rows.length+' Supabase sessions.','success');
   }
   function csvSafe(value) {
@@ -943,6 +960,7 @@
     await checkAccess();
   });
   for(const id of ['admin-signout','access-signout']) $(id).addEventListener('click',async()=>{
+    workforce?.stop();
     await client.auth.signOut();
     currentUser=null;users=[];today=[];history=[];audit=[];
     $('admin-app').hidden=true;await checkAccess();
@@ -1131,6 +1149,13 @@
     client=window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey,{
       auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true},
     });
+    workforce = new window.LinkoraWorkforceAdmin(client, timestamp, fail);
+    client.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') { workforce.stop(); currentUser = null; $('admin-app').hidden = true;
+        $('access-screen').hidden = false; $('admin-login').hidden = false;
+        notice('Sign in with an active Co-CEO account.', '', $('access-notice')); }
+    });
+    window.addEventListener('pageshow', (event) => { if (event.persisted) checkAccess().catch(fail); });
     checkAccess().catch((error)=>notice(errorText(error),'error',$('access-notice')));
   }catch(error){notice(errorText(error),'error',$('access-notice'));}
 }());

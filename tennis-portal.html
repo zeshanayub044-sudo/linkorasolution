@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Tennis Portal | LINKORA SOLUTIONS</title>
   <link rel="stylesheet" href="styles.css?v=2">
-  <link rel="stylesheet" href="tennis-portal.css?v=4">
+  <link rel="stylesheet" href="tennis-portal.css?v=5">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=2">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=2">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?v=2">
@@ -44,6 +44,24 @@
       </section>
       <section id="employee-panel" hidden aria-live="polite">
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
+        <section class="presence-panel" aria-labelledby="presence-title">
+          <h3 id="presence-title">Attendance connection</h3>
+          <p id="presence-message" class="form-message" role="status">Connecting to attendance…</p>
+          <p class="presence-note">You can minimize this window or work in another tab. Keep a portal tab open while working.</p>
+          <button id="resume-attendance" class="btn btn-primary" type="button" hidden>Start attendance / reconnect</button>
+        </section>
+        <section class="screen-share-panel" aria-labelledby="screen-share-title">
+          <h3 id="screen-share-title">Optional live screen sharing</h3>
+          <p>When enabled, an authorized Co-CEO can view the screen, window or tab you choose. Your browser will ask you to select it. Share only content you intend management to see.</p>
+          <button id="screen-share-start" class="btn btn-ghost" type="button">Start Screen Sharing</button>
+          <p id="screen-share-message" class="form-message" role="status">Not sharing. Attendance works independently.</p>
+        </section>
+        <section id="screen-share-banner" class="screen-share-banner" hidden aria-label="Screen sharing controls">
+          <strong>SCREEN SHARING ACTIVE</strong>
+          <p>Authorized management can view the screen/window/tab you selected. No audio or recording.</p>
+          <p id="screen-share-viewers">No connected viewers.</p>
+          <button id="screen-share-stop" class="btn btn-primary" type="button">Stop Sharing</button>
+        </section>
         <section id="ceo-panel" class="ceo-panel" hidden aria-labelledby="ceo-panel-title">
           <div class="admin-panel-heading"><div><span class="mono">Executive access</span><h3 id="ceo-panel-title">Co-CEO admin panel</h3></div><div class="admin-panel-actions"><a class="btn btn-primary" href="attendance-admin.html">Admin Panel</a><button id="report-refresh" class="btn btn-ghost" type="button">Refresh report</button></div></div>
           <p class="admin-panel-intro">Supabase login and logout activity. Only Co-CEO accounts can view this report.</p>
@@ -56,7 +74,8 @@
     </section>
   </main>
   <script src="portal-config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="tennis-portal.js?v=6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
+  <script src="workforce-common.js?v=1"></script>
+  <script src="tennis-portal.js?v=7"></script>
 </body>
 </html>
