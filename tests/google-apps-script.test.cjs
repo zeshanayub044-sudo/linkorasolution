@@ -58,6 +58,7 @@ const secret = 'test-only-secret';
 const id = '33333333-3333-3333-3333-333333333333';
 
 assert.equal(post({action:'report'}).error, 'Unauthorized');
+assert.equal(post({secret,action:'capabilities'}).contractVersion,5);
 let report = post({secret, action:'report'});
 assert.equal(report.source, 'google_sheet');
 assert.equal(report.total, 2);
@@ -71,11 +72,13 @@ assert.equal(post({secret, action:'login', sessionId:id,
   email:'three@example.com', employeeName:'Three Person', employeeId:'EMP003'}).ok, true);
 assert.equal(rows.length, 4);
 assert.equal(post({secret, action:'login', sessionId:id,
-  email:'three@example.com', employeeName:'Three Person', employeeId:'EMP003'}).duplicate, true);
+  email:'three@example.com', employeeName:'Three Person', employeeId:'EMP003'}).updated, true);
 assert.equal(rows.length, 4);
-assert.equal(post({secret, action:'logout', sessionId:id}).ok, true);
+assert.equal(post({secret, action:'logout', sessionId:id,
+  logoutAt:'2026-10-07T11:00:00.000Z'}).ok, true);
 const firstLogout = rows[3][8];
-assert.equal(post({secret, action:'logout', sessionId:id}).duplicate, true);
+assert.equal(post({secret, action:'logout', sessionId:id,
+  logoutAt:'2026-10-07T11:00:00.000Z'}).ok, true);
 assert.equal(rows[3][8], firstLogout);
 
 const recovered = post({secret, action:'logout', sessionId:'44444444-4444-4444-4444-444444444444',
