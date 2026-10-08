@@ -150,7 +150,7 @@
     list.replaceChildren();
     status.textContent = 'Loading authoritative attendance records…';
     try {
-      const report = await activity({ action: 'get-activity-report', limit: 8 });
+      const report = await activity({ action: 'get-activity-report', reportVersion: 2, limit: 8 });
       if (report?.source !== 'supabase' || !Array.isArray(report.sessions) ||
           !Number.isFinite(Number(report.total)))
         throw new Error('Invalid attendance report response.');
@@ -178,7 +178,7 @@
     status.textContent = 'Loading authoritative attendance records…';
     try {
       const report = await activity({
-        action: 'get-activity-report', limit: 200, offset: sheetReportRows.length,
+        action: 'get-activity-report', reportVersion: 2, limit: 200, offset: sheetReportRows.length,
       });
       if (report?.source !== 'supabase' || !Array.isArray(report.sessions) ||
           !Number.isFinite(Number(report.total)))

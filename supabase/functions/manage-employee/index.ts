@@ -212,6 +212,26 @@ Deno.serve(async (request) => {
         }
         return response({ ok: true, updated });
       }
+      if (body.reportVersion !== 2) {
+        // Keep already-published clients working until their cached JS updates.
+        const legacy = await notifySheet({
+          action: "report",
+          limit: String(Math.min(500, Math.max(1, Number(body.limit) || 200))),
+          offset: String(Math.max(0, Number(body.offset) || 0)),
+          from: typeof body.from === "string" ? body.from : "",
+          to: typeof body.to === "string" ? body.to : "",
+          employeeId: typeof body.employeeId === "string" ? body.employeeId : "",
+        });
+        if (!Array.isArray(legacy.sessions) || !Number.isFinite(Number(legacy.total)))
+          throw new SheetError("Google Sheets returned an invalid report.");
+        return response({ source: "google_sheet", total: legacy.total,
+          sessions: legacy.sessions.map((row: Record<string, unknown>) => ({
+            ...row, login_at: row.loginAt || null, logout_at: row.logoutAt || null,
+            status: row.status || "Unknown",
+            employee_profiles: { full_name: row.employeeName || "",
+              employee_id: row.employeeId || "", role: row.role || "", scheme: row.scheme || "" },
+          })) });
+      }
       const limit = Math.min(500, Math.max(1, Number(body.limit) || 200));
       const offset = Math.max(0, Number(body.offset) || 0);
       let query = service.from("employee_activity_sessions")
