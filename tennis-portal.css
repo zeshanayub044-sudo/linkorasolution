@@ -9,3 +9,13 @@
 .portal-admin-entry{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:24px;padding:15px 17px;border:1px solid rgba(47,212,196,.32);border-radius:10px;background:rgba(47,212,196,.06)}.portal-admin-entry span{color:var(--text-muted);font-size:.85rem}.portal-admin-entry .btn{padding:9px 14px;white-space:nowrap}
 #logout-button{margin-top:20px;}
 @media(max-width:520px){.portal-shell{width:min(100% - 28px,620px);padding:30px 0;}.employee-summary dl{grid-template-columns:1fr;gap:12px;}.admin-panel-heading{flex-direction:column;gap:10px;}.portal-admin-entry{align-items:flex-start;flex-direction:column}}
+
+.presence-panel,.screen-share-panel{margin-top:18px;padding:20px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.presence-panel h3,.screen-share-panel h3{margin:0 0 10px}.presence-note,.screen-share-panel p{color:var(--text-muted);font-size:.86rem;line-height:1.6}
+.screen-share-banner{position:sticky;top:12px;z-index:20;margin:18px 0;padding:20px;border:2px solid var(--teal);border-radius:12px;background:#082d32;box-shadow:0 8px 30px #0008}
+.screen-share-banner strong{color:#7bfff1;font-size:1rem;letter-spacing:.06em}.screen-share-banner p{font-size:.85rem;margin:10px 0;color:#e0f4f4}
+.screen-share-banner[hidden],.presence-panel [hidden]{display:none!important}
+
+/* Keep the consent indicator visible even when the portal report scrolls. */
+.screen-share-banner{position:fixed;inset:auto 16px 16px;max-width:620px;margin-inline:auto;max-height:42vh;overflow:auto;z-index:1000;}
+.portal-shell:has(#screen-share-banner:not([hidden])){padding-bottom:280px;}

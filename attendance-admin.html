@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#081521">
   <title>Attendance Admin | LINKORA SOLUTIONS</title>
   <link rel="icon" href="assets/favicon.ico?v=2">
-  <link rel="stylesheet" href="attendance-admin.css?v=3">
+  <link rel="stylesheet" href="attendance-admin.css?v=4">
 </head>
 <body>
   <div id="access-screen" class="access-screen">
@@ -32,6 +32,7 @@
       <p class="nav-caption">WORKFORCE</p>
       <nav id="admin-nav" aria-label="Admin sections">
         <button type="button" data-view="dashboard" class="active"><span>◈</span> Dashboard</button>
+        <button type="button" data-view="workforce"><span>◉</span> Live Workforce</button>
         <button type="button" data-view="live"><span>◉</span> Live Attendance</button>
         <button type="button" data-view="employees"><span>♧</span> Employees</button>
         <button type="button" data-view="today"><span>▤</span> Today's Attendance</button>
@@ -76,6 +77,13 @@
           <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role / scheme</th><th>Sign in</th><th>Sign out</th><th>Duration</th><th>Status</th><th>Leave</th><th>Issues</th><th>Action</th></tr></thead><tbody id="live-body"></tbody></table></div>
         </section>
 
+        <section id="view-workforce" class="view" hidden>
+          <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Presence &amp; optional screen sharing</h2><p>Only employee-selected, consented video can be viewed. No audio, recording or remote control.</p></div><button id="workforce-refresh" type="button" class="quiet">Refresh status</button></div>
+          <div class="toolbar"><label>Find employee<input id="workforce-search" type="search" placeholder="Name or employee ID"></label></div>
+          <p id="workforce-message" class="muted" role="status" aria-live="polite">Checking portal presence…</p>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Scheme</th><th>Attendance</th><th>Sign in</th><th>Last heartbeat</th><th>Sign out</th><th>Screen sharing</th><th>Sharing started</th><th>Action</th></tr></thead><tbody id="workforce-body"></tbody></table></div>
+        </section>
+
         <section id="view-employees" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">PEOPLE DIRECTORY</span><h2>Employees &amp; accounts</h2><p>Accounts are managed through the existing secure Co-CEO service.</p></div><button id="add-employee" type="button" class="primary">+ Add employee</button></div>
           <div class="toolbar"><label>Search<input id="employee-search" type="search" placeholder="Name, ID or email"></label><label>Account<select id="employee-status-filter"><option value="">All accounts</option><option value="active">Active</option><option value="inactive">Inactive</option></select></label><label>Role<select id="employee-role-filter"><option value="">All roles</option><option value="Employee">Employee</option><option value="Co-CEO">Co-CEO</option></select></label><label>Today<select id="employee-attendance-filter"><option value="">Any status</option><option value="present">Present</option><option value="Absent">Absent</option><option value="On Leave">On Leave</option><option value="late">Late</option><option value="Missing Sign-Out">Missing sign-out</option></select></label></div>
@@ -104,7 +112,7 @@
           <div class="section-heading"><div><span class="eyebrow">AUDITABLE TIMELINE</span><h2>Attendance history</h2><p>Records are paginated and kept in Supabase.</p></div><button id="history-export" type="button" class="quiet">Export selected range ↓</button></div>
           <div class="toolbar"><label>From<input id="history-from" type="date"></label><label>To<input id="history-to" type="date"></label><label>Employee<select id="history-employee"><option value="">Everyone</option></select></label><label>Status<select id="history-status"><option value="">All statuses</option><option value="Logged In">Signed In</option><option value="Logged Out">Signed Out</option><option value="Needs Review">Needs Review</option></select></label><button id="history-apply" type="button" class="primary">Apply filters</button></div>
           <div class="quick-ranges"><button type="button" data-range="7">Last 7 days</button><button type="button" data-range="30">Last 30 days</button><button type="button" data-range="month">This month</button><button type="button" data-range="previous">Previous month</button></div>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Status</th><th>Source</th><th>Action</th></tr></thead><tbody id="history-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Status</th><th>Last heartbeat</th><th>Logout type / source</th><th>Action</th></tr></thead><tbody id="history-body"></tbody></table></div>
           <div class="pagination"><span id="history-page-label"></span><div><button id="history-prev" type="button" class="quiet">← Previous</button><button id="history-next" type="button" class="quiet">Next →</button></div></div>
         </section>
 
@@ -113,7 +121,7 @@
           <section class="panel">
             <div class="panel-head"><div><h3>Supabase attendance log</h3><p>Authoritative employee sign-ins and sign-outs. Google Sheets is a separate mirror.</p></div><button id="sheet-report-refresh" type="button" class="quiet">↻ Refresh</button></div>
             <p id="sheet-report-message" class="muted" role="status" aria-live="polite">Loading attendance records…</p>
-            <div class="table-wrap"><table><thead><tr><th>Employee</th><th>ID</th><th>Role / scheme</th><th>Sign-in date</th><th>Sign-in time</th><th>Sign-out date</th><th>Sign-out time</th><th>Worked</th><th>Status</th></tr></thead><tbody id="sheet-report-body"></tbody></table></div>
+            <div class="table-wrap"><table><thead><tr><th>Employee</th><th>ID</th><th>Role / scheme</th><th>Sign-in date</th><th>Sign-in time</th><th>Sign-out date</th><th>Sign-out time</th><th>Worked</th><th>Status</th><th>Last heartbeat</th><th>Logout type / source</th></tr></thead><tbody id="sheet-report-body"></tbody></table></div>
             <button id="sheet-report-more" type="button" class="quiet" hidden>Load more records</button>
           </section>
           <div class="toolbar"><label>Employee for individual report<select id="report-employee"><option value="">Choose an employee</option></select></label></div>
@@ -186,8 +194,16 @@
     <input type="hidden" name="employeeId"><p id="manual-person" class="muted"></p><div class="form-grid"><label>Sign-in time<input name="loginAt" type="datetime-local" required></label><label>Sign-out time <small>(optional)</small><input name="logoutAt" type="datetime-local"></label></div><label>Reason<textarea name="reason" minlength="5" maxlength="500" required placeholder="Why is this session being added?"></textarea></label><div class="form-actions"><button type="button" data-close="manual-dialog" class="quiet">Cancel</button><button type="submit" class="primary">Review manual entry</button></div></form></dialog>
 
   <dialog id="confirm-dialog" class="dialog confirm-dialog"><div class="dialog-head"><h2 id="confirm-title">Confirm change</h2></div><p id="confirm-description"></p><div class="form-actions"><button id="confirm-cancel" type="button" class="quiet">Cancel</button><button id="confirm-accept" type="button" class="primary">Confirm</button></div></dialog>
+  <dialog id="screen-viewer" class="dialog screen-viewer" aria-labelledby="screen-viewer-person">
+    <div class="dialog-head"><h2 id="screen-viewer-person">Employee screen share</h2><button id="screen-viewer-close" type="button" class="quiet">Close Viewer</button></div>
+    <p id="screen-viewer-started" class="muted"></p><p id="screen-viewer-status" role="status" aria-live="polite"></p>
+    <video id="screen-viewer-video" autoplay muted playsinline aria-label="Employee-selected live screen"></video>
+    <p class="muted">Live view only. The employee can stop at any time. No recording, audio or remote control.</p>
+  </dialog>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="portal-config.js"></script>
-  <script src="attendance-admin.js?v=5"></script>
+  <script src="workforce-common.js?v=1"></script>
+  <script src="workforce-admin.js?v=1"></script>
+  <script src="attendance-admin.js?v=6"></script>
 </body>
 </html>

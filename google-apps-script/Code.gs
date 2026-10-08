@@ -17,7 +17,7 @@ function doPost(event) {
     const payload = JSON.parse((event && event.postData && event.postData.contents) || '{}');
     const secret = PropertiesService.getScriptProperties().getProperty('GOOGLE_SHEETS_WEBHOOK_SECRET');
     if (!secret || payload.secret !== secret) return response_({ok: false, error: 'Unauthorized'});
-    if (payload.action === 'capabilities') return response_({ok:true,contractVersion:5});
+    if (payload.action === 'capabilities') return response_({ok:true,contractVersion:6});
     if (payload.action === 'report') return report_(getLogSheet_(), payload);
     if (payload.action === 'matrix-day') {
       const lock = LockService.getScriptLock();
@@ -85,6 +85,8 @@ function recordLogout_(sheet, payload) {
   const logoutAt = payload.logoutAt ? new Date(payload.logoutAt) : new Date();
   if (isNaN(logoutAt.getTime())) return response_({ok: false, error: 'Invalid sign-out time'});
   const zone = payload.timezone || TIME_ZONE;
+  const logoutStatus = payload.logoutType === 'auto_closed' ? 'Auto Closed (estimated)'
+    : payload.logoutType === 'portal_closed' ? 'Portal Closed' : 'Logged Out';
   const logoutDate = Utilities.formatDate(logoutAt, zone, 'yyyy-MM-dd');
   const logoutTime = Utilities.formatDate(logoutAt, zone, 'HH:mm:ss');
   if (index < 0) {
@@ -97,7 +99,7 @@ function recordLogout_(sheet, payload) {
       safeCell_(payload.scheme), safeCell_(payload.role),
       Utilities.formatDate(loginAt, zone, 'yyyy-MM-dd'),
       Utilities.formatDate(loginAt, zone, 'HH:mm:ss'),
-      logoutDate, logoutTime, 'Logged Out', payload.sessionId
+      logoutDate, logoutTime, logoutStatus, payload.sessionId
     ]);
     return response_({ok: true, recovered: true});
   }
@@ -110,7 +112,7 @@ function recordLogout_(sheet, payload) {
       Utilities.formatDate(loginAt, zone, 'yyyy-MM-dd'),
       Utilities.formatDate(loginAt, zone, 'HH:mm:ss')]]);
   }
-  sheet.getRange(row, 8, 1, 3).setValues([[logoutDate, logoutTime, 'Logged Out']]);
+  sheet.getRange(row, 8, 1, 3).setValues([[logoutDate, logoutTime, logoutStatus]]);
   return response_({ok: true});
 }
 

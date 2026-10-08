@@ -10,6 +10,8 @@
   var logoutMessage = document.getElementById('logout-message');
   var adminEntry = document.querySelector('.portal-admin-entry');
   var sessionKey = 'linkora.tennisPortal.activitySessionId';
+  function storeSession(value) { try { if (value) sessionStorage.setItem(sessionKey, value); else sessionStorage.removeItem(sessionKey); } catch (_) { /* presence retains the ID in memory */ } }
+  function currentSession() { if (presence.sessionId) return presence.sessionId; try { return sessionStorage.getItem(sessionKey); } catch (_) { return null; } }
 
   function isCoCeo(profile) {
     return String(profile.role || '').trim().toLowerCase() === 'co-ceo';
@@ -29,6 +31,42 @@
   }
   var supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  var presence = new window.LinkoraWorkforce.Presence(supabase, function (state) {
+    var status = document.getElementById('presence-message');
+    var resume = document.getElementById('resume-attendance');
+    if (state.error) {
+      status.textContent = state.active ? 'Connection interrupted. Attendance has a recovery grace period.' : 'Attendance connection could not be verified. Please reconnect.';
+      resume.hidden = state.active;
+      if (!state.active) screenShare.stop('Sharing stopped because portal authorization ended.');
+    } else if (state.active) {
+      status.textContent = 'Attendance active · Last confirmed ' + new Date(state.lastHeartbeatAt).toLocaleTimeString();
+      resume.hidden = true;
+    } else {
+      status.textContent = state.estimatedLogout
+        ? 'Attendance auto-closed at the last confirmed heartbeat. This sign-out is an estimate.'
+        : 'This attendance session has ended. Start attendance again when ready.';
+      resume.hidden = false;
+      screenShare.stop('Screen sharing ended with attendance.');
+    }
+  });
+  var screenShare = new window.LinkoraWorkforce.ScreenShare(supabase, presence, {
+    start: document.getElementById('screen-share-start'), stop: document.getElementById('screen-share-stop'),
+    banner: document.getElementById('screen-share-banner'), message: document.getElementById('screen-share-message'),
+    viewers: document.getElementById('screen-share-viewers')
+  });
+  document.getElementById('resume-attendance').addEventListener('click', async function () {
+    this.disabled = true;
+    try {
+      var identity = await supabase.auth.getUser();
+      if (!identity.data.user) throw new Error('Please sign in again.');
+      var profile = await loadProfile(identity.data.user);
+      var started = await presence.start(identity.data.user.id);
+      storeSession(started.sessionId);
+      showEmployee(profile);
+    } catch (error) { message(logoutMessage, error.message, 'error'); }
+    this.disabled = false;
   });
 
   async function invokeActivity(action, activitySessionId) {
@@ -70,7 +108,7 @@
         session.login_at ? new Date(session.login_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
         session.logout_at ? new Date(session.logout_at).toLocaleDateString('en-CA',{timeZone:timezone}) : '—',
         session.logout_at ? new Date(session.logout_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
-        workedTime(session.workedMinutes), session.status || '—'
+        workedTime(session.workedMinutes), session.estimated_logout ? 'Auto Closed (estimated)' : session.disconnect_reason === 'portal_closed' ? 'Portal Closed' : session.status || '—'
       ];
       var row = document.createElement('tr');
       values.forEach(function (value, index) { var cell = document.createElement('td'); cell.textContent = value; if (index === 8) cell.className = 'report-status'; row.appendChild(cell); });
@@ -106,6 +144,7 @@
     adminEntry.hidden = false;
   }
   function showPasswordReset() {
+    presence.stop(); screenShare.stop('Sharing stopped for password recovery.');
     form.hidden = true;
     panel.hidden = true;
     resetPanel.hidden = false;
@@ -127,21 +166,33 @@
   async function loadProfile(user) {
     var result = await supabase.from('employee_profiles')
       .select('full_name, employee_id, scheme, role, is_active')
-      .eq('id', user.id).single();
-    if (result.error || !result.data || !result.data.is_active) throw new Error('This account is not an active employee account.');
+      .eq('id', user.id).maybeSingle();
+    if (result.error) throw new Error('Your profile could not be checked. Please retry the connection.');
+    if (!result.data || !result.data.is_active) {
+      var denied = new Error('This account is not an active employee account.'); denied.authDenied = true; throw denied;
+    }
     return result.data;
   }
   async function restoreSession() {
+    if (resetPanel.hidden === false) return;
+    var profile;
     var result = await supabase.auth.getUser();
     if (!result.data.user) return;
     try {
-      var profile = await loadProfile(result.data.user);
-      var started = await invokeActivity('start-session', crypto.randomUUID());
-      sessionStorage.setItem(sessionKey, started.sessionId);
+      profile = await loadProfile(result.data.user);
+      var started = await presence.start(result.data.user.id);
+      storeSession(started.sessionId);
       showEmployee(profile);
       if (started.warning) message(logoutMessage, started.warning, 'success');
     }
-    catch (error) { await supabase.auth.signOut(); message(loginMessage, error.message, 'error'); }
+    catch (error) {
+      if (error.authDenied) await supabase.auth.signOut();
+      if (profile && !error.authDenied) {
+        showEmployee(profile); message(logoutMessage, error.message, 'error');
+        document.getElementById('presence-message').textContent = 'Attendance has not connected. Use Start attendance to retry.';
+        document.getElementById('resume-attendance').hidden = false;
+      } else message(loginMessage, error.message, 'error');
+    }
   }
   document.getElementById('forgot-password-button').addEventListener('click', async function () {
     var email = document.getElementById('email').value.trim();
@@ -186,14 +237,18 @@
     }
     try {
       var profile = await loadProfile(result.data.user);
-      var activitySessionId = crypto.randomUUID();
-      var started = await invokeActivity('start-session', activitySessionId);
-      sessionStorage.setItem(sessionKey, started.sessionId || activitySessionId);
+      var started = await presence.start(result.data.user.id);
+      storeSession(started.sessionId);
+      form.reset();
       showEmployee(profile);
       message(logoutMessage, started.warning || 'Your login has been recorded.', 'success');
     } catch (error) {
-      await supabase.auth.signOut();
-      message(loginMessage, error.message || 'Could not start the employee session.', 'error');
+      if (error.authDenied) await supabase.auth.signOut();
+      form.reset();
+      if (profile && !error.authDenied) {
+        showEmployee(profile); message(logoutMessage, error.message || 'Attendance has not connected. Please retry.', 'error');
+        document.getElementById('resume-attendance').hidden = false;
+      } else message(loginMessage, error.message || 'Could not start the employee session. Please retry the connection.', 'error');
     }
     button.disabled = false;
   });
@@ -205,9 +260,11 @@
       // A Supabase session can be restored after a refresh or on another tab,
       // while sessionStorage is intentionally browser-tab scoped. In that case
       // the server safely closes this employee's most recent active session.
-      var activitySessionId = sessionStorage.getItem(sessionKey) || null;
+      var activitySessionId = currentSession() || null;
       var ended = await invokeActivity('end-session', activitySessionId);
-      sessionStorage.removeItem(sessionKey);
+      presence.stop();
+      await screenShare.stop('Screen sharing ended with sign-out.');
+      storeSession(null);
       await supabase.auth.signOut();
       panel.hidden = true; form.hidden = false; form.reset();
       adminEntry.hidden = false;
@@ -218,6 +275,7 @@
   document.getElementById('report-refresh').addEventListener('click', loadActivityReport);
   supabase.auth.onAuthStateChange(function (event) {
     if (event === 'PASSWORD_RECOVERY') showPasswordReset();
+    if (event === 'SIGNED_OUT') { presence.stop(); screenShare.stopLocal('Screen sharing ended with sign-out.'); showLogin(); }
   });
   restoreSession();
 }());

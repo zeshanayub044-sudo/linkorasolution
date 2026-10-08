@@ -58,7 +58,7 @@ const secret = 'test-only-secret';
 const id = '33333333-3333-3333-3333-333333333333';
 
 assert.equal(post({action:'report'}).error, 'Unauthorized');
-assert.equal(post({secret,action:'capabilities'}).contractVersion,5);
+assert.equal(post({secret,action:'capabilities'}).contractVersion,6);
 let report = post({secret, action:'report'});
 assert.equal(report.source, 'google_sheet');
 assert.equal(report.total, 2);
@@ -87,6 +87,12 @@ const recovered = post({secret, action:'logout', sessionId:'44444444-4444-4444-4
 assert.equal(recovered.recovered, true);
 assert.equal(rows[4][5], '2026-10-06');
 assert.equal(rows[4][9], 'Logged Out');
+assert.equal(post({secret, action:'logout', sessionId:id, logoutAt:'2026-10-07T11:00:00.000Z', logoutType:'auto_closed'}).ok, true);
+assert.equal(rows[3][9], 'Auto Closed (estimated)');
+assert.equal(rows[3][8], firstLogout);
+assert.equal(rows.length, 5);
+assert.equal(post({secret, action:'logout', sessionId:id, logoutAt:'2026-10-07T11:00:00.000Z', logoutType:'portal_closed'}).ok, true);
+assert.equal(rows[3][9], 'Portal Closed');
 rows[0][0] = 'Wrong header';
 assert.equal(post({secret, action:'report'}).ok, false);
 console.log('Google Sheets attendance contract tests passed');
