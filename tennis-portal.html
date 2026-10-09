@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Employee Portal | LINKORA SOLUTIONS</title>
   <link rel="stylesheet" href="styles.css?v=2">
-  <link rel="stylesheet" href="tennis-portal.css?v=6">
+  <link rel="stylesheet" href="tennis-portal.css?v=7">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=2">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=2">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?v=2">
@@ -44,6 +44,14 @@
       </section>
       <section id="employee-panel" hidden aria-live="polite">
         <div class="employee-summary"><span class="mono">Signed in</span><h2 id="employee-name"></h2><dl><div><dt>Employee ID</dt><dd id="employee-id"></dd></div><div><dt>Scheme</dt><dd id="employee-scheme"></dd></div><div><dt>Role</dt><dd id="employee-role"></dd></div></dl></div>
+        <section id="monitoring-panel" class="monitoring-panel" hidden aria-labelledby="monitoring-title">
+          <h3 id="monitoring-title">Work Session Monitoring</h3>
+          <p id="monitoring-notice"></p>
+          <label class="monitoring-ack"><input id="monitoring-ack" type="checkbox" disabled> I understand that my entire work screen will be recorded during this Clock-In session.</label>
+        </section>
+        <section id="recording-panel" class="recording-panel" hidden aria-labelledby="recording-title">
+          <h3 id="recording-title">Screen recording</h3><p id="recording-status" role="status">NOT RECORDING</p><p id="recording-pending"></p>
+        </section>
         <section class="presence-panel" aria-labelledby="presence-title">
           <h3 id="presence-title">Today’s attendance</h3>
           <p id="presence-message" class="form-message" role="status">NOT CLOCKED IN</p>
@@ -54,13 +62,13 @@
         </section>
         <section class="screen-share-panel" aria-labelledby="screen-share-title">
           <h3 id="screen-share-title">Live screen sharing</h3>
-          <p>Clock In requests screen sharing. Select Entire Screen (recommended) so authorized Co-CEOs can view your work. Your browser will ask you to select it. Share only content you intend management to see.</p>
-          <button id="screen-share-start" class="btn btn-ghost" type="button" hidden>Re-enable Screen Sharing</button>
+          <p id="share-policy-copy">Checking work-session monitoring policy…</p>
+          <button id="screen-share-start" class="btn btn-ghost" type="button" hidden>RESUME SCREEN SHARING</button>
           <p id="screen-share-message" class="form-message" role="status">Screen Share Permission Required. Your browser always asks for approval.</p>
         </section>
         <section id="screen-share-banner" class="screen-share-banner" hidden aria-label="Screen sharing controls">
           <strong>SCREEN SHARING ACTIVE</strong>
-          <p>Authorized management can view the screen/window/tab you selected. No audio or recording.</p>
+          <p id="share-banner-copy">Screen video only. No audio or webcam.</p>
           <p id="screen-share-viewers">No connected viewers.</p>
           <button id="screen-share-stop" class="btn btn-primary" type="button">Stop Sharing</button>
         </section>
@@ -77,7 +85,8 @@
   </main>
   <script src="portal-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
-  <script src="workforce-common.js?v=2"></script>
-  <script src="tennis-portal.js?v=8"></script>
+  <script src="workforce-common.js?v=3"></script>
+  <script src="screen-recording.js?v=1"></script>
+  <script src="tennis-portal.js?v=9"></script>
 </body>
 </html>

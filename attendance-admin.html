@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#081521">
   <title>Attendance Admin | LINKORA SOLUTIONS</title>
   <link rel="icon" href="assets/favicon.ico?v=2">
-  <link rel="stylesheet" href="attendance-admin.css?v=4">
+  <link rel="stylesheet" href="attendance-admin.css?v=5">
 </head>
 <body>
   <div id="access-screen" class="access-screen">
@@ -36,6 +36,7 @@
         <button type="button" data-view="live"><span>◉</span> Live Attendance</button>
         <button type="button" data-view="employees"><span>♧</span> Employees</button>
         <button type="button" data-view="today"><span>▤</span> Today's Attendance</button>
+        <button type="button" data-view="recordings"><span>◉</span> Screen Recordings</button>
         <button type="button" data-view="monthly"><span>▦</span> Monthly Attendance</button>
         <button type="button" data-view="leaves"><span>◷</span> Leaves</button>
         <button type="button" data-view="history"><span>⌕</span> Attendance History</button>
@@ -74,14 +75,14 @@
           <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Currently present</h2><p>Elapsed time updates while this page is open.</p></div><strong id="present-count" class="count-pill">0 present</strong></div>
           <div id="present-cards" class="present-grid"></div>
           <div class="section-heading"><div><h2>Today's live status</h2><p>Sign-ins, sign-outs and people yet to arrive.</p></div></div>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role / scheme</th><th>Sign in</th><th>Sign out</th><th>Duration</th><th>Status</th><th>Leave</th><th>Issues</th><th>Action</th></tr></thead><tbody id="live-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Role / scheme</th><th>Sign in</th><th>Sign out</th><th>Duration</th><th>Status</th><th>Leave</th><th>Issues</th><th>Recording</th><th>Action</th></tr></thead><tbody id="live-body"></tbody></table></div>
         </section>
 
         <section id="view-workforce" class="view" hidden>
-          <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Presence &amp; optional screen sharing</h2><p>Only employee-selected, consented video can be viewed. No audio, recording or remote control.</p></div><button id="workforce-refresh" type="button" class="quiet">Refresh status</button></div>
+          <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Presence &amp; work screen sharing</h2><p>Only employee-selected, consented video can be viewed live. Recorded history is available in Screen Recordings when enabled. No audio or remote control.</p></div><button id="workforce-refresh" type="button" class="quiet">Refresh status</button></div>
           <div class="toolbar"><label>Find employee<input id="workforce-search" type="search" placeholder="Name or employee ID"></label></div>
           <p id="workforce-message" class="muted" role="status" aria-live="polite">Checking portal presence…</p>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Scheme</th><th>Attendance</th><th>Sign in</th><th>Last heartbeat</th><th>Clock out</th><th>Duration</th><th>Logout type</th><th>Screen sharing</th><th>Sharing started</th><th>Action</th></tr></thead><tbody id="workforce-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Scheme</th><th>Attendance</th><th>Sign in</th><th>Last heartbeat</th><th>Clock out</th><th>Duration</th><th>Logout type</th><th>Screen sharing</th><th>Sharing started</th><th>Recording</th><th>Action</th></tr></thead><tbody id="workforce-body"></tbody></table></div>
         </section>
 
         <section id="view-employees" class="view" hidden>
@@ -93,7 +94,34 @@
         <section id="view-today" class="view" hidden>
           <div class="section-heading"><div><span class="eyebrow">DAILY OPERATIONS</span><h2>Today's attendance</h2><p id="today-date"></p></div><button id="today-export" type="button" class="quiet">Export CSV ↓</button></div>
           <div class="toolbar"><label>Find employee<input id="today-search" type="search" placeholder="Name or ID"></label><label>Status<select id="today-status-filter"><option value="">All</option><option value="present">Present</option><option value="Signed In">Signed In</option><option value="Signed Out">Signed Out</option><option value="Absent">Absent</option><option value="On Leave">On Leave</option><option value="late">Late</option><option value="Missing Sign-Out">Missing Sign-Out</option></select></label></div>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Attendance</th><th>Late</th><th>Integrity</th><th>Action</th></tr></thead><tbody id="today-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Attendance</th><th>Late</th><th>Integrity</th><th>Recording</th><th>Action</th></tr></thead><tbody id="today-body"></tbody></table></div>
+        </section>
+
+
+        <section id="view-recordings" class="view" hidden>
+          <div class="section-heading"><div><span class="eyebrow">PRIVATE WORK SESSION VIDEO</span><h2>Screen Recordings</h2><p>Employee-approved screen video, retained for up to 90 days. Co-CEO access only.</p></div></div>
+          <div id="recordings-summary" class="summary-grid"></div><p id="recordings-capacity" class="notice"></p>
+          <form id="recordings-filter" class="toolbar recording-filters">
+            <label>Employee<select id="recordings-employee"><option value="">All employees</option></select></label>
+            <label>Search<input id="recordings-search" type="search" maxlength="120" placeholder="Name, email or employee ID"></label>
+            <label>Range<select id="recordings-preset"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="month">Current month</option><option value="previous">Previous month</option><option value="90" selected>Last 90 days</option><option value="custom">Custom range</option></select></label>
+            <label>From<input id="recordings-from" type="date" required></label><label>To<input id="recordings-to" type="date" required></label>
+            <label>Status<select id="recordings-status"><option value="">All statuses</option><option value="initializing">Initializing</option><option value="recording">Recording</option><option value="completed">Completed</option><option value="interrupted">Interrupted</option><option value="upload_issue">Upload issue</option><option value="incomplete">Incomplete</option><option value="expired">Expired</option><option value="deleted">Deleted</option></select></label><button type="submit" class="primary">Apply filters</button>
+          </form>
+          <p id="recordings-message" class="notice" role="status" aria-live="polite"></p>
+          <div class="table-wrap"><table><thead><tr><th>Employee / ID</th><th>Date</th><th>Clock In</th><th>Clock Out</th><th>Recording start</th><th>Recording end</th><th>Video duration</th><th>Status</th><th>Segments</th><th>Size</th><th>Retention expiry</th><th>Termination</th><th>Actions</th></tr></thead><tbody id="recordings-body"></tbody></table></div>
+          <div class="form-actions"><button id="recordings-previous" class="quiet" type="button" disabled>Previous</button><button id="recordings-next" class="quiet" type="button" disabled>Next</button></div>
+          <details class="panel recording-settings"><summary>Recording settings &amp; employee monitoring notice</summary>
+            <p>Confirm that your Supabase plan supports the approved recording budget and playback bandwidth. Review the notice under your applicable workplace policy before enabling. This technical implementation does not establish legal compliance. Enabled Clock In requires employee acknowledgement and native screen permission. Retention is fixed at 90 days; video has no audio.</p>
+            <form id="recording-settings-form"><div class="form-grid">
+              <label>Recording budget (decimal GB)<input name="budget" type="number" min="0" step="0.1" required></label>
+              <label>Target video bitrate (bits/s)<input name="bitrate" type="number" min="200000" max="1500000" step="10000" required></label>
+              <label>Target FPS<input name="fps" type="number" min="5" max="15" required></label>
+            </div><label>Employee monitoring notice<textarea name="notice" minlength="50" maxlength="4000" required></textarea></label>
+            <label class="recording-check"><input name="policyReady" type="checkbox"> Approved storage capacity and employee monitoring policy are ready for this deployment.</label>
+            <label class="recording-check"><input name="enabled" type="checkbox"> Enable mandatory screen recording for new Clock-In sessions.</label>
+            <button class="primary" type="submit">Save recording policy</button><p id="recording-settings-message" class="notice" role="status"></p></form>
+          </details>
         </section>
 
         <section id="view-monthly" class="view" hidden>
@@ -184,6 +212,9 @@
     <div id="detail-stats" class="detail-stats"></div><div class="section-heading"><h3>Daily breakdown</h3><button id="detail-add-session" type="button" class="quiet">+ Manual session</button></div>
     <div class="table-wrap"><table><thead><tr><th>Date</th><th>Sign in</th><th>Sign out</th><th>Worked</th><th>Status</th></tr></thead><tbody id="detail-days"></tbody></table></div>
     <div class="section-heading"><h3>Recent sessions</h3></div><div class="table-wrap"><table><thead><tr><th>Sign in</th><th>Sign out</th><th>Source</th><th>Status</th><th>Action</th></tr></thead><tbody id="detail-sessions"></tbody></table></div>
+    <div class="section-heading"><h3>Screen Recording History</h3></div>
+    <form id="detail-recordings-filter" class="toolbar"><label>Range<select id="detail-recordings-preset"><option value="today">Today</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="custom">Custom range</option></select></label><label>From<input id="detail-recordings-from" type="date" required></label><label>To<input id="detail-recordings-to" type="date" required></label><button class="quiet" type="submit">Apply range</button></form>
+    <div class="table-wrap"><table><thead><tr><th>Recording start</th><th>Stored duration</th><th>Status</th><th>Action</th></tr></thead><tbody id="detail-recordings-body"></tbody></table></div><button id="detail-recordings-more" class="quiet" type="button" hidden>Load more recordings</button>
   </dialog>
 
   <dialog id="correction-dialog" class="dialog"><form id="correction-form"><div class="dialog-head"><div><span class="eyebrow">AUDITED CHANGE</span><h2>Correct attendance</h2></div><button type="button" data-close="correction-dialog" class="icon-button" aria-label="Close">×</button></div>
@@ -198,12 +229,27 @@
     <div class="dialog-head"><h2 id="screen-viewer-person">Employee screen share</h2><button id="screen-viewer-close" type="button" class="quiet">Close Viewer</button></div>
     <p id="screen-viewer-started" class="muted"></p><p id="screen-viewer-status" role="status" aria-live="polite"></p>
     <video id="screen-viewer-video" autoplay muted playsinline aria-label="Employee-selected live screen"></video>
-    <p class="muted">Live view only. The employee can stop at any time. No recording, audio or remote control.</p>
+    <p class="muted">This viewer uses live WebRTC video. The employee can stop sharing at any time. When recording is enabled, retained video is reviewed separately in Screen Recordings. No audio or remote control.</p>
   </dialog>
+
+  <dialog id="recording-viewer" class="dialog recording-viewer" aria-labelledby="recording-title">
+    <div class="dialog-head"><h2 id="recording-title">Screen recording</h2><button id="recording-close" type="button" class="quiet">Close</button></div>
+    <p id="recording-meta" class="muted"></p><p id="recording-viewer-message" class="notice" role="status" aria-live="polite"></p>
+    <video id="recording-video" playsinline muted preload="metadata" controlslist="nodownload" disablepictureinpicture aria-label="Private employee screen recording"></video>
+    <div class="recording-controls"><button id="recording-play" type="button" class="primary">Play</button><button id="recording-prev-segment" type="button" class="quiet">Previous segment</button><button id="recording-next-segment" type="button" class="quiet">Next segment</button><label>Playback speed<select id="recording-speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label><button id="recording-fullscreen" type="button" class="quiet">Fullscreen</button></div>
+    <label class="recording-timeline">Session video timeline<input id="recording-timeline" type="range" min="0" max="1" step="0.1" value="0"></label><p id="recording-time" class="muted"></p>
+    <details><summary>Segment timeline &amp; missing video</summary><ol id="recording-segments" class="recording-list"></ol></details>
+    <details><summary>Session events</summary><ol id="recording-events" class="recording-list"></ol></details>
+    <p class="muted">Screen video only. Playback access is temporary and audited. No download action is provided.</p>
+    <button id="recording-delete" type="button" class="quiet danger">Permanently delete recording</button>
+  </dialog>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="portal-config.js"></script>
-  <script src="workforce-common.js?v=2"></script>
-  <script src="workforce-admin.js?v=2"></script>
-  <script src="attendance-admin.js?v=7"></script>
+  <script src="workforce-common.js?v=3"></script>
+  <script src="screen-recording.js?v=1"></script>
+  <script src="recordings-admin.js?v=1"></script>
+  <script src="workforce-admin.js?v=3"></script>
+  <script src="attendance-admin.js?v=8"></script>
 </body>
 </html>

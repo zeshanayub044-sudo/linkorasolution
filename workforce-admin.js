@@ -11,8 +11,8 @@
     : row.attendanceStatus === 'Logged In' ? (row.lastHeartbeatAt ? 'Online' : 'Untracked open session')
     : row.attendanceStatus === 'Needs Review' ? 'Needs Review' : row.logoutAt ? 'Clocked Out' : 'Not Clocked In';
   class WorkforceAdmin {
-    constructor(client, timestamp, onDenied) {
-      this.client = client; this.timestamp = timestamp; this.onDenied = onDenied;
+    constructor(client, timestamp, onDenied, recordings) {
+      this.client = client; this.timestamp = timestamp; this.onDenied = onDenied; this.recordings = recordings;
       this.rows = []; this.running = false; this.epoch = 0; this.viewerEpoch = 0;
       this.viewer = null; this.cursor = 0; this.refreshing = false; this.polling = false;
       $('workforce-search').addEventListener('input', () => this.render());
@@ -65,6 +65,7 @@
         if (row.estimatedLogout) logout.append(element('small', 'Estimated from last heartbeat'));
         const seconds = row.loginAt ? Math.max(0,Math.floor(((row.logoutAt ? new Date(row.logoutAt).getTime() : Date.now()) - new Date(row.loginAt).getTime()) / 1000)) : 0;
         tr.append(logout, element('td', Math.floor(seconds / 3600) + 'h ' + Math.floor(seconds % 3600 / 60) + 'm'), element('td', row.autoClosed ? 'Automatic / disconnected' : row.logoutAt ? 'Manual / ' + (row.disconnectReason || 'recorded') : '—'), element('td', row.shareId ? 'SHARING' : (row.screenState || 'permission_required').replaceAll('_',' ').toUpperCase()), element('td', this.timestamp(row.sharingStarted)));
+        const recording = element('td'); recording.append(this.recordings.recordingBadge(row.userId)); tr.append(recording);
         const actions = element('td');
         if (row.shareId) {
           const view = element('button', 'View', 'table-action'); view.type = 'button';
@@ -73,7 +74,7 @@
         tr.append(actions); body.append(tr);
       }
       if (!body.children.length) {
-        const td = element('td', 'No matching employees.', 'empty-state'); td.colSpan = 11;
+        const td = element('td', 'No matching employees.', 'empty-state'); td.colSpan = 12;
         const tr = element('tr'); tr.append(td); body.append(tr);
       }
     }
