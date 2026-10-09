@@ -34,6 +34,35 @@
   });
 
   var attendanceLoginAt = null;
+  var recordingConfig = null;
+  var recording = new window.LinkoraRecording.Recording(supabase, null, function (state) {
+    var status = document.getElementById('recording-status');
+    status.textContent = state.message || state.state;
+    status.dataset.state = state.state;
+    document.getElementById('recording-pending').textContent = state.pending ? state.pending + ' segment(s) awaiting upload.' : '';
+    if (state.state === 'interrupted' && presence.active) {
+      screenShare.stop('Screen sharing stopped. Your work session requires screen sharing. Resume screen sharing or Clock Out.');
+    }
+  });
+  async function loadRecordingPolicy() {
+    try {
+      recordingConfig = await window.LinkoraRecording.api(supabase, 'config');
+      document.getElementById('monitoring-notice').textContent = recordingConfig.notice;
+      document.getElementById('monitoring-panel').hidden = !recordingConfig.enabled;
+      document.getElementById('monitoring-ack').disabled = !recordingConfig.enabled;
+      document.getElementById('recording-panel').hidden = !recordingConfig.enabled;
+      document.getElementById('share-policy-copy').textContent = recordingConfig.enabled
+        ? 'Entire Screen sharing and visible recording are required during Clock In. Your browser always asks for permission. Do not share content you do not intend management to review.'
+        : 'Clock In requests optional live screen sharing. Your browser always asks for approval. Recording is not enabled.';
+      document.getElementById('share-banner-copy').textContent = recordingConfig.enabled
+        ? 'Your approved work screen is visible to authorized Co-CEOs and recorded while this session is active. Screen video only; no audio or webcam. You can stop sharing at any time.'
+        : 'Authorized management can view the screen you selected. No audio or recording.';
+    } catch (error) {
+      recordingConfig = null;
+      message(logoutMessage, 'The monitoring policy could not be checked. Retry before starting a work session.', 'error');
+    }
+  }
+  function recordingRequired() { return !!recordingConfig?.enabled; }
   var presence = new window.LinkoraWorkforce.Presence(supabase, function (state) {
     var status = document.getElementById('presence-message');
     var resume = document.getElementById('resume-attendance');
@@ -59,41 +88,96 @@
     start: document.getElementById('screen-share-start'), stop: document.getElementById('screen-share-stop'),
     banner: document.getElementById('screen-share-banner'), message: document.getElementById('screen-share-message'),
     viewers: document.getElementById('screen-share-viewers')
+  }, {
+    resume: function () { return startWork(true); },
+    recordingEnabled: recordingRequired,
+    stopped: function (reason) { if (recording.mode !== 'idle') return recording.stop(reason || 'screen_share_stopped'); }
   });
+  recording.presence = presence;
   setInterval(function () {
     var elapsed = attendanceLoginAt && presence.active ? Math.max(0, Math.floor((Date.now() - new Date(attendanceLoginAt).getTime()) / 1000)) : 0;
     document.getElementById('working-duration').textContent = [Math.floor(elapsed / 3600),Math.floor(elapsed % 3600 / 60),elapsed % 60].map(function (n) { return String(n).padStart(2,'0'); }).join(':');
   }, 1000);
-  document.getElementById('resume-attendance').addEventListener('click', async function () {
-    if (this.disabled) return;
-    this.disabled = true; this.textContent = 'CLOCKING IN…';
+  async function startWork(resuming) {
+    var button = document.getElementById(resuming ? 'screen-share-start' : 'resume-attendance');
+    if (button.disabled) return;
+    if (!recordingConfig) { await loadRecordingPolicy(); message(logoutMessage, 'Policy refreshed. Please press Clock In or Resume Screen Sharing again.', 'error'); return; }
+    if (recordingRequired() && !document.getElementById('monitoring-ack').checked) {
+      message(logoutMessage, 'Please acknowledge the Work Session Monitoring notice before sharing your screen.', 'error');
+      document.getElementById('monitoring-ack').focus(); return;
+    }
+    button.disabled = true; button.textContent = resuming ? 'RESUMING…' : 'CLOCKING IN…';
+    // Native permission is requested synchronously from the employee click, before any network await.
     var capture = screenShare.requestCapture();
+    var began = false;
     try {
+      var selected;
+      var prepared;
+      if (recordingRequired()) {
+        selected = await capture;
+        if (selected.error) throw new Error('Screen sharing is required to start your work session. Please share your entire screen to continue.');
+        prepared = window.LinkoraRecording.prepare(selected.stream, recordingConfig);
+      }
       var identity = await supabase.auth.getUser();
       if (!identity.data.user) throw new Error('Please sign in again.');
       var profile = await loadProfile(identity.data.user);
-      var started = await presence.start(identity.data.user.id, true);
+      var started;
+      if (recordingRequired()) {
+        var approved = await window.LinkoraRecording.api(supabase, 'begin', {
+          acknowledged: true, noticeVersion: recordingConfig.notice_version,
+          displaySurface: prepared.displaySurface, mimeType: prepared.mimeType, codec: prepared.codec,
+          sessionId: crypto.randomUUID(), clientId: presence.clientId, tabId: presence.tabId, background: document.hidden
+        });
+        began = true;
+        started = await presence.start(identity.data.user.id, false, approved.presence);
+        await recording.start(prepared, approved);
+      } else started = await presence.start(identity.data.user.id, !resuming);
       if (!started.active) throw new Error('Clock In was not confirmed. Please retry.');
       storeSession(started.sessionId); showEmployee(profile);
-      await screenShare.start(capture);
+      var sharing = await screenShare.start(capture);
+      if (recordingRequired() && !sharing) throw new Error('Live sharing could not start. The work session will end safely; try again.');
+      if (prepared?.displaySurface === 'unknown') message(logoutMessage, 'This browser cannot verify the selected source. Select Entire Screen; management can review what you chose.', 'success');
+      else message(logoutMessage, recordingRequired() ? 'Clocked In · Screen recording and live sharing active.' : 'Clock In saved.', 'success');
     } catch (error) {
-      screenShare.stopLocal('Clock In failed. Screen sharing stopped.');
       capture.then(function (selected) { selected.stream?.getTracks().forEach(function (track) { track.stop(); }); });
+      if (began && presence.active) {
+        recording.abort('recording_start_failed');
+        try { await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: presence.sessionId}); presence.stop(); storeSession(null); }
+        catch (_) { presence.stop(); storeSession(null); /* Server lease ends the interrupted attempt. */ }
+      }
+      screenShare.stopLocal('Screen sharing is required to start a recorded work session. Try again.');
+      document.getElementById('presence-message').textContent = presence.active ? 'CLOCKED IN · Resume screen sharing or Clock Out.' : 'NOT CLOCKED IN';
+      document.getElementById('resume-attendance').hidden = presence.active;
+      document.getElementById('clock-out-button').hidden = !presence.active;
       message(logoutMessage, error.message, 'error');
-    } finally { this.disabled = false; this.textContent = 'CLOCK IN'; }
-  });
+    } finally { button.disabled = false; button.textContent = resuming ? 'RESUME SCREEN SHARING' : 'CLOCK IN / TRY AGAIN'; }
+  }
+  document.getElementById('resume-attendance').addEventListener('click', function () { startWork(false); });
+  async function endWork() {
+    var recordingResult = await recording.stop('clock_out', true);
+    presence.stop();
+    await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: presence.sessionId});
+    presence.stop(); await screenShare.stop('Screen sharing stopped with Clock Out.');
+    storeSession(null); attendanceLoginAt = null;
+    document.getElementById('presence-message').textContent = 'CLOCKED OUT · You are still signed in.';
+    document.getElementById('resume-attendance').hidden = false;
+    document.getElementById('clock-out-button').hidden = true;
+    document.getElementById('screen-share-start').hidden = true;
+    document.getElementById('monitoring-ack').checked = false;
+    if (recordingResult.status === 'finalizing') document.getElementById('recording-status').textContent = 'RECORDING COMPLETED · Verified stored segments.';
+  }
   document.getElementById('clock-out-button').addEventListener('click', async function () {
     if (this.disabled || !presence.active) return;
-    this.disabled = true; this.textContent = 'CLOCKING OUT…';
-    try {
-      await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: presence.sessionId});
-      presence.stop(); await screenShare.stop('Screen sharing stopped with Clock Out.');
+    this.disabled = true; this.textContent = 'FINALIZING WORK SESSION…';
+    try { await endWork(); message(logoutMessage, 'Clock Out saved. Your account remains signed in.', 'success'); }
+    catch (error) {
+      await screenShare.stop('Recording stopped. Clock Out connection failed; attendance will close under the server lease.');
       storeSession(null); attendanceLoginAt = null;
-      document.getElementById('presence-message').textContent = 'CLOCKED OUT · You are still signed in.';
-      document.getElementById('resume-attendance').hidden = false; this.hidden = true;
-      document.getElementById('screen-share-start').hidden = true;
-      message(logoutMessage, 'Clock Out saved. Your account remains signed in.', 'success');
-    } catch (error) { message(logoutMessage,error.message,'error'); }
+      document.getElementById('resume-attendance').hidden = false;
+      document.getElementById('clock-out-button').hidden = true;
+      document.getElementById('presence-message').textContent = 'Connection Lost · Work capture stopped. Attendance closes after its existing 15-second lease.';
+      message(logoutMessage,error.message,'error');
+    }
     finally { this.disabled = false; this.textContent = 'CLOCK OUT'; }
   });
 
@@ -172,7 +256,7 @@
     adminEntry.hidden = false;
   }
   function showPasswordReset() {
-    presence.stop(); screenShare.stop('Sharing stopped for password recovery.');
+    recording.abort('password_recovery'); presence.stop(); screenShare.stop('Sharing stopped for password recovery.');
     form.hidden = true;
     panel.hidden = true;
     resetPanel.hidden = false;
@@ -184,6 +268,7 @@
     document.getElementById('employee-id').textContent = profile.employee_id;
     document.getElementById('employee-scheme').textContent = profile.scheme;
     document.getElementById('employee-role').textContent = profile.role;
+    if (!recordingConfig) loadRecordingPolicy();
     var isExecutive = isCoCeo(profile);
     document.getElementById('ceo-panel').hidden = !isExecutive;
     if (isExecutive) loadActivityReport();
@@ -290,7 +375,8 @@
       // while sessionStorage is intentionally browser-tab scoped. In that case
       // the server safely closes this employee's most recent active session.
       var activitySessionId = currentSession() || null;
-      var ended = presence.active && activitySessionId ? await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: activitySessionId}) : {};
+      var ended = {};
+      if (presence.active && activitySessionId) await endWork();
       presence.stop();
       await screenShare.stop('Screen sharing ended with sign-out.');
       storeSession(null);
@@ -304,7 +390,7 @@
   document.getElementById('report-refresh').addEventListener('click', loadActivityReport);
   supabase.auth.onAuthStateChange(function (event) {
     if (event === 'PASSWORD_RECOVERY') showPasswordReset();
-    if (event === 'SIGNED_OUT') { presence.stop(); screenShare.stopLocal('Screen sharing ended with sign-out.'); showLogin(); }
+    if (event === 'SIGNED_OUT') { recordingConfig = null; document.getElementById('monitoring-ack').checked = false; recording.abort('account_signed_out'); presence.stop(); screenShare.stopLocal('Screen sharing ended with sign-out.'); showLogin(); }
   });
   restoreSession();
 }());

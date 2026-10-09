@@ -85,7 +85,7 @@ function main() {
     if (!base || !/^[a-zA-Z0-9_./-]+$/.test(base)) throw new Error('Invalid base ref');
     run('git', ['-c', 'core.whitespace=cr-at-eol', 'diff', '--check', base + '...HEAD']);
   }
-  run(process.execPath, ['--test', 'tests/intro.test.mjs', 'tests/validation.test.mjs', 'tests/workforce-browser.test.mjs']);
+  run(process.execPath, ['--test', 'tests/intro.test.mjs', 'tests/validation.test.mjs', 'tests/workforce-browser.test.mjs', 'tests/screen-recording-browser.test.mjs']);
   run(process.execPath, ['tests/google-apps-script.test.cjs']);
   run(process.execPath, ['tests/attendance-matrix.test.cjs']);
   console.log('Repository validation passed: syntax, links, conflicts, migration versions, credential patterns and existing tests.');

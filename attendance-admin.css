@@ -26,3 +26,21 @@ label{display:block;color:var(--muted);font-size:11px;font-weight:800}label smal
 .screen-viewer video { display: block; width: 100%; max-height: 66vh; background: #020811; object-fit: contain; border-radius: 12px; }
 #view-workforce td small { display: block; color: var(--muted); margin-top: 6px; }
 #view-workforce .table-wrap { overflow-x: auto; }
+.recording-viewer{width:min(1100px,96vw);}
+#recording-video{display:block;width:100%;max-height:55vh;background:#02060b;border:1px solid var(--line);border-radius:10px;}
+.recording-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px;margin:14px 0;}
+.recording-controls label{min-width:100px;}
+.recording-timeline{display:block;margin:12px 0;}
+.recording-timeline input{display:block;width:100%;accent-color:#30d7c8;padding:0;}
+.recording-list{padding-left:24px;margin:12px 0;max-height:250px;overflow:auto;}
+.recording-list li{padding:8px 0;border-bottom:1px solid var(--line);}
+.recording-list .table-action{margin-left:10px;}
+.recording-settings{margin-top:24px;}
+.recording-settings summary{font-weight:600;cursor:pointer;padding:12px 0;}
+.recording-settings p{margin:10px 0;color:var(--muted);}
+.recording-check{display:flex;gap:10px;align-items:flex-start;margin:14px 0;}
+.recording-check input{width:18px;min-width:18px;height:18px;margin-top:3px;}
+.recording-filters{flex-wrap:wrap;}
+.recording-badge-action{white-space:normal;}
+.recording-viewer .danger{margin-top:18px;}
+@media(max-width:700px){.recording-controls button{flex:1 1 40%;}.recording-filters label{flex:1 1 160px;}}

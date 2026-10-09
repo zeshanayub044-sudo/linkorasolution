@@ -37,8 +37,8 @@ jobs:
           fi
       - name: Check and test attendance Edge Functions
         run: |
-          npx --yes deno@2.5.6 check supabase/functions/workforce-live/index.ts supabase/functions/manage-employee/index.ts
-          npx --yes deno@2.5.6 test tests/workforce-handler.test.ts
+          npx --yes deno@2.5.6 check supabase/functions/workforce-live/index.ts supabase/functions/manage-employee/index.ts supabase/functions/workforce-recordings/index.ts
+          npx --yes deno@2.5.6 test tests/workforce-handler.test.ts tests/screen-recording-handler.test.ts
       - name: Parse publishing script
         shell: pwsh
         run: |

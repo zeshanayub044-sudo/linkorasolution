@@ -1,3 +1,5 @@
+> Screen recording upgrade: the optional live-only behavior below applies while recording is disabled. Once an approved Co-CEO enables recording, Clock In requires explicit monitoring acknowledgement and Entire Screen permission; capture is visibly recorded. See [recording architecture](SCREEN_RECORDING_ARCHITECTURE.md), [security](SCREEN_RECORDING_SECURITY.md), [retention](SCREEN_RECORDING_RETENTION.md) and [capacity estimates](SCREEN_RECORDING_STORAGE_ESTIMATE.md) for the current enabled workflow.
+
 # Employee screen sharing
 
 CLOCK IN directly invokes getDisplayMedia while the click retains transient activation, alongside authenticated attendance creation. Awaiting Auth/network first can lose activation, so the chooser may appear before the database response. WebRTC authorization begins only after successful Clock In. Failed/cancelled/logout/unload flows stop pending approved streams.

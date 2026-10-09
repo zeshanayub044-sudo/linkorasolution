@@ -1,0 +1,27 @@
+# Screen recording security
+
+Capture is explicit and visible: current monitoring notice acknowledgement, employee click, native browser permission, Entire Screen where the browser exposes a reliable source type, persistent active indicator, stop control and no automatic restart after interruption. Microphone, webcam and system audio are not requested; unexpected audio tracks are stopped/removed before MediaRecorder, and WebRTC uses video only. No remote admin can initiate capture or bypass native consent.
+
+## Identity and authorization
+
+The Edge handler validates every employee/admin bearer token using Supabase Auth `getUser`. Only then does it read the verified JWT session UUID. It supplies that UUID and verified Auth user ID to the service-only recording RPC. Existing `portal_identity` checks active employee profile and current `auth.sessions`, not email matching, client role, or editable user metadata. Historical list/detail/playback/settings/deletion require the current exact existing `Co-CEO` role. Disabled/deleted/logged-out or downgraded accounts lose fresh access. Blog/Careers roles and data are unchanged.
+
+The service-only RPC is SECURITY DEFINER with empty fixed search_path and schema-qualified objects, because service_role has no generic read grant on auth.users. It is revoked from public, anon and authenticated; it performs identity/role checks before metadata or email access. No blanket auth.users grant is introduced. Private tables have RLS plus revoked client grants; no public metadata view is added.
+
+Employees can insert only the exact immutable reserved Storage object for their own active recording, current generation, Auth session and portal tab, fresh attendance/recording-owner leases, unexpired retention, pending segment and exact declared byte size. Employees cannot read/list/update/delete recordings, other employees' objects or arbitrary paths. No direct client execution of privileged recording RPCs. Storage is private with video MIME and 8 MiB restrictions; no broad authenticated policy is added. Upsert is false. Retry verifies existing object size and unique sequence/path rather than copying or overwriting it.
+
+Server validation cannot prove that a custom client actually captured a physical monitor, or that an arbitrary video with an allowed MIME contains the claimed work content. The browser reports surface/consent and the server bounds/reserves video metadata; management must review actual video. Unknown displaySurface is explicitly disclosed. A byte-size check is not a content hash or forensic integrity signature. This limitation must not be described as tamper-proof monitoring.
+
+## Playback and secrets
+
+Co-CEO playback requires new server authorization per segment, then a private Storage signed URL of at most five minutes and capped by retention. Browser responses use no-store. The UI offers no download/export control, clears source when closed/logged out and rechecks authorization while open. A signed URL is a temporary bearer capability: an authorized viewer can copy it, fetch bytes, cache video or record their screen. Revocation prevents new URL issuance immediately, but a previously issued URL may survive up to its expiry or until object removal. Do not promise instant revocation of already cached video.
+
+Service-role credentials exist only in Edge server environment. Worker capability is generated in SQL/Vault and only its hash enters private authorization metadata. Frontend uses the existing public anon key plus the employee JWT for scoped upload. No password, signed playback URL, screen content or request body is committed or printed in application logs. Safe logs report retry failure without path/identity/token. Custom JWT verification is why this Edge Function gateway verify_jwt is false; removing handler authentication would be a security defect.
+
+## Audit and integrity
+
+Separate indexed private events capture start (notice version and source claim), verified uploaded segment, upload incident, resume/generation, completion or interruption, playback grant with acting Co-CEO, requested deletion and verified deletion/expiry, policy changes with actor/time/budget. A playback grant proves access authorization, not that someone watched every frame. Attendance history and existing human admin audit remain intact. Interrupted/missing/unknown tail is visible, never reported as a completed uninterrupted shift. Low-volume event details appear with history; per-segment audit stays out of the main human admin activity stream.
+
+Permission tests cover employee admin denial, forged/omitted owner IDs, service-only function grants, private Storage reads/unreserved writes, fresh signing and retention denial. Physical real-browser native consent, actual authenticated Storage upload and expired-object deletion require final employee/Co-CEO acceptance; synthetic encoder and rollback metadata tests alone are not those tests.
+
+Baseline project advisor warnings (legacy function search_path, legacy callable SECURITY DEFINER RPCs and disabled leaked-password protection) predate this feature; unrelated authorization was not changed. Private RLS tables intentionally have no client policies. See [Supabase database linter](https://supabase.com/docs/guides/database/database-linter) and [Storage RLS access control](https://supabase.com/docs/guides/storage/security/access-control) for operator review.

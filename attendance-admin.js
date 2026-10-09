@@ -4,7 +4,8 @@
   const $ = (id) => document.getElementById(id);
   const titles = {
     dashboard: ['Executive overview', 'A clear picture of your team, right now.'],
-    workforce: ['Live Workforce', 'Portal presence and optional employee-approved screen sharing.'],
+    workforce: ['Live Workforce', 'Portal presence and employee-approved work screen sharing.'],
+    recordings: ['Screen Recordings', 'Private retained screen video and recording policy.'],
     live: ['Live attendance', 'Who is present and who needs attention.'],
     employees: ['Employees', 'Accounts, access and attendance history.'],
     today: ["Today's attendance", 'The complete workforce picture for the current company day.'],
@@ -18,6 +19,7 @@
   };
   let client;
   let workforce;
+  let recordings;
   let currentUser = null;
   let currentView = 'dashboard';
   let settings = null;
@@ -314,7 +316,7 @@
     return rows.map((row) => ({ ...row, ...map.get(row.session_id) }));
   }
   async function checkAccess() {
-    workforce?.stop();
+    recordings?.stop(); workforce?.stop();
     $('admin-app').hidden = true;
     $('access-screen').hidden = false;
     notice('Checking your access…', '', $('access-notice'));
@@ -347,9 +349,10 @@
       $('admin-login').hidden = true;
       workforce.start();
       await refreshCore();
+      recordings.start(users);
       showView(currentView);
     } catch (error) {
-      workforce?.stop();
+      recordings?.stop(); workforce?.stop();
       $('admin-app').hidden = true;
       $('access-screen').hidden = false;
       notice(errorText(error), 'error', $('access-notice'));
@@ -369,6 +372,7 @@
     ]);
     if (leaveResult.error) throw leaveResult.error;
     users = userResult.users || [];
+    if (recordings?.running) recordings.setUsers(users);
     today = todayRows || [];
     weekly = weekRows || [];
     issues = issueRows || [];
@@ -496,7 +500,7 @@
   function renderLive() {
     renderPresentCards();
     const body = $('live-body'); body.replaceChildren();
-    if (!today.length) return empty(body,9,'No attendance records or employees today.');
+    if (!today.length) return empty(body,10,'No attendance records or employees today.');
     for (const row of today) {
       const tr = node('tr');
       cell(tr,row.full_name,'person').append(node('small',row.employee_id));
@@ -507,7 +511,8 @@
        attachBadge(cell(tr,''),activeSession ? 'Signed In' : row.attendance_status);
        cell(tr,row.leave_status === 'Approved' ? row.leave_type + ' · Approved' : '—');
        cell(tr,issues.filter((issue)=>issue.user_id===row.user_id).map((issue)=>issue.issue).join(', ') || '—');
-       cell(tr,'').append(button('Inspect',()=>openEmployee(row.user_id)));
+       cell(tr,'').append(recordings.recordingBadge(row.user_id));
+      cell(tr,'').append(button('Inspect',()=>openEmployee(row.user_id)));
       body.append(tr);
     }
   }
@@ -554,7 +559,7 @@
     $('today-date').textContent = dateLabel(companyDay()) + ' · ' + tz();
     const body = $('today-body'); body.replaceChildren();
     const list = filteredToday();
-    if (!list.length) return empty(body,8,'No employees match this view.');
+    if (!list.length) return empty(body,9,'No employees match this view.');
     for (const row of list) {
       const tr = node('tr');
       cell(tr,row.full_name,'person').append(node('small',row.employee_id));
@@ -564,6 +569,7 @@
       attachBadge(cell(tr,''),row.is_late ? 'Late' : 'On time');
       attachBadge(cell(tr,''),row.review_count ? 'Missing Sign-Out' : row.open_count > 1 ? 'Multiple open'
         : row.open_count > 0 && !currentlyPresent(row) ? 'Long open' : 'Clear');
+      cell(tr,'').append(recordings.recordingBadge(row.user_id));
       cell(tr,'').append(button('Inspect',()=>openEmployee(row.user_id)));
       body.append(tr);
     }
@@ -744,6 +750,7 @@
     $('view-subtitle').textContent=titles[view][1];
     $('sidebar').classList.remove('open'); $('mobile-nav').setAttribute('aria-expanded','false');
     if (view==='workforce') workforce.refresh();
+    if (view==='recordings') recordings.load().catch(fail);
     if (view==='monthly') loadMonthly().catch(fail);
     if (view==='history') loadHistory().catch(fail);
     if (view==='reports') loadSheetReport().catch(fail);
@@ -807,6 +814,7 @@
       user.isActive?'Active':'Inactive','Created '+timestamp(user.createdAt)].join(' · ');
     const month=selectedMonth||$('month-select').value||companyDay().slice(0,7);
     $('detail-dialog').showModal();
+    recordings.employeeHistory(id).catch(fail);
     empty($('detail-days'),5,'Loading daily breakdown…');
     empty($('detail-sessions'),5,'Loading sessions…');
     try {
@@ -973,7 +981,7 @@
     const open=$('sidebar').classList.toggle('open');
     $('mobile-nav').setAttribute('aria-expanded',String(open));
   });
-  $('refresh-view').addEventListener('click',()=>refreshCore().catch(fail));
+  $('refresh-view').addEventListener('click',()=>{refreshCore().catch(fail);if(currentView==='recordings')recordings.load().catch(fail);});
   ['employee-search','employee-status-filter','employee-role-filter','employee-attendance-filter'].forEach((id)=>
     $(id).addEventListener(id.includes('search')?'input':'change',renderEmployees));
   ['today-search','today-status-filter'].forEach((id)=>
@@ -1149,9 +1157,10 @@
     client=window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey,{
       auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true},
     });
-    workforce = new window.LinkoraWorkforceAdmin(client, timestamp, fail);
+    recordings = new window.LinkoraRecordingsAdmin(client, {timestamp, day:companyDay, denied:fail, badges:()=>{renderToday();renderLive();workforce?.render();}});
+    workforce = new window.LinkoraWorkforceAdmin(client, timestamp, fail, recordings);
     client.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') { workforce.stop(); currentUser = null; $('admin-app').hidden = true;
+      if (event === 'SIGNED_OUT') { recordings?.stop(); workforce.stop(); currentUser = null; $('admin-app').hidden = true;
         $('access-screen').hidden = false; $('admin-login').hidden = false;
         notice('Sign in with an active Co-CEO account.', '', $('access-notice')); }
     });

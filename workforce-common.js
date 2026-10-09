@@ -41,7 +41,7 @@
         return false;
       } catch (_) { return true; } // Server-side uniqueness still protects storage-restricted browsers.
     }
-    async start(userId, clockIn = false) {
+    async start(userId, clockIn = false, approvedPresence = null) {
       const epoch = ++this.epoch;
       clearInterval(this.timer); this.timer = null;
       this.userId = userId;
@@ -50,7 +50,7 @@
         this.channel = new BroadcastChannel('linkora.portal.presence.' + userId);
         this.channel.onmessage = (event) => { if (event.data?.type === 'leaving') this.heartbeat(true); };
       }
-      const result = await this.api(clockIn ? 'clock-in' : 'connect', {
+      const result = approvedPresence || await this.api(clockIn ? 'clock-in' : 'connect', {
         sessionId: crypto.randomUUID(), clientId: this.clientId, tabId: this.tabId, background: document.hidden,
       });
       if (epoch !== this.epoch) return result;
@@ -144,11 +144,11 @@
   }
 
   class ScreenShare {
-    constructor(client, presence, ui) {
-      this.client = client; this.presence = presence; this.ui = ui;
+    constructor(client, presence, ui, hooks = {}) {
+      this.client = client; this.presence = presence; this.ui = ui; this.hooks = hooks;
       this.stream = null; this.shareId = null; this.peers = new Map(); this.cursor = 0;
       this.timer = null; this.polling = false; this.epoch = 0; this.starting = false;
-      this.ui.start.addEventListener('click', () => this.start());
+      this.ui.start.addEventListener('click', () => this.hooks.resume ? this.hooks.resume() : this.start());
       this.ui.stop.addEventListener('click', () => this.stop('Screen sharing ended by employee.'));
       window.addEventListener('pagehide', () => this.stopLocal('Screen sharing ended.'));
       if (!navigator.mediaDevices?.getDisplayMedia || !window.RTCPeerConnection) {
@@ -203,7 +203,7 @@
         this.shareId = result.shareId;
         this.ice = await liveApi(this.client, 'ice', {});
         if (epoch !== this.epoch) return;
-        this.ui.message.textContent = 'Sharing your selected screen/window/tab. No audio or recording.';
+        this.ui.message.textContent = this.hooks.recordingEnabled?.() ? 'Live screen sharing active · Screen video recording is active during this work session. No audio.' : 'Sharing your selected screen/window/tab. No audio or recording.';
         this.cursor = 0; this.timer = setInterval(() => this.poll(), 2000); await this.poll();
       } catch (error) {
         if (stream) stream.getTracks().forEach((track) => track.stop());
@@ -211,6 +211,7 @@
         await this.stop(cancelled ? 'Screen Share Declined. Attendance remains active. Re-enable sharing when ready.' : error.message);
         await this.screenState(cancelled ? 'declined' : error.name === 'NotSupportedError' ? 'unsupported' : 'stopped');
       } finally { this.starting = false; this.ui.start.disabled = false; }
+      return !!this.shareId && !!this.stream;
     }
     async poll() {
       if (!this.shareId || this.polling) return;
@@ -252,6 +253,8 @@
     }
     async stop(reason) {
       const shareId = this.shareId; this.shareId = null;
+      // Recorder receives the final stop event while capture still exists; track shutdown is immediate.
+      this.hooks.stopped?.(reason)?.catch(()=>{});
       this.stopLocal(reason);
       if (shareId) try { await liveApi(this.client, 'share-stop', { shareId }); } catch (_) {
         this.ui.message.textContent += ' Server cleanup will follow the sharing lease.';
