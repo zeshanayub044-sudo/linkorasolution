@@ -81,7 +81,7 @@
           <div class="section-heading"><div><span class="eyebrow">LIVE WORKFORCE</span><h2>Presence &amp; optional screen sharing</h2><p>Only employee-selected, consented video can be viewed. No audio, recording or remote control.</p></div><button id="workforce-refresh" type="button" class="quiet">Refresh status</button></div>
           <div class="toolbar"><label>Find employee<input id="workforce-search" type="search" placeholder="Name or employee ID"></label></div>
           <p id="workforce-message" class="muted" role="status" aria-live="polite">Checking portal presence…</p>
-          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Scheme</th><th>Attendance</th><th>Sign in</th><th>Last heartbeat</th><th>Sign out</th><th>Screen sharing</th><th>Sharing started</th><th>Action</th></tr></thead><tbody id="workforce-body"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Scheme</th><th>Attendance</th><th>Sign in</th><th>Last heartbeat</th><th>Clock out</th><th>Duration</th><th>Logout type</th><th>Screen sharing</th><th>Sharing started</th><th>Action</th></tr></thead><tbody id="workforce-body"></tbody></table></div>
         </section>
 
         <section id="view-employees" class="view" hidden>
@@ -202,8 +202,8 @@
   </dialog>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
   <script src="portal-config.js"></script>
-  <script src="workforce-common.js?v=1"></script>
-  <script src="workforce-admin.js?v=1"></script>
-  <script src="attendance-admin.js?v=6"></script>
+  <script src="workforce-common.js?v=2"></script>
+  <script src="workforce-admin.js?v=2"></script>
+  <script src="attendance-admin.js?v=7"></script>
 </body>
 </html>

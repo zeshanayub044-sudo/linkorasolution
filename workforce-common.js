@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const liveApi = async (client, action, body) => {
-    const result = await client.functions.invoke('workforce-live', { body: { ...body, action }, timeout: 12000 });
+    const result = await client.functions.invoke('workforce-live', { body: { ...body, action }, timeout: action === 'heartbeat' ? 4000 : 12000 });
     if (result.error) {
       let detail; try { detail = await result.error.context.json(); } catch (_) { /* safe fallback */ }
       const error = new Error(detail?.error || 'The workforce connection is unavailable.');
@@ -15,7 +15,7 @@
       this.client = client; this.onState = onState || (() => {});
       this.tabId = crypto.randomUUID(); this.sessionId = null; this.active = false;
       this.closeToken = null; this.timer = null; this.busy = false; this.epoch = 0;
-      this.interval = 30; this.lastSent = 0; this.userId = null;
+      this.interval = 5; this.lastSent = 0; this.userId = null;
       try {
         this.clientId = localStorage.getItem('linkora.portal.client.v1') || crypto.randomUUID();
         localStorage.setItem('linkora.portal.client.v1', this.clientId);
@@ -35,13 +35,13 @@
       try {
         const owner = JSON.parse(localStorage.getItem(key) || 'null');
         if (!owner || owner.until < Date.now() || owner.tab === this.tabId) {
-          localStorage.setItem(key, JSON.stringify({ tab: this.tabId, until: Date.now() + 90000 }));
+          localStorage.setItem(key, JSON.stringify({ tab: this.tabId, until: Date.now() + 7500 }));
           return true;
         }
         return false;
       } catch (_) { return true; } // Server-side uniqueness still protects storage-restricted browsers.
     }
-    async start(userId) {
+    async start(userId, clockIn = false) {
       const epoch = ++this.epoch;
       clearInterval(this.timer); this.timer = null;
       this.userId = userId;
@@ -50,21 +50,21 @@
         this.channel = new BroadcastChannel('linkora.portal.presence.' + userId);
         this.channel.onmessage = (event) => { if (event.data?.type === 'leaving') this.heartbeat(true); };
       }
-      const result = await this.api('connect', {
+      const result = await this.api(clockIn ? 'clock-in' : 'connect', {
         sessionId: crypto.randomUUID(), clientId: this.clientId, tabId: this.tabId, background: document.hidden,
       });
       if (epoch !== this.epoch) return result;
+      if (!result.active) { this.stop(); this.onState(result); return result; }
       this.sessionId = result.sessionId; this.closeToken = result.closeToken; this.active = true;
-      this.interval = Math.max(20, Math.min(60, Number(result.heartbeatSeconds) || 30));
+      this.interval = Math.max(5, Math.min(60, Number(result.heartbeatSeconds) || 5));
       this.lastSent = Date.now(); this.primary();
       this.timer = setInterval(() => this.heartbeat(), this.interval * 1000);
       this.onState(result); return result;
     }
     async heartbeat(force) {
       if (!this.active || this.busy) return;
-      // One primary sends every interval. Secondary tabs keep their own server
-      // leases alive every two intervals, so closing one tab cannot close another.
-      if (!force && !this.primary() && Date.now() - this.lastSent < this.interval * 2000) return;
+      // Each live tab renews its own server lease; closing one cannot close another.
+      this.primary(); // Every tab renews its own lease every five seconds.
       this.busy = true; const epoch = this.epoch;
       try {
         const result = await this.api('heartbeat', {
@@ -156,18 +156,46 @@
         this.ui.message.textContent = 'Live screen sharing is unavailable in this browser. Attendance works independently.';
       }
     }
-    async start() {
-      if (this.stream || this.starting) return;
-      if (!this.presence.active) { this.ui.message.textContent = 'Start attendance before sharing.'; return; }
+    requestCapture() {
+      // Must run before awaiting Auth/network, while Clock In has transient activation.
+      if (!navigator.mediaDevices?.getDisplayMedia || !window.RTCPeerConnection)
+        return Promise.resolve({ error: Object.assign(new Error('Screen sharing unsupported.'), { name: 'NotSupportedError' }) });
+      const generation = this.captureGeneration || 0;
+      this.ui.message.textContent = 'Permission required: choose Entire Screen in the browser chooser.';
+      try {
+        return navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: 'monitor', frameRate: { ideal: 10, max: 15 } }, audio: false })
+          .then(stream => {
+            if (generation !== (this.captureGeneration || 0)) {
+              stream.getTracks().forEach(track => track.stop());
+              return { error: Object.assign(new Error('Sharing request ended.'), { name: 'AbortError' }) };
+            }
+            this.pendingStream = stream; this.ui.banner.hidden = false;
+            return { stream };
+          }, error => ({ error }));
+      } catch (error) { return Promise.resolve({ error }); }
+    }
+    async screenState(state) {
+      if (this.presence.active) try {
+        await liveApi(this.client, 'screen-state', { sessionId: this.presence.sessionId, state });
+      } catch (_) { this.ui.message.textContent += ' Sharing status could not be confirmed by the server.'; }
+    }
+    async start(capture) {
+      if (this.stream || this.starting) { capture?.then(selected => selected.stream?.getTracks().forEach(track => track.stop())); return; }
+      if (!this.presence.active) { capture?.then(selected => selected.stream?.getTracks().forEach(track => track.stop())); this.ui.message.textContent = 'Clock In before sharing.'; return; }
       this.starting = true; this.ui.start.disabled = true; const epoch = ++this.epoch;
       let stream;
       try {
         // The native chooser is invoked directly from this click. No remote action invokes capture.
-        stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: { ideal: 10, max: 15 } }, audio: false });
+        const request = capture || this.requestCapture();
+        await this.screenState('requested');
+        const selected = await request;
+        if (selected.error) throw selected.error;
+        stream = selected.stream;
+        if (stream.getVideoTracks().some(track => track.readyState === 'ended')) throw Object.assign(new Error('Sharing stopped before attendance connected.'), { name: 'AbortError' });
         if (epoch !== this.epoch) { stream.getTracks().forEach((track) => track.stop()); return; }
         stream.getAudioTracks().forEach((track) => track.stop());
-        this.stream = stream;
-        this.ui.banner.hidden = false; this.ui.stop.disabled = false;
+        this.pendingStream = null; this.stream = stream;
+        this.ui.banner.hidden = false; this.ui.start.hidden = true; this.ui.stop.disabled = false;
         this.ui.viewers.textContent = 'No connected viewers.';
         stream.getVideoTracks().forEach((track) => track.addEventListener('ended', () => this.stop('Screen sharing ended by employee.')));
         const result = await liveApi(this.client, 'share-start', { sessionId: this.presence.sessionId, tabId: this.presence.tabId });
@@ -180,7 +208,8 @@
       } catch (error) {
         if (stream) stream.getTracks().forEach((track) => track.stop());
         const cancelled = error.name === 'NotAllowedError' || error.name === 'AbortError';
-        await this.stop(cancelled ? 'Screen sharing was cancelled. Attendance remains active.' : error.message);
+        await this.stop(cancelled ? 'Screen Share Declined. Attendance remains active. Re-enable sharing when ready.' : error.message);
+        await this.screenState(cancelled ? 'declined' : error.name === 'NotSupportedError' ? 'unsupported' : 'stopped');
       } finally { this.starting = false; this.ui.start.disabled = false; }
     }
     async poll() {
@@ -213,10 +242,12 @@
       } finally { this.polling = false; }
     }
     stopLocal(reason) {
+      this.captureGeneration = (this.captureGeneration || 0) + 1;
+      this.pendingStream?.getTracks().forEach(track => track.stop()); this.pendingStream = null;
       ++this.epoch; clearInterval(this.timer); this.timer = null;
       this.stream?.getTracks().forEach((track) => track.stop()); this.stream = null;
       for (const peer of this.peers.values()) peer.close(); this.peers.clear();
-      this.ui.banner.hidden = true; this.ui.start.disabled = this.starting;
+      this.ui.banner.hidden = true; this.ui.start.hidden = !this.presence.active; this.ui.start.disabled = this.starting;
       this.ui.message.textContent = reason || 'Not sharing.';
     }
     async stop(reason) {

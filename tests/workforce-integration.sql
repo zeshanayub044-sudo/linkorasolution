@@ -14,7 +14,9 @@ begin
  select count(*) into initial_count from public.employee_activity_sessions;
  -- All changes, including test setup, audit events and queue rows roll back.
  update public.employee_activity_sessions set status='Needs Review' where employee_id=emp and status='Logged In';
- result:=public.portal_presence_action(emp,emp_auth,'connect',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('a',64),'background',false));
+ result:=public.portal_presence_action(emp,emp_auth,'connect',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('a',64)));
+ if (result->>'active')::boolean or (select count(*) from public.employee_activity_sessions)<>initial_count then raise exception 'Login/restoration created attendance'; end if;
+ result:=public.portal_presence_action(emp,emp_auth,'clock-in',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('a',64),'background',false));
  if (result->>'sessionId')::uuid<>s or not(result->>'active')::boolean then raise exception 'Connect failed'; end if;
  result:=public.portal_presence_action(emp,emp_auth,'connect',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',tab_b,'clientId',client_id,'closeTokenHash',repeat('b',64),'background',false));
  if (result->>'sessionId')::uuid<>s or (select count(*) from public.employee_activity_sessions)<>initial_count+1 then raise exception 'Refresh/multitab duplicated attendance'; end if;
@@ -31,6 +33,10 @@ begin
  denied:=false;
  begin perform public.portal_workforce_action(emp,emp_auth,'workforce','{}'); exception when insufficient_privilege then denied:=true; end;
  if not denied then raise exception 'Employee can list workforce'; end if;
+ perform public.portal_workforce_action(emp,emp_auth,'screen-state',jsonb_build_object('sessionId',s,'state','requested'));
+ perform public.portal_workforce_action(emp,emp_auth,'screen-state',jsonb_build_object('sessionId',s,'state','declined'));
+ if not exists(select 1 from public.employee_activity_sessions where session_id=s and screen_share_state='declined' and status='Logged In') then raise exception 'Permission denial corrupted attendance/state'; end if;
+ if not exists(select 1 from public.portal_admin_audit_log where target_user_id=emp and action='screen_share_declined' and after_state->>'session_id'=s::text) then raise exception 'Missing denial audit'; end if;
  -- Consent metadata grants no media; only the employee browser supplies selected video.
  result:=public.portal_workforce_action(emp,emp_auth,'share-start',jsonb_build_object('sessionId',s,'tabId',tab_a)); share:=(result->>'shareId')::uuid;
  denied:=false;
@@ -51,22 +57,25 @@ begin
  update public.employee_profiles set role='Co-CEO' where id=admin_id;
  perform public.portal_workforce_action(emp,emp_auth,'share-stop',jsonb_build_object('shareId',share));
  if (select state from admin_private.screen_shares where id=share)<>'ended' or exists(select 1 from admin_private.screen_signals where peer_id=peer) then raise exception 'Share cleanup failed'; end if;
- -- Hidden/background client survives five minutes without a heartbeat.
- update public.employee_activity_sessions set login_at=now()-interval '2 hours',last_heartbeat_at=now()-interval '5 minutes' where session_id=s;
- update admin_private.portal_clients set last_seen_at=now()-interval '5 minutes',background=true,close_requested_at=null where session_id=s;
+ -- Hidden is never a close event. Recent hidden heartbeat remains active.
+ update admin_private.portal_clients set background=true,last_seen_at=now()-interval '8 seconds',close_requested_at=null where session_id=s;
+ update public.employee_activity_sessions set last_heartbeat_at=now()-interval '8 seconds' where session_id=s;
  perform admin_private.expire_portal_sessions(emp);
- if (select status from public.employee_activity_sessions where session_id=s)<>'Logged In' then raise exception 'Minimized client closed prematurely'; end if;
- -- Brief interruption resumes; expired foreground lease gets estimated last heartbeat.
- result:=public.portal_presence_action(emp,emp_auth,'heartbeat',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id,'background',false));
- if not(result->>'active')::boolean then raise exception 'Recovery inside hidden lease failed'; end if;
- update admin_private.portal_clients set last_seen_at=now()-interval '4 minutes',background=false where session_id=s;
- update public.employee_activity_sessions set last_heartbeat_at=now()-interval '4 minutes' where session_id=s;
+ if (select status from public.employee_activity_sessions where session_id=s)<>'Logged In' then raise exception 'Recent hidden lease closed'; end if;
+ result:=public.portal_presence_action(emp,emp_auth,'heartbeat',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id,'background',true));
+ if not(result->>'active')::boolean then raise exception 'Brief outage recovery failed'; end if;
+ if (select last_heartbeat_at from public.employee_activity_sessions where session_id=s)<>now() then raise exception 'Heartbeat did not use server time'; end if;
+ -- Both foreground and background expire after 15 seconds without server contact.
+ update admin_private.portal_clients set last_seen_at=now()-interval '16 seconds' where session_id=s;
+ update public.employee_activity_sessions set login_at=now()-interval '2 hours',last_heartbeat_at=now()-interval '16 seconds' where session_id=s;
  perform admin_private.expire_portal_sessions(emp);
- if not exists(select 1 from public.employee_activity_sessions where session_id=s and status='Logged Out' and auto_closed and estimated_logout and logout_source='system' and logout_at=last_heartbeat_at) then raise exception 'Estimated timeout rule failed'; end if;
+ if not exists(select 1 from public.employee_activity_sessions where session_id=s and status='Logged Out' and auto_closed and not estimated_logout and logout_source='system' and logout_at=now() and last_heartbeat_at<logout_at) then raise exception 'System-time disconnect closure failed'; end if;
  select login_at,logout_at into saved_login,saved_logout from public.employee_activity_sessions where session_id=s;
  result:=public.portal_presence_action(emp,emp_auth,'heartbeat',jsonb_build_object('sessionId',s,'tabId',tab_a,'clientId',client_id));
- if (result->>'active')::boolean or not(result->>'estimatedLogout')::boolean then raise exception 'Closed session revived'; end if;
+ if (result->>'active')::boolean or (result->>'estimatedLogout')::boolean then raise exception 'Closed session revived'; end if;
  result:=public.portal_presence_action(emp,emp_auth,'connect',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('d',64),'background',false));
+ if (result->>'active')::boolean then raise exception 'Reconnect silently restarted attendance'; end if;
+ result:=public.portal_presence_action(emp,emp_auth,'clock-in',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('d',64),'background',false));
  if (result->>'sessionId')::uuid=s then raise exception 'Reopen rewrote completed session'; end if;
  s:=(result->>'sessionId')::uuid;
  perform public.portal_presence_close(s,tab_a,repeat('d',64));
@@ -74,12 +83,12 @@ begin
  update public.employee_activity_sessions set login_at=now()-interval '1 hour' where session_id=s;
  perform admin_private.expire_portal_sessions(emp);
  if not exists(select 1 from public.employee_activity_sessions where session_id=s and status='Logged Out' and not estimated_logout and disconnect_reason='portal_closed') then raise exception 'Final-tab close failed'; end if;
- result:=public.portal_presence_action(emp,emp_auth,'connect',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('e',64),'background',false));
+ result:=public.portal_presence_action(emp,emp_auth,'clock-in',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',tab_a,'clientId',client_id,'closeTokenHash',repeat('e',64),'background',false));
  s:=(result->>'sessionId')::uuid;
- perform public.portal_employee_end_session(emp,s);
+ perform public.portal_presence_action(emp,emp_auth,'clock-out',jsonb_build_object('sessionId',s));
  if not exists(select 1 from public.employee_activity_sessions where session_id=s and status='Logged Out' and not estimated_logout and disconnect_reason='manual_logout') then raise exception 'Normal logout failed'; end if;
  if not exists(select 1 from public.portal_admin_audit_log where target_user_id=emp and action='attendance_session_auto_closed') then raise exception 'Missing timeout audit'; end if;
  if has_function_privilege('authenticated','public.portal_workforce_action(uuid,uuid,text,jsonb)','EXECUTE') or has_table_privilege('authenticated','admin_private.screen_signals','SELECT') or has_table_privilege('anon','admin_private.screen_shares','SELECT') then raise exception 'Private signaling grants leaked'; end if;
 end $test$;
 rollback;
-select 'PASS: connect, refresh, two tabs, one-tab close, hidden lease, recovery, timeout, reopen, final close, normal logout, spoofing, Co-CEO gating, signaling generations, revocation, cleanup, audit and private grants (all changes rolled back)' as result;
+select 'PASS: connect, refresh, two tabs, one-tab close, hidden recent lease, recovery, 15-second expiry, explicit restart, final close, normal logout, spoofing, Co-CEO gating, signaling generations, revocation, cleanup, audit and private grants (all changes rolled back)' as result;

@@ -1,3 +1,5 @@
+> Current workflow: [Employee attendance](EMPLOYEE_PORTAL_ATTENDANCE_FLOW.md) and [Employee screen sharing](EMPLOYEE_SCREEN_SHARE.md). Explicit Clock In and 5-second / 15-second defaults supersede the historical workflow below.
+
 # Tennis Portal setup
 
 This static Linkora site now has a protected employee portal and an Edge Function for activity tracking. The authenticated Edge Function sends activity directly to the Google Apps Script Web App; Apps Script, not Supabase, writes to Google Sheets. It intentionally contains no real credentials.

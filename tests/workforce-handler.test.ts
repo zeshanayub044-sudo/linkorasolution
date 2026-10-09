@@ -66,3 +66,14 @@ Deno.test("TURN is short-lived HMAC credential, never the shared secret", async 
   catch { denied = true; }
   equal(denied, true);
 });
+
+Deno.test('clock-in, restoration and consent audit require verified identity and use existing RPCs', async () => {
+  const f=fixture();
+  for (const action of ['clock-in','clock-out','connect','portal-login','screen-state']) {
+    equal((await f.handle(request({action}))).status,401);
+    equal((await f.handle(request({action,userId:'spoof',employeeId:'other'},jwt))).status,200);
+    const call=f.calls.at(-1)!;
+    equal(call.args.p_user_id,user); equal(call.args.p_auth_session,session);
+    equal(call.name,action==='clock-in'||action==='clock-out'||action==='connect'?'portal_presence_action':'portal_workforce_action');
+  }
+});

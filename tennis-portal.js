@@ -33,22 +33,26 @@
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 
+  var attendanceLoginAt = null;
   var presence = new window.LinkoraWorkforce.Presence(supabase, function (state) {
     var status = document.getElementById('presence-message');
     var resume = document.getElementById('resume-attendance');
+    var clockOut = document.getElementById('clock-out-button');
+    resume.hidden = !!state.active; clockOut.hidden = !state.active;
+    document.getElementById('screen-share-start').hidden = !state.active || !!screenShare?.stream || !!screenShare?.pendingStream || !!screenShare?.starting || resume.disabled;
     if (state.error) {
-      status.textContent = state.active ? 'Connection interrupted. Attendance has a recovery grace period.' : 'Attendance connection could not be verified. Please reconnect.';
-      resume.hidden = state.active;
+      status.textContent = state.active ? 'Connection Lost · Attendance may end after 15 seconds without a heartbeat.' : 'Attendance could not be checked. Retry Clock In to resolve its status.';
       if (!state.active) screenShare.stop('Sharing stopped because portal authorization ended.');
     } else if (state.active) {
-      status.textContent = 'Attendance active · Last confirmed ' + new Date(state.lastHeartbeatAt).toLocaleTimeString();
-      resume.hidden = true;
+      attendanceLoginAt = state.loginAt || attendanceLoginAt;
+      document.getElementById('clock-in-time').textContent = attendanceLoginAt ? new Date(attendanceLoginAt).toLocaleString() : '—';
+      status.textContent = 'CLOCKED IN · Online · Last heartbeat ' + new Date(state.lastHeartbeatAt).toLocaleTimeString();
     } else {
-      status.textContent = state.estimatedLogout
-        ? 'Attendance auto-closed at the last confirmed heartbeat. This sign-out is an estimate.'
-        : 'This attendance session has ended. Start attendance again when ready.';
-      resume.hidden = false;
-      screenShare.stop('Screen sharing ended with attendance.');
+      attendanceLoginAt = null; storeSession(null);
+      status.textContent = state.autoClosed || state.sessionState === 'auto_closed'
+        ? 'Previous attendance session ended because the portal connection was lost. Clock In when ready.'
+        : state.sessionState === 'completed' ? 'CLOCKED OUT · You are still signed in.' : 'NOT CLOCKED IN';
+      screenShare.stop('Screen Share Permission Required. Clock In to request sharing.');
     }
   });
   var screenShare = new window.LinkoraWorkforce.ScreenShare(supabase, presence, {
@@ -56,17 +60,41 @@
     banner: document.getElementById('screen-share-banner'), message: document.getElementById('screen-share-message'),
     viewers: document.getElementById('screen-share-viewers')
   });
+  setInterval(function () {
+    var elapsed = attendanceLoginAt && presence.active ? Math.max(0, Math.floor((Date.now() - new Date(attendanceLoginAt).getTime()) / 1000)) : 0;
+    document.getElementById('working-duration').textContent = [Math.floor(elapsed / 3600),Math.floor(elapsed % 3600 / 60),elapsed % 60].map(function (n) { return String(n).padStart(2,'0'); }).join(':');
+  }, 1000);
   document.getElementById('resume-attendance').addEventListener('click', async function () {
-    this.disabled = true;
+    if (this.disabled) return;
+    this.disabled = true; this.textContent = 'CLOCKING IN…';
+    var capture = screenShare.requestCapture();
     try {
       var identity = await supabase.auth.getUser();
       if (!identity.data.user) throw new Error('Please sign in again.');
       var profile = await loadProfile(identity.data.user);
-      var started = await presence.start(identity.data.user.id);
-      storeSession(started.sessionId);
-      showEmployee(profile);
-    } catch (error) { message(logoutMessage, error.message, 'error'); }
-    this.disabled = false;
+      var started = await presence.start(identity.data.user.id, true);
+      if (!started.active) throw new Error('Clock In was not confirmed. Please retry.');
+      storeSession(started.sessionId); showEmployee(profile);
+      await screenShare.start(capture);
+    } catch (error) {
+      screenShare.stopLocal('Clock In failed. Screen sharing stopped.');
+      capture.then(function (selected) { selected.stream?.getTracks().forEach(function (track) { track.stop(); }); });
+      message(logoutMessage, error.message, 'error');
+    } finally { this.disabled = false; this.textContent = 'CLOCK IN'; }
+  });
+  document.getElementById('clock-out-button').addEventListener('click', async function () {
+    if (this.disabled || !presence.active) return;
+    this.disabled = true; this.textContent = 'CLOCKING OUT…';
+    try {
+      await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: presence.sessionId});
+      presence.stop(); await screenShare.stop('Screen sharing stopped with Clock Out.');
+      storeSession(null); attendanceLoginAt = null;
+      document.getElementById('presence-message').textContent = 'CLOCKED OUT · You are still signed in.';
+      document.getElementById('resume-attendance').hidden = false; this.hidden = true;
+      document.getElementById('screen-share-start').hidden = true;
+      message(logoutMessage, 'Clock Out saved. Your account remains signed in.', 'success');
+    } catch (error) { message(logoutMessage,error.message,'error'); }
+    finally { this.disabled = false; this.textContent = 'CLOCK OUT'; }
   });
 
   async function invokeActivity(action, activitySessionId) {
@@ -108,7 +136,7 @@
         session.login_at ? new Date(session.login_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
         session.logout_at ? new Date(session.logout_at).toLocaleDateString('en-CA',{timeZone:timezone}) : '—',
         session.logout_at ? new Date(session.logout_at).toLocaleTimeString('en-GB',{timeZone:timezone}) : '—',
-        workedTime(session.workedMinutes), session.estimated_logout ? 'Auto Closed (estimated)' : session.disconnect_reason === 'portal_closed' ? 'Portal Closed' : session.status || '—'
+        workedTime(session.workedMinutes), session.auto_closed ? (session.estimated_logout ? 'Auto Closed (estimated)' : 'Auto Closed') : session.disconnect_reason === 'portal_closed' ? 'Portal Closed' : session.status || '—'
       ];
       var row = document.createElement('tr');
       values.forEach(function (value, index) { var cell = document.createElement('td'); cell.textContent = value; if (index === 8) cell.className = 'report-status'; row.appendChild(cell); });
@@ -189,7 +217,7 @@
       if (error.authDenied) await supabase.auth.signOut();
       if (profile && !error.authDenied) {
         showEmployee(profile); message(logoutMessage, error.message, 'error');
-        document.getElementById('presence-message').textContent = 'Attendance has not connected. Use Start attendance to retry.';
+        document.getElementById('presence-message').textContent = 'Attendance has not connected. Press Clock In to resolve your attendance status.';
         document.getElementById('resume-attendance').hidden = false;
       } else message(loginMessage, error.message, 'error');
     }
@@ -237,11 +265,12 @@
     }
     try {
       var profile = await loadProfile(result.data.user);
+      await window.LinkoraWorkforce.api(supabase, 'portal-login', {});
       var started = await presence.start(result.data.user.id);
       storeSession(started.sessionId);
       form.reset();
       showEmployee(profile);
-      message(logoutMessage, started.warning || 'Your login has been recorded.', 'success');
+      message(logoutMessage, started.warning || 'You are signed in. Press Clock In to begin attendance.', 'success');
     } catch (error) {
       if (error.authDenied) await supabase.auth.signOut();
       form.reset();
@@ -261,7 +290,7 @@
       // while sessionStorage is intentionally browser-tab scoped. In that case
       // the server safely closes this employee's most recent active session.
       var activitySessionId = currentSession() || null;
-      var ended = await invokeActivity('end-session', activitySessionId);
+      var ended = presence.active && activitySessionId ? await window.LinkoraWorkforce.api(supabase, 'clock-out', {sessionId: activitySessionId}) : {};
       presence.stop();
       await screenShare.stop('Screen sharing ended with sign-out.');
       storeSession(null);

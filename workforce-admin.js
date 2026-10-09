@@ -5,11 +5,11 @@
     const el = document.createElement(tag); if (text != null) el.textContent = text;
     if (klass) el.className = klass; return el;
   };
-  const label = (row) => row.autoClosed ? 'Auto Closed (estimated)'
+  const label = (row) => row.autoClosed ? (row.estimatedLogout ? 'Auto Closed (estimated)' : 'Auto Closed')
     : row.sessionState === 'manually_closed' ? 'Manual Correction'
     : row.sessionState === 'connection_lost' ? 'Connection Lost'
     : row.attendanceStatus === 'Logged In' ? (row.lastHeartbeatAt ? 'Online' : 'Untracked open session')
-    : row.attendanceStatus === 'Needs Review' ? 'Needs Review' : 'Signed Out';
+    : row.attendanceStatus === 'Needs Review' ? 'Needs Review' : row.logoutAt ? 'Clocked Out' : 'Not Clocked In';
   class WorkforceAdmin {
     constructor(client, timestamp, onDenied) {
       this.client = client; this.timestamp = timestamp; this.onDenied = onDenied;
@@ -25,7 +25,7 @@
     start() {
       if (this.running) return;
       this.running = true; ++this.epoch;
-      this.timer = setInterval(() => this.refresh(), 15000); this.refresh();
+      this.timer = setInterval(() => this.refresh(), 5000); this.refresh();
     }
     stop() {
       ++this.epoch; this.running = false; clearInterval(this.timer); this.timer = null;
@@ -39,7 +39,7 @@
         if (epoch !== this.epoch) return;
         this.rows = data.rows; this.render();
         $('workforce-message').textContent = 'Updated ' + this.timestamp(data.serverTime) +
-          ' · Status refreshes every 15 seconds. Screen sharing is optional.';
+          ' · Status refreshes every 5 seconds. Sharing requires employee approval.';
         const sharing = this.rows.find((row) => row.shareId === this.viewer?.shareId);
         if (this.viewer && !sharing) this.endViewer('Screen sharing ended by employee or portal session.');
       } catch (error) {
@@ -63,7 +63,8 @@
         tr.append(status, element('td', this.timestamp(row.loginAt)), element('td', this.timestamp(row.lastHeartbeatAt)));
         const logout = element('td', this.timestamp(row.logoutAt));
         if (row.estimatedLogout) logout.append(element('small', 'Estimated from last heartbeat'));
-        tr.append(logout, element('td', row.shareId ? 'ACTIVE' : 'NOT SHARING'), element('td', this.timestamp(row.sharingStarted)));
+        const seconds = row.loginAt ? Math.max(0,Math.floor(((row.logoutAt ? new Date(row.logoutAt).getTime() : Date.now()) - new Date(row.loginAt).getTime()) / 1000)) : 0;
+        tr.append(logout, element('td', Math.floor(seconds / 3600) + 'h ' + Math.floor(seconds % 3600 / 60) + 'm'), element('td', row.autoClosed ? 'Automatic / disconnected' : row.logoutAt ? 'Manual / ' + (row.disconnectReason || 'recorded') : '—'), element('td', row.shareId ? 'SHARING' : (row.screenState || 'permission_required').replaceAll('_',' ').toUpperCase()), element('td', this.timestamp(row.sharingStarted)));
         const actions = element('td');
         if (row.shareId) {
           const view = element('button', 'View', 'table-action'); view.type = 'button';
@@ -72,7 +73,7 @@
         tr.append(actions); body.append(tr);
       }
       if (!body.children.length) {
-        const td = element('td', 'No matching employees.', 'empty-state'); td.colSpan = 9;
+        const td = element('td', 'No matching employees.', 'empty-state'); td.colSpan = 11;
         const tr = element('tr'); tr.append(td); body.append(tr);
       }
     }

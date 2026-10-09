@@ -37,7 +37,7 @@ export async function flushSheetQueue(service: Service, limit = 5) {
   for (const item of pending || []) {
     try {
       const capabilities = await notifySheet({ action: "capabilities" });
-      if (![5, 6].includes(Number(capabilities.contractVersion)))
+      if (![5, 6, 7].includes(Number(capabilities.contractVersion)))
         throw new SheetError("The attendance Sheet script must be updated before raw reconciliation.");
       const { data: session, error: sessionError } = await service
         .from("employee_activity_sessions")
@@ -54,11 +54,11 @@ export async function flushSheetQueue(service: Service, limit = 5) {
       const { data: policy, error: policyError } = await service.from("company_settings")
         .select("timezone").eq("id", true).single();
       if (policyError || !policy?.timezone) throw new Error("Attendance timezone is unavailable");
-      if (session.estimated_logout && Number(capabilities.contractVersion) < 6) throw new SheetError("Auto-close raw sync requires Apps Script contract 6; Supabase is preserved and the matrix remains marked as estimated.");
+      if (session.auto_closed && Number(capabilities.contractVersion) < 7) throw new SheetError("Auto-close raw sync requires Apps Script contract 7; authoritative Supabase attendance is preserved.");
       await notifySheet({
         action: item.action, sessionId: item.session_id, loginAt: session.login_at,
         logoutAt: session.logout_at || "", timezone: policy.timezone,
-        logoutType: session.auto_closed ? "auto_closed" : session.disconnect_reason === "portal_closed" ? "portal_closed" : "normal",
+        logoutType: session.auto_closed ? (session.estimated_logout ? "auto_closed" : "auto_disconnect") : session.disconnect_reason === "portal_closed" ? "portal_closed" : "normal",
         email: account.user.email || "", employeeName: profile.full_name,
         employeeId: profile.employee_id, scheme: profile.scheme, role: profile.role,
       });
@@ -95,7 +95,7 @@ export async function syncMatrixDay(service: Service, day: string, timezone: str
       signIn: row.first_sign_in,
       signOut: row.attendance_status === "Signed In" ||
         row.attendance_status === "Missing Sign-Out" ? null : row.last_sign_out,
-      status: estimated.has(String(row.user_id)) ? "Auto Closed (estimated)" : row.attendance_status, isLate: row.is_late,
+      status: estimated.has(String(row.user_id)) ? "Auto Closed / Automatic" : row.attendance_status, isLate: row.is_late,
       activeOnDay: row.active_on_day, scheduled: row.scheduled,
     }))),
   });
