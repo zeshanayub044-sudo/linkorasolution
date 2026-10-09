@@ -37,3 +37,5 @@ These are not physical browser tests. Required real-device checks: login without
 Apps Script: copy google-apps-script/Code.gs into the existing bound project and redeploy its existing web-app deployment as a new version. Preserve its URL, Sheet, properties and secret. Do not create a replacement deployment.
 
 Measured production scheduler cadence on 2026-10-09: 1.015–1.331 seconds between starts; average tick execution 0.014 seconds over a one-minute sample with no active tracked employees. This measures scheduler operation only, not actual sleep/browser auto-close or loaded production scale. Existing 56 attendance records were verified unchanged by a hash of all pre-existing fields after rollback tests.
+
+Restoration excludes prior-day untracked rows; only tracked or current-day open attendance resumes. Explicit Clock In alone invokes existing stale-review handling. Deployment migrations: 20261009095818_employee_portal_clock_in, 20261009100419_employee_portal_clock_out and 20261009101432_employee_portal_restore_current_session. workforce-live version 2 and manage-employee version 31 are deployed.

@@ -90,5 +90,14 @@ begin
  if not exists(select 1 from public.portal_admin_audit_log where target_user_id=emp and action='attendance_session_auto_closed') then raise exception 'Missing timeout audit'; end if;
  if has_function_privilege('authenticated','public.portal_workforce_action(uuid,uuid,text,jsonb)','EXECUTE') or has_table_privilege('authenticated','admin_private.screen_signals','SELECT') or has_table_privilege('anon','admin_private.screen_shares','SELECT') then raise exception 'Private signaling grants leaked'; end if;
 end $test$;
+do $legacy_test$
+declare emp uuid; a uuid; old_id uuid:=gen_random_uuid(); r jsonb;
+begin
+ select p.id,s.id into emp,a from public.employee_profiles p join auth.sessions s on s.user_id=p.id where p.is_active and p.role='Employee' limit 1;
+ update public.employee_activity_sessions set status='Needs Review' where employee_id=emp and status='Logged In';
+ insert into public.employee_activity_sessions(session_id,employee_id,login_at,status,login_source) values(old_id,emp,now()-interval '2 days','Logged In','user');
+ r:=public.portal_presence_action(emp,a,'connect',jsonb_build_object('sessionId',gen_random_uuid(),'tabId',gen_random_uuid(),'clientId',gen_random_uuid(),'closeTokenHash',repeat('a',64)));
+ if (r->>'active')::boolean or not exists(select 1 from public.employee_activity_sessions where session_id=old_id and status='Logged In' and last_heartbeat_at is null) then raise exception 'Login resumed or modified stale history'; end if;
+end $legacy_test$;
 rollback;
 select 'PASS: connect, refresh, two tabs, one-tab close, hidden recent lease, recovery, 15-second expiry, explicit restart, final close, normal logout, spoofing, Co-CEO gating, signaling generations, revocation, cleanup, audit and private grants (all changes rolled back)' as result;
