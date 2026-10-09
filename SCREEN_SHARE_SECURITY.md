@@ -1,3 +1,5 @@
+> Current workflow: [Employee attendance](EMPLOYEE_PORTAL_ATTENDANCE_FLOW.md) and [Employee screen sharing](EMPLOYEE_SCREEN_SHARE.md). Explicit Clock In and 5-second / 15-second defaults supersede the historical workflow below.
+
 # Optional live screen sharing security
 
 ## Consent and UI

@@ -4,7 +4,7 @@ const uuid = (value: unknown): value is string => typeof value === "string" &&
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const browserOrigin = (origin: string | null) => origin === "https://linkorasolution.com" ||
   origin === "https://www.linkorasolution.com" || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin || "");
-const actions = new Set(["connect", "heartbeat", "workforce", "ice", "share-start", "share-stop",
+const actions = new Set(["connect", "clock-in", "clock-out", "portal-login", "screen-state", "heartbeat", "workforce", "ice", "share-start", "share-stop",
   "viewer-join", "poll-owner", "poll-viewer", "peer-leave", "signal"]);
 declare const EdgeRuntime: { waitUntil(task: Promise<unknown>): void } | undefined;
 
@@ -86,11 +86,11 @@ export function createWorkforceHandler(service: Service, env = (name: string) =>
       const payload = { ...body };
       delete payload.action;
       let closeToken: string | undefined;
-      if (action === "connect") {
+      if (action === "connect" || action === "clock-in") {
         closeToken = crypto.randomUUID() + crypto.randomUUID();
         payload.closeTokenHash = await digest(closeToken);
       }
-      const rpc = action === "connect" || action === "heartbeat" ? "portal_presence_action" : "portal_workforce_action";
+      const rpc = action === "connect" || action === "clock-in" || action === "clock-out" || action === "heartbeat" ? "portal_presence_action" : "portal_workforce_action";
       const { data, error } = await service.rpc(rpc, {
         p_user_id: auth.user.id, p_auth_session: authSession, p_action: action, p_payload: payload,
       });
@@ -100,6 +100,10 @@ export function createWorkforceHandler(service: Service, env = (name: string) =>
         if (error.code === "54000") return response({ error: "Please wait before trying again." }, 429);
         if (["22023", "22P02", "22003", "P0002"].includes(error.code)) return response({ error: "The requested session is unavailable or invalid." }, 400);
         return response({ error: "The workforce service is temporarily unavailable." }, 500);
+      }
+      if ((action === "clock-in" || action === "clock-out") && typeof EdgeRuntime !== "undefined") {
+        EdgeRuntime.waitUntil(Promise.all([flushSheetQueue(service,5),flushMatrixQueue(service,5)])
+          .catch(() => { console.error("Attendance mirror retry deferred"); }));
       }
       if (action === "ice") return response(await iceConfig(auth.user.id, env));
       return response({ ...data, ...(closeToken ? { closeToken } : {}) });

@@ -164,7 +164,7 @@
         line.append(node('span', (session.employee_profiles?.full_name || 'Unknown employee') + ' · ' +
           (session.employee_profiles?.employee_id || '—') + ' · ' +
           timestamp(session.login_at)),
-        node('span', session.auto_closed ? 'Auto Closed (estimated)' : session.status || 'Unknown'));
+        node('span', session.auto_closed ? (session.estimated_logout ? 'Auto Closed (estimated)' : 'Auto Closed') : session.status || 'Unknown'));
         list.append(line);
       });
     } catch (error) {
@@ -198,7 +198,7 @@
           session.logout_at ? companyDay(session.logout_at) : '—', timeOnly(session.logout_at),
           minutes(session.workedMinutes),
         ].forEach((value) => cell(row, value));
-        attachBadge(cell(row, ''), session.auto_closed ? 'Auto Closed (estimated)' : session.status || 'Unknown');
+        attachBadge(cell(row, ''), session.auto_closed ? (session.estimated_logout ? 'Auto Closed (estimated)' : 'Auto Closed') : session.status || 'Unknown');
         cell(row, timestamp(session.last_heartbeat_at)); cell(row, sessionSource(session));
         body.append(row);
       });
@@ -215,7 +215,7 @@
   }
   function sessionSource(row) {
     if (row.corrected_at || row.session_state === 'manually_closed' || row.disconnect_reason === 'manual_correction') return 'Manual correction';
-    if (row.auto_closed || row.estimated_logout) return 'Auto Closed — estimated heartbeat timeout';
+    if (row.auto_closed || row.estimated_logout) return row.estimated_logout ? 'Automatic — estimated last heartbeat' : 'Automatic — server closure / ' + (row.disconnect_reason || 'disconnect');
     if (row.disconnect_reason === 'portal_closed') return 'Portal closed';
     if (row.disconnect_reason === 'manual_logout') return 'Normal logout';
     if (row.login_source === 'admin' && row.logout_source === 'admin') return 'Admin';

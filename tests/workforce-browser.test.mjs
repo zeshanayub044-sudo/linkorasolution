@@ -18,7 +18,7 @@ function harness(storage = new Map(), responder) {
   const client = { functions: { async invoke(_name, options) {
     requests.push(options.body);
     return responder ? responder(options.body) : { data: { active: true, sessionId: 'same-session',
-      closeToken: 'a'.repeat(72), lastHeartbeatAt: new Date().toISOString(), heartbeatSeconds: 30 } };
+      closeToken: 'a'.repeat(72), lastHeartbeatAt: new Date().toISOString(), heartbeatSeconds: 5 } };
   } } };
   const context = vm.createContext({ window, document, navigator, crypto: webcrypto, Date, JSON, Math,
     Map, Set, Blob, Promise, BroadcastChannel: Channel, RTCPeerConnection: window.RTCPeerConnection,
@@ -65,13 +65,13 @@ test('brief network errors keep attendance; server expiry stops heartbeat', asyn
   mode = 'network'; await state.heartbeat(true); assert.equal(state.active, true);
   mode = 'expired'; await state.heartbeat(true); assert.equal(state.active, false); assert.equal(h.timers.size, 0);
 });
-test('screen capture is never automatic; cancel leaves attendance running', async () => {
+test('login never captures; explicit sharing denial is audited and keeps attendance running', async () => {
   const h = harness(), presence = { active: true };
   const share = new h.ScreenShare(h.client, presence, h.ui);
   assert.equal(h.captureCalls(), 0);
   await h.ui.start.listeners.click();
   assert.equal(h.captureCalls(), 1); assert.equal(share.stream, null);
-  assert.equal(presence.active, true); assert.equal(h.requests.length, 0);
+  assert.equal(presence.active, true); assert.deepEqual(h.requests.map(r=>r.state), ['requested','declined']);
 });
 test('chosen video has persistent notice and explicit/native stop immediately stops tracks', async () => {
   let videoStops = 0, audioStops = 0, onEnded;
@@ -115,4 +115,34 @@ test('ICE candidates received before SDP are buffered and viewer sends answer on
   await peer.receive({ kind: 'offer', payload: { type: 'offer', sdp: 'test' } });
   assert.equal(candidates.length, 1); assert.equal(h.requests[0].kind, 'answer'); assert.equal(h.requests[0].generation, 3);
   peer.close(); assert.equal(peer.closed, true);
+});
+
+
+test('login restoration without attendance starts neither heartbeat nor screen capture', async () => {
+  const h = harness(new Map(), () => ({ data: { active: false, sessionState: 'not_clocked_in' } }));
+  const presence = new h.Presence(h.client);
+  await presence.start('employee');
+  assert.equal(h.requests[0].action,'connect');
+  assert.equal(presence.active,false); assert.equal(h.timers.size,0); assert.equal(h.captureCalls(),0);
+});
+
+test('Clock In explicitly creates attendance and requests capture before awaiting the backend', async () => {
+  const h=harness(); const presence=new h.Presence(h.client);
+  const share=new h.ScreenShare(h.client,presence,h.ui);
+  const capture=share.requestCapture();
+  assert.equal(h.captureCalls(),1); assert.equal(h.requests.length,0);
+  await presence.start('employee',true); await share.start(capture);
+  assert.equal(h.requests[0].action,'clock-in'); assert.equal(presence.interval,5);
+  assert.equal(presence.active,true); assert.equal(share.stream,null);
+  assert.equal(h.requests.at(-1).state,'declined');
+});
+
+test('pending approved capture is stopped when attendance ends before it can be adopted', async () => {
+  let resolve, stopped=0;
+  const h=harness(); h.setCapture(()=>new Promise(r=>{resolve=r;}));
+  const share=new h.ScreenShare(h.client,{active:false},h.ui);
+  const capture=share.requestCapture(); share.stopLocal('Clocked out');
+  resolve({getTracks:()=>[{stop(){stopped++;}}]});
+  const selected=await capture;
+  assert.equal(selected.error.name,'AbortError'); assert.equal(stopped,1); assert.equal(h.ui.banner.hidden,true);
 });

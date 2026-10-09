@@ -9,7 +9,7 @@ const HEADERS = [
 
 // GET is a health check only. Attendance reads and writes require the POST secret.
 function doGet() {
-  return response_({ok: true, service: 'Tennis Portal Logs', method: 'POST required'});
+  return response_({ok: true, service: 'Employee Attendance Logs', method: 'POST required'});
 }
 
 function doPost(event) {
@@ -17,7 +17,7 @@ function doPost(event) {
     const payload = JSON.parse((event && event.postData && event.postData.contents) || '{}');
     const secret = PropertiesService.getScriptProperties().getProperty('GOOGLE_SHEETS_WEBHOOK_SECRET');
     if (!secret || payload.secret !== secret) return response_({ok: false, error: 'Unauthorized'});
-    if (payload.action === 'capabilities') return response_({ok:true,contractVersion:6});
+    if (payload.action === 'capabilities') return response_({ok:true,contractVersion:7});
     if (payload.action === 'report') return report_(getLogSheet_(), payload);
     if (payload.action === 'matrix-day') {
       const lock = LockService.getScriptLock();
@@ -85,7 +85,8 @@ function recordLogout_(sheet, payload) {
   const logoutAt = payload.logoutAt ? new Date(payload.logoutAt) : new Date();
   if (isNaN(logoutAt.getTime())) return response_({ok: false, error: 'Invalid sign-out time'});
   const zone = payload.timezone || TIME_ZONE;
-  const logoutStatus = payload.logoutType === 'auto_closed' ? 'Auto Closed (estimated)'
+  const logoutStatus = payload.logoutType === 'auto_disconnect' ? 'Auto Closed / Automatic'
+    : payload.logoutType === 'auto_closed' ? 'Auto Closed (estimated)'
     : payload.logoutType === 'portal_closed' ? 'Portal Closed' : 'Logged Out';
   const logoutDate = Utilities.formatDate(logoutAt, zone, 'yyyy-MM-dd');
   const logoutTime = Utilities.formatDate(logoutAt, zone, 'HH:mm:ss');

@@ -19,3 +19,8 @@
 /* Keep the consent indicator visible even when the portal report scrolls. */
 .screen-share-banner{position:fixed;inset:auto 16px 16px;max-width:620px;margin-inline:auto;max-height:42vh;overflow:auto;z-index:1000;}
 .portal-shell:has(#screen-share-banner:not([hidden])){padding-bottom:280px;}
+.attendance-timer { display:flex; gap:2rem; flex-wrap:wrap; margin:1.25rem 0; }
+.attendance-timer dt { color:var(--muted,#9ca8b8); font-size:.8rem; }
+.attendance-timer dd { margin:.4rem 0; font-variant-numeric:tabular-nums; font-weight:600; }
+
+.screen-share-panel [hidden] { display:none!important; }
