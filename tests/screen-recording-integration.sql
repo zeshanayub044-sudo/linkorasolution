@@ -31,6 +31,12 @@ begin
  execute 'set local role authenticated';
  denied:=false;begin insert into storage.objects(bucket_id,name,metadata) values('employee-screen-recordings',res->>'path',jsonb_build_object('size',999));exception when insufficient_privilege then denied:=true;end;if not denied then raise exception 'Wrong-size upload allowed';end if;
  execute 'reset role';
+ -- Reproduce the Storage permission probe, which has contentLength but no size.
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',emp,'session_id',ea,'role','authenticated')::text,true);
+ if not admin_private.recording_upload_allowed(res->>'path','{"contentLength":1000,"mimetype":"video/webm"}') then raise exception 'Storage pre-upload probe rejected';end if;
+ if admin_private.recording_upload_allowed(res->>'path','{"contentLength":999}') or admin_private.recording_upload_allowed(res->>'path','{}') then raise exception 'Incorrect or absent upload length accepted';end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',other,'session_id',ea,'role','authenticated')::text,true);
+ if admin_private.recording_upload_allowed(res->>'path','{"contentLength":1000}') then raise exception 'Other employee probe accepted';end if;
  for seq in 1..3 loop
   res:=public.portal_recording_action(emp,ea,'reserve',jsonb_build_object('recordingId',rid,'tabId',tab,'generation',gen,'sequence',seq,'sizeBytes',1000,'durationSeconds',1,'endedAt',now()));seg_path:=res->>'path';
   if seg_path is null then raise exception 'Path missing';end if;

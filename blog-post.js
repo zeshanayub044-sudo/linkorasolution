@@ -109,7 +109,7 @@
       var card = node('article', 'blog-card');
       var body = node('div', 'blog-card__body');
       body.appendChild(node('span', 'blog-card__category', other.category));
-      var h2 = node('h2'); var link = node('a', '', other.title); link.href = blog.postUrl(other.slug);
+      var h2 = node('h2'); var link = node('a', '', other.title); link.href = blog.postUrl(other.slug); link.target = '_blank'; link.rel = 'noopener noreferrer';
       h2.appendChild(link); body.appendChild(h2);
       body.appendChild(node('p', 'blog-card__excerpt', other.excerpt));
       body.appendChild(node('p', 'blog-card__meta', blog.formatDate(other.published_at)));
