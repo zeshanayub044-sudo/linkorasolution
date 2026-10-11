@@ -19,6 +19,8 @@
     var article = element('article', 'blog-card');
     var imageLink = element('a', 'blog-card__image');
     imageLink.href = blog.postUrl(post.slug);
+    imageLink.target = "_blank";
+    imageLink.rel = "noopener noreferrer";
     var image = blog.imageUrl(post.featured_image_url);
     if (image) {
       var picture = element('img');
@@ -41,6 +43,8 @@
     var title = element('h2');
     var titleLink = element('a', '', post.title);
     titleLink.href = blog.postUrl(post.slug);
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener noreferrer";
     title.appendChild(titleLink);
     body.appendChild(title);
     body.appendChild(element('p', 'blog-card__excerpt', post.excerpt));
@@ -49,6 +53,8 @@
     body.appendChild(meta);
     var more = element('a', 'blog-card__more', 'Read article →');
     more.href = blog.postUrl(post.slug);
+    more.target = "_blank";
+    more.rel = "noopener noreferrer";
     body.appendChild(more);
     article.appendChild(body);
     return article;

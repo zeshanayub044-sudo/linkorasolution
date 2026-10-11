@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const tick=()=>new Promise(r=>setImmediate(r));
-function harness(respond=()=>({data:{ok:true,active:true}})){
+function harness(respond=()=>({data:{ok:true,active:true}}),uploadResponse={ok:true}){
  const calls=[],uploads=[],timers=new Map(),states=[];let id=0,clock=1000;
  class Stream{constructor(tracks){this.tracks=tracks}getTracks(){return this.tracks}getVideoTracks(){return this.tracks.filter(t=>t.kind==='video')}getAudioTracks(){return this.tracks.filter(t=>t.kind==='audio')}removeTrack(t){this.tracks=this.tracks.filter(x=>x!==t)}}
  class Recorder{static isTypeSupported(m){return m.includes('vp8')}constructor(stream,options){this.stream=stream;this.options=options;this.state='inactive'}start(){this.state='recording';queueMicrotask(()=>this.onstart?.())}stop(){this.state='inactive';queueMicrotask(()=>{this.ondataavailable?.({data:new Blob(['test video bytes'])});this.onstop?.()})}}
@@ -11,7 +11,7 @@ function harness(respond=()=>({data:{ok:true,active:true}})){
  const client={functions:{async invoke(name,{body}){calls.push(body);return respond(body)}},auth:{async getSession(){return{data:{session:{access_token:'verified-test-token'}}}}}};
  const ctx=vm.createContext({window,MediaRecorder:Recorder,MediaStream:Stream,Blob,Date,Math,Promise,performance:{now:()=>clock},AbortSignal,
  setTimeout(fn,ms){const n=++id;timers.set(n,{fn,ms});return n},clearTimeout(n){timers.delete(n)},setInterval(fn,ms){const n=++id;timers.set(n,{fn,ms});return n},clearInterval(n){timers.delete(n)},
- async fetch(url,options){uploads.push({url,options});return{ok:true}},queueMicrotask});
+ async fetch(url,options){uploads.push({url,options});return uploadResponse},queueMicrotask});
  vm.runInContext(readFileSync('screen-recording.js','utf8'),ctx);
  const video={kind:'video',readyState:'live',getSettings:()=>({displaySurface:'monitor'}),async applyConstraints(){},stop(){this.readyState='ended'}};
  const audio={kind:'audio',readyState:'live',stop(){this.readyState='ended'}};
@@ -50,4 +50,9 @@ test('bounded queue overflow interrupts capture; crashes discard only unsaved ta
 });
 test('revoked authorization stops recorder and capture; no background permission requests',async()=>{
  const h=harness(b=>b.action==='pulse'?{error:{context:{status:403,async json(){return{error:'Access denied'}}}}}:{data:{ok:true,active:true}});await h.recording.start(h.prepared,h.result);h.presence.active=false;await h.recording.pulse();await tick();await tick();assert.equal(h.video.readyState,'ended');assert.equal(h.recording.mode,'idle');assert.equal(h.calls.some(x=>x.action==='interrupt'),true);
+});
+
+test('Storage rejection shows HTTP authorization detail without exposing tokens or response payload',async()=>{
+ const h=harness(b=>({data:b.action==='reserve'?{path:'approved/video.webm'}:{ok:true,active:true}}),{ok:false,status:400,async json(){return{statusCode:'403',message:'new row violates row-level security policy'}}});
+ await h.recording.start(h.prepared,h.result);h.advance();h.recording.rotate();await tick();await tick();assert.equal(h.recording.queue.length,1);assert.equal(h.recording.failed,true);assert.match(h.states.at(-1).message,/HTTP 400.*Storage authorization/);assert.equal(h.states.some(s=>s.message.includes('verified-test-token')),false);h.recording.abort('test_done');
 });

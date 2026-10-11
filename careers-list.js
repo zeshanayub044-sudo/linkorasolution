@@ -16,6 +16,8 @@
     var title = career.node('h2');
     var titleLink = career.node('a', '', job.title);
     titleLink.href = career.jobUrl(job.slug);
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener noreferrer";
     title.appendChild(titleLink); article.appendChild(title);
     article.appendChild(career.node('p', 'career-card__summary', job.summary));
     var info = career.node('div', 'career-card__facts');
@@ -24,6 +26,8 @@
     article.appendChild(info);
     var more = career.node('a', 'btn btn-ghost', 'View details & apply →');
     more.href = career.jobUrl(job.slug);
+    more.target = "_blank";
+    more.rel = "noopener noreferrer";
     article.appendChild(more);
     return article;
   }

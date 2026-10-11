@@ -85,12 +85,12 @@
      const response=await fetch(cfg.supabaseUrl+'/storage/v1/object/employee-screen-recordings/'+reserved.path,{method:'POST',headers:{Authorization:'Bearer '+token,apikey:cfg.supabaseAnonKey,'Content-Type':this.prepared.mimeType,'x-upsert':'false','cache-control':'no-store'},body:q.blob,signal:AbortSignal.timeout(12000)});
      if(!response.ok){let detail;try{detail=await response.json()}catch{/* safe fallback */}
       // Existing immutable object is accepted only after the backend verifies its exact reserved byte size.
-      if(!['409','Duplicate','ResourceAlreadyExists'].includes(String(detail?.statusCode||detail?.error))&&!/already exists/i.test(detail?.message||''))throw new Error('Recording upload failed.');}
+      if(!['409','Duplicate','ResourceAlreadyExists'].includes(String(detail?.statusCode||detail?.error))&&!/already exists/i.test(detail?.message||'')){const error=new Error('Recording upload failed (HTTP '+response.status+'). '+(response.status===400||response.status===403?'Storage authorization rejected this segment.':'Please restore your connection or contact management.'));error.status=response.status;throw error;}}
     }
     await api(this.client,'commit',this.payload({sequence:q.sequence}));
     if(epoch!==this.epoch)return;this.queue.shift();this.queueBytes-=q.blob.size;q.blob=null;
     if(this.mode==='recording')this.notify(this.failed?'upload_issue':'recording',this.failed?'Recording active · Prior upload incident will be visible to management.':'● SCREEN RECORDING ACTIVE · Screen video only');
-   }catch(e){if(epoch!==this.epoch)return;q.attempts++;q.nextAttempt=Date.now()+Math.min(30000,1000*2**Math.min(q.attempts,5));this.issue('segment_upload_failed',q.sequence);
+   }catch(e){if(epoch!==this.epoch)return;q.attempts++;q.nextAttempt=Date.now()+Math.min(30000,1000*2**Math.min(q.attempts,5));this.issue('segment_upload_failed',q.sequence);this.notify('upload_issue',e.message||'Recording segment upload failed.');
     if(q.attempts>=5||e.status===401||e.status===403){this.failed=true;this.stop(e.status===403?'authorization_ended':'upload_retry_limit');}}
    finally{this.uploading=false}
    if(this.queue.length&&this.queue[0].nextAttempt<=Date.now())this.drain();
