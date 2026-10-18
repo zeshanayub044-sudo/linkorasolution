@@ -18,11 +18,28 @@ Sign in to the existing Blog Admin as an authorized active Co-CEO. Use **Load pr
 
 The renderer supports headings, lists and safe `[label](https://...)` or relative document links using DOM text nodes. Stored HTML is not executed and unsafe URL protocols/credential URLs remain plain text. Blog featured images remain restricted to the existing public blog-images bucket and authorized upload rules.
 
-At the initial audit, production contained zero Blog posts. Real owner dashboard sign-in was verified. Publication, editing, unpublication, image upload and logout acceptance will be recorded below only after those actions are observed; prepared files alone do not establish successful publishing.
+At the initial audit, production contained zero Blog posts. Real owner dashboard sign-in was verified. Creation, editing, publishing, unpublishing, featured-image upload and logout were exercised through the real signed-in CMS. Prepared files alone were not used as publication evidence.
 
 ## Publication acceptance record
 
-Pending deployment of the upgraded editor and real signed-in CMS acceptance. Do not treat this section as a claim that the drafts are published.
+Verified on 18 October 2026 as muneebansari1993@gmail.com (active Co-CEO → Blog Admin), with no password or role changes:
+
+- Saved the outreach article as a draft with the supplied lion mark uploaded through the normal featured-image control; the image URL returned HTTP 200.
+- Edited and saved its excerpt, published it, verified public API access, unpublished through the editor, verified the public API returned zero rows, then republished.
+- Imported/reviewed and published the on-page and GBP articles through the same editor. All three database rows are published and the public listing shows three articles.
+- Verified all three real public pages at 1366px and 390px: content, featured image where supplied, author, dates, SEO title/description/canonical/OG, Article schema, safe internal links and CTA. A missing/unpublished URL remains noindex.
+- View counts increased during actual browser acceptance; these include internal QA visits and are not customer-performance proof.
+- Verified Sign out returns to the protected sign-in form with the dashboard hidden.
+- Rollback-only SQL tests verified ordinary Employee denial for management INSERT/UPDATE/DELETE and draft reads, anonymous draft denial, and authorized draft deletion. No disposable CMS post was left behind. Actual destructive UI deletion was not performed; real articles were retained.
+- Standardized the existing corporate author display name from LINKORA SOLUTIONS to LINKORA SOLUTION, preserving its Auth UUID and every permission. Corporate authors use Organization schema; personal authors retain Person.
+
+Published URLs:
+
+- https://linkorasolution.com/blog-post.html?slug=evaluate-backlink-quality-before-outreach
+- https://linkorasolution.com/blog-post.html?slug=on-page-seo-checklist-business-websites
+- https://linkorasolution.com/blog-post.html?slug=google-business-profile-optimization-checklist
+
+The public-API sitemap refresh includes these three published URLs. Future publication/unpublication still requires the documented sitemap refresh; no automatic CMS-to-GitHub webhook is configured.
 
 ## Indexing and promotion
 

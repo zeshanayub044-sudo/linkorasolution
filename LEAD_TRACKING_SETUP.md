@@ -25,7 +25,7 @@ Real production acceptance: endpoint returned accepted twice for one disposable 
 
 ## Campaign attribution
 
-The five standard UTM fields are captured from the public page URL, limited to 120 characters each, kept in session storage across public navigation, and sent only with an inquiry. A newly tagged campaign replaces the prior campaign. Source is pathname only. UTM/query strings and form values are excluded from analytics event payloads. Storage denial falls back to current-page attribution without breaking the form.
+The five standard UTM fields are captured from the public page URL, limited to 120 characters each, kept in session storage across public navigation, and sent to the lead backend with an inquiry. A newly tagged campaign replaces the prior campaign. Source is pathname only. UTM/query strings and form values are excluded from analytics event payloads. Storage denial falls back to current-page attribution without breaking the form. Because approved document navigation opens new tabs with noopener, allowlisted public links carry UTM parameters into the destination URL. The new tab captures them independently. Private Employee/Admin links, in-page anchors and external URLs never receive these propagated fields. Pointer/keyboard handlers cover dynamically rendered Blog/Careers links too. Cross-tab propagation is browser-tested.
 
 ## Conversion events
 

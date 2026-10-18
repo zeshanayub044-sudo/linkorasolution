@@ -6,6 +6,7 @@
   var campaign = {};
   try { campaign = JSON.parse(sessionStorage.getItem('linkora.campaign') || '{}'); } catch (_) { /* storage is optional */ }
   var query = new URLSearchParams(location.search);
+  if (!campaign || typeof campaign !== 'object' || Array.isArray(campaign)) campaign = {};
   if (keys.some(function (k) { return query.has(k); })) {
     campaign = {};
     keys.forEach(function (k) { if (query.has(k)) campaign[k] = query.get(k).slice(0, 120); });
@@ -22,6 +23,17 @@
     if (consent && typeof window.gtag === 'function') window.gtag('event', name, data);
   }
   window.LinkoraMarketing = Object.freeze({ track: track });
+  function carryCampaign(link) {
+    if (!link || (link.getAttribute('href') || '').startsWith('#')) return;
+    if (!keys.some(function (key) { return typeof campaign[key] === 'string' && campaign[key]; })) return;
+    var url = new URL(link.href, location.href);
+    // New tabs with noopener do not inherit sessionStorage. Carry attribution only
+    // into known public documents, never private portals or third-party URLs.
+    if (url.origin !== location.origin || !/^\/(?:index\.html|services\.html|about\.html|contact\.html|blog\.html|blog-post\.html|careers\.html|career-job\.html|backlinks\.html|guest-posting\.html|on-page-seo\.html|gmb\.html|privacy\.html)?$/.test(url.pathname)) return;
+    keys.forEach(function (key) { if (typeof campaign[key] === 'string' && !url.searchParams.has(key)) url.searchParams.set(key, campaign[key]); });
+    link.href = url.href;
+    if (url.hash && url.pathname === location.pathname && url.search === location.search) { link.removeAttribute('target'); link.removeAttribute('rel'); }
+  }
   function loadAnalytics() {
     if (!consent || !/^G-[A-Z0-9]+$/.test(config.ga4MeasurementId || '') || document.querySelector('[data-linkora-analytics]') || window.gtag) return;
     window.dataLayer = window.dataLayer || [];
@@ -43,8 +55,11 @@
       privacy.querySelector('[data-decline]').onclick = function () { consent = false; try { localStorage.setItem('linkora.analytics.consent', 'denied'); } catch (_) {} if (window.gtag) window.gtag('consent', 'update', { analytics_storage: 'denied' }); privacy.remove(); };
     }
     if (document.body.dataset.service) track('service_view', 'service');
+    document.querySelectorAll('a[href]').forEach(carryCampaign);
+    ['pointerdown', 'focusin'].forEach(function (name) { document.addEventListener(name, function (event) { carryCampaign(event.target.closest('a[href]')); }, true); });
     document.addEventListener('click', function (event) {
       var link = event.target.closest('a[href]'); if (!link) return;
+      carryCampaign(link);
       var url = new URL(link.href, location.href);
       if (url.hostname === 'wa.me') track('whatsapp_click');
       else if (url.protocol === 'tel:') track('phone_click');

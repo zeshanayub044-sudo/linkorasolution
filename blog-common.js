@@ -46,7 +46,7 @@
   // Posts are plain text with optional # headings and dash lists. Every block
   // uses textContent, so stored markup can never execute in a reader's browser.
   function inline(host, value) {
-    var pattern = /\[([^\]\n]+)\]\(([^\s)]+(?:\([^\s)]*\)[^\s)]*)?)\)/g, match, cursor = 0;
+    var pattern = /\[([^\]\n]+)\]\(((?:[^\s()]|\([^\s()]*\))+)\)/g, match, cursor = 0;
     while ((match = pattern.exec(value))) {
       host.appendChild(document.createTextNode(value.slice(cursor, match.index)));
       var link = null; try { var url = new URL(match[2], location.href); if (/^https?:$/.test(url.protocol) && !url.username && !url.password) { link = document.createElement('a'); link.href = url.href; link.textContent = match[1]; link.target = '_blank'; link.rel = 'noopener noreferrer'; } } catch (_) { /* unsafe URLs remain plain text */ }
