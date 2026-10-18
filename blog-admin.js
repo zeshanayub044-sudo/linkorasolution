@@ -222,6 +222,19 @@
     if (result.error) { show(errorMessage(result.error), 'error'); return; }
     posts = []; formPanel.hidden = true; await refreshAccess();
   });
+  document.getElementById('blog-draft-import').addEventListener('change', async function (event) {
+    var input = event.target, file = input.files[0]; if (!file) return;
+    try {
+      if (role !== 'blog_admin' || !user) throw new Error('Active Co-CEO access required.');
+      if (file.size > 250000) throw new Error('Choose a prepared JSON draft under 250 KB.');
+      var raw = JSON.parse(await file.text()), draft = {};
+      ['title','slug','category','excerpt','content','seo_title','seo_description'].forEach(function (key) { if (typeof raw[key] !== 'string') throw new Error('Invalid prepared draft.'); draft[key] = raw[key]; });
+      if (!blog.validSlug(draft.slug) || draft.title.length > 200 || draft.content.length > 200000 || draft.excerpt.length > 700) throw new Error('Invalid draft fields.');
+      draft.status = 'draft'; openEditor(draft);
+      show('Prepared draft loaded for review. Nothing is saved or published until you submit the editor.', 'success');
+    } catch (error) { show(errorMessage(error), 'error'); }
+    finally { input.value = ''; }
+  });
   document.getElementById('blog-new').addEventListener('click', function () { openEditor(); });
   document.getElementById('blog-cancel').addEventListener('click', function () { formPanel.hidden = true; resetEditor(); });
   document.getElementById('blog-image-clear').addEventListener('click', function () {

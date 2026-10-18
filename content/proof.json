@@ -1,0 +1,7 @@
+{
+  "enabled": false,
+  "testimonials": [],
+  "caseStudies": [],
+  "portfolio": [],
+  "publicationRule": "Require verified=true, approvedForPublication=true and evidence before enabling an entry. Do not publish confidential client data."
+}

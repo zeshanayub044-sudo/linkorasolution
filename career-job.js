@@ -17,20 +17,20 @@
     if (!item.parentNode) document.head.appendChild(item);
   }
   function notFound(message) {
-    document.title = 'Job unavailable | LINKORA SOLUTIONS';
+    document.title = 'Job unavailable | LINKORA SOLUTION';
     document.getElementById('career-job-status').textContent = message;
     applyPanel.hidden = true;
   }
   function seo(job) {
-    var title = job.title + ' | Careers at LINKORA SOLUTIONS';
+    var title = job.title + ' | Careers at LINKORA SOLUTION';
     var url = location.origin + '/career-job.html?slug=' + encodeURIComponent(job.slug);
     document.title = title;
     meta('description', job.summary);
     meta('robots', 'index,follow');
     meta('og:title', title, true); meta('og:description', job.summary, true);
-    meta('og:url', url, true); meta('og:image', location.origin + '/assets/linkora-logo.png', true);
+    meta('og:url', url, true); meta('og:image', location.origin + '/assets/linkora-mark.png', true);
     meta('twitter:title', title); meta('twitter:description', job.summary);
-    meta('twitter:image', location.origin + '/assets/linkora-logo.png');
+    meta('twitter:image', location.origin + '/assets/linkora-mark.png');
     var canonical = document.querySelector('link[rel=canonical]') || career.node('link');
     canonical.rel = 'canonical'; canonical.href = url;
     if (!canonical.parentNode) document.head.appendChild(canonical);
@@ -39,7 +39,7 @@
       description: [job.description, job.responsibilities, job.requirements].filter(Boolean).join('\n\n'),
       datePosted: job.published_at, validThrough: job.closes_at || undefined,
       employmentType: { full_time: 'FULL_TIME', part_time: 'PART_TIME', internship: 'INTERN', contract: 'CONTRACTOR' }[job.employment_type],
-      hiringOrganization: { '@type': 'Organization', name: 'LINKORA SOLUTIONS', sameAs: 'https://linkorasolution.com', logo: 'https://linkorasolution.com/assets/linkora-logo.png' },
+      hiringOrganization: { '@type': 'Organization', name: 'LINKORA SOLUTION', sameAs: 'https://linkorasolution.com', logo: 'https://linkorasolution.com/assets/linkora-mark.png' },
       url: url
     };
     if (job.workplace_type === 'remote') structured.jobLocationType = 'TELECOMMUTE';
@@ -112,6 +112,7 @@
       if (!response.ok || !result.success) throw new Error(result.error || 'The application could not be submitted.');
       form.reset(); form.hidden = true;
       var success = career.node('p', 'career-form-message', result.message || 'Application received. Thank you for applying.');
+      window.LinkoraMarketing?.track('career_application', 'career');
       success.dataset.kind = 'success'; applyPanel.appendChild(success);
     } catch (error) {
       formMessage.textContent = error.message || 'A network error occurred. Please try again.';

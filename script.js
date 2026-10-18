@@ -39,15 +39,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var leadership = document.createElement('section');
     leadership.className = 'leadership-section border-top';
     leadership.setAttribute('aria-labelledby', 'leadership-title');
-    leadership.innerHTML = '<div class="wrap"><div class="section-head"><span class="mono">Leadership</span><h2 id="leadership-title">Meet the Leadership Behind LINKORA SOLUTIONS</h2></div><div class="leadership-grid"><article class="leadership-card reveal in" aria-labelledby="founder-name"><img class="founder-photo" src="assets/founder.jpg" alt="Muhammad Muneeb, founder and CEO of LINKORA SOLUTIONS" width="500" height="500" loading="lazy"><div class="leadership-details"><h3 id="founder-name" class="founder-name">MUHAMMAD MUNEEB</h3><p class="leadership-role">Founder &amp; CEO</p><div class="leadership-bio"><p><strong>9+ years of experience in digital growth.</strong> Helping businesses turn their online presence into <strong>visibility, qualified leads, and real growth.</strong></p><p>Founder and CEO of <strong>LINKORA SOLUTIONS</strong>, delivering strategic digital marketing, SEO, lead generation, and growth solutions for businesses ready to scale.</p><p class="founder-vision"><strong>Our vision:</strong> Build sustainable search visibility through thoughtful strategy, quality work and transparent communication.</p></div></div></article><article class="leadership-card reveal in" aria-labelledby="ibrahim-name"><img class="founder-photo" src="assets/leadership/ibrahim-placeholder.svg" alt="Profile placeholder for Ibrahim Naveed, CFO and Co-Founder of LINKORA SOLUTION" width="500" height="500" loading="lazy"><div class="leadership-details"><h3 id="ibrahim-name" class="founder-name">IBRAHIM NAVEED</h3><p class="leadership-role">CFO &amp; Co-Founder</p><div class="leadership-bio"><p>Focused on building the financial discipline and operational foundations that support sustainable business growth. As CFO &amp; Co-Founder of LINKORA SOLUTION, Ibrahim contributes to financial planning, budgeting, resource allocation, performance oversight, and long-term business strategy — helping ensure that growth decisions remain commercially sound and scalable.</p></div></div></article></div></div>';
+    leadership.innerHTML = '<div class="wrap"><div class="section-head"><span class="mono">Leadership</span><h2 id="leadership-title">Meet the Leadership Behind LINKORA SOLUTION</h2></div><div class="leadership-grid"><article class="leadership-card reveal in" aria-labelledby="founder-name"><img class="founder-photo" src="assets/founder.jpg" alt="Muhammad Muneeb, founder and CEO of LINKORA SOLUTION" width="500" height="500" loading="lazy" decoding="async"><div class="leadership-details"><h3 id="founder-name" class="founder-name">MUHAMMAD MUNEEB</h3><p class="leadership-role">Founder &amp; CEO</p><div class="leadership-bio"><p>Helping businesses turn their online presence into <strong>visibility, qualified leads, and real growth.</strong></p><p>Founder and CEO of <strong>LINKORA SOLUTION</strong>, delivering strategic digital marketing, SEO, lead generation, and growth solutions for businesses ready to scale.</p><p class="founder-vision"><strong>Our vision:</strong> Build sustainable search visibility through thoughtful strategy, quality work and transparent communication.</p></div></div></article><article class="leadership-card reveal in" aria-labelledby="ibrahim-name"><img class="founder-photo" src="assets/leadership/ibrahim-placeholder.svg" alt="Profile placeholder for Ibrahim Naveed, CFO and Co-Founder of LINKORA SOLUTION" width="500" height="500" loading="lazy"><div class="leadership-details"><h3 id="ibrahim-name" class="founder-name">IBRAHIM NAVEED</h3><p class="leadership-role">CFO &amp; Co-Founder</p><div class="leadership-bio"><p>Focused on building the financial discipline and operational foundations that support sustainable business growth. As CFO &amp; Co-Founder of LINKORA SOLUTION, Ibrahim contributes to financial planning, budgeting, resource allocation, performance oversight, and long-term business strategy — helping ensure that growth decisions remain commercially sound and scalable.</p></div></div></article></div></div>';
     main.appendChild(leadership);
   }
 
+  var servicePages = {'Backlinks':'backlinks.html','Guest Posting':'guest-posting.html','On-Page SEO':'on-page-seo.html','Google Business Profile (GMB)':'gmb.html'};
   var serviceAnchors = {
     'On-Page SEO': 'on-page-seo', 'Off-Page SEO': 'off-page-seo', Backlinks: 'backlinks',
     'Guest Posting': 'guest-posting', 'Blog Writing': 'blog-writing', 'DA Increase': 'da-increase',
     'Guest Post Sites Sheet': 'guest-post-sheet', 'Technical SEO': 'technical-seo',
-    'GMB / Google Business Profile': 'gmb-optimization',
+    'Google Business Profile (GMB)': 'gmb-optimization',
     'Web Development': 'web-development',
     '12-Website Monthly SEO Plan': 'multi-site-seo'
   };
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     servicesGrid.className = 'services-dropdown__grid';
     Object.keys(serviceAnchors).forEach(function (service) {
       var serviceLink = document.createElement('a');
-      serviceLink.href = 'services.html#' + serviceAnchors[service];
+      serviceLink.href = servicePages[service] || 'services.html#' + serviceAnchors[service];
       serviceLink.textContent = service;
       serviceLink.target = location.pathname.endsWith('/services.html') ? '_self' : '_blank';
       serviceLink.rel = 'noopener noreferrer';
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     card.classList.add('service-card');
     var link = document.createElement('a');
     link.className = 'service-link';
-    link.href = 'services.html#' + serviceAnchors[service];
+    link.href = servicePages[service] || 'services.html#' + serviceAnchors[service];
     link.textContent = 'Learn more about ' + service;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('.gmb-order-trigger').forEach(function (button) {
       button.addEventListener('click', function () {
-        openOrder('GMB / Google Business Profile Optimization', button);
+        openOrder('Google Business Profile (GMB) Optimization', button);
       });
     });
 
@@ -175,20 +176,21 @@ document.addEventListener('DOMContentLoaded', function () {
       event.preventDefault();
       if (!orderForm.reportValidity()) return;
       var data = new FormData(orderForm);
-      var message = 'Hello LINKORA SOLUTIONS, I would like to place an order.\n\n'
+      var message = 'Hello LINKORA SOLUTION, I would like to place an order.\n\n'
         + 'Service: ' + selectedService + '\n'
         + 'Name: ' + data.get('name') + '\n'
         + 'Business: ' + (data.get('company') || 'Not provided') + '\n'
         + 'Website: ' + (data.get('website') || 'Not provided') + '\n'
         + 'Contact: ' + data.get('contact') + '\n'
         + 'Requirements: ' + (data.get('notes') || 'Not provided');
+      window.LinkoraMarketing?.track('whatsapp_click', 'service');
       window.open('https://wa.me/923216308339?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
       closeOrder();
     });
   }
 
   var footer = document.querySelector('footer');
-  if (footer) footer.innerHTML = '<div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTIONS logo"></span><span class="brandname">LINKORA SOLUTIONS</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="services.html#on-page-seo" target="_blank" rel="noopener noreferrer">On-Page SEO</a></li><li><a href="services.html#off-page-seo" target="_blank" rel="noopener noreferrer">Off-Page SEO</a></li><li><a href="services.html#backlinks" target="_blank" rel="noopener noreferrer">Backlinks</a></li><li><a href="services.html#guest-posting" target="_blank" rel="noopener noreferrer">Guest Posting</a></li><li><a href="services.html#gmb-optimization" target="_blank" rel="noopener noreferrer">GMB / Google Business Profile</a></li></ul></div><div><h5>More services</h5><ul><li><a href="services.html#blog-writing" target="_blank" rel="noopener noreferrer">Blog Writing</a></li><li><a href="services.html#da-increase" target="_blank" rel="noopener noreferrer">DA Increase</a></li><li><a href="services.html#guest-post-sheet" target="_blank" rel="noopener noreferrer">Guest Post Sites Sheet</a></li><li><a href="services.html#technical-seo" target="_blank" rel="noopener noreferrer">Technical SEO</a></li><li><a href="services.html#web-development" target="_blank" rel="noopener noreferrer">Web Development</a></li><li><a href="services.html#multi-site-seo" target="_blank" rel="noopener noreferrer">12-Website SEO Plan</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html" target="_blank" rel="noopener noreferrer">About</a></li><li><a href="blog.html" target="_blank" rel="noopener noreferrer">Blog</a></li><li><a href="careers.html" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="contact.html" target="_blank" rel="noopener noreferrer">Contact</a></li><li><a class="tennis-portal-link" href="tennis-portal.html">Employee Portal <span aria-hidden="true">↗</span></a></li><li><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com" target="_blank" rel="noopener noreferrer">Email us</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year">2026</span> LINKORA SOLUTIONS. All rights reserved.</p><div class="footer-social"><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer" aria-label="Contact LINKORA SOLUTIONS on WhatsApp">WA</a></div></div></div>';
+  if (footer) footer.innerHTML = '<div class="wrap"><div class="footer-grid"><div><div class="logo" style="margin-bottom:14px"><span class="mark"><img src="assets/linkora-mark.png" alt="LINKORA SOLUTION logo"></span><span class="brandname">LINKORA SOLUTION</span></div><p>Practical SEO, link building and content support for businesses building sustainable search visibility.</p></div><div><h5>Services</h5><ul><li><a href="on-page-seo.html" target="_blank" rel="noopener noreferrer">On-Page SEO</a></li><li><a href="services.html#off-page-seo" target="_blank" rel="noopener noreferrer">Off-Page SEO</a></li><li><a href="backlinks.html" target="_blank" rel="noopener noreferrer">Backlinks</a></li><li><a href="guest-posting.html" target="_blank" rel="noopener noreferrer">Guest Posting</a></li><li><a href="gmb.html" target="_blank" rel="noopener noreferrer">Google Business Profile (GMB)</a></li></ul></div><div><h5>More services</h5><ul><li><a href="services.html#blog-writing" target="_blank" rel="noopener noreferrer">Blog Writing</a></li><li><a href="services.html#da-increase" target="_blank" rel="noopener noreferrer">DA Increase</a></li><li><a href="services.html#guest-post-sheet" target="_blank" rel="noopener noreferrer">Guest Post Sites Sheet</a></li><li><a href="services.html#technical-seo" target="_blank" rel="noopener noreferrer">Technical SEO</a></li><li><a href="services.html#web-development" target="_blank" rel="noopener noreferrer">Web Development</a></li><li><a href="services.html#multi-site-seo" target="_blank" rel="noopener noreferrer">12-Website SEO Plan</a></li></ul></div><div><h5>Company</h5><ul><li><a href="about.html" target="_blank" rel="noopener noreferrer">About</a></li><li><a href="blog.html" target="_blank" rel="noopener noreferrer">Blog</a></li><li><a href="careers.html" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="contact.html" target="_blank" rel="noopener noreferrer">Contact</a></li><li><a href="privacy.html" target="_blank" rel="noopener noreferrer">Inquiry Privacy</a></li><li><a class="tennis-portal-link" href="tennis-portal.html">Employee Portal <span aria-hidden="true">↗</span></a></li><li><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com" target="_blank" rel="noopener noreferrer">Email us</a></li></ul></div></div><div class="footer-bottom"><p>© <span class="year">2026</span> LINKORA SOLUTION. All rights reserved.</p><div class="footer-social"><a href="https://wa.me/923216308339" target="_blank" rel="noopener noreferrer" aria-label="Contact LINKORA SOLUTION on WhatsApp">WA</a></div></div></div>';
   // A section link within the current document remains an in-page scroll.
   document.querySelectorAll('a[href]').forEach(function (link) {
     var url = new URL(link.href, location.href);

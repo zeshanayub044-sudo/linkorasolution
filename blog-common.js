@@ -45,6 +45,15 @@
 
   // Posts are plain text with optional # headings and dash lists. Every block
   // uses textContent, so stored markup can never execute in a reader's browser.
+  function inline(host, value) {
+    var pattern = /\[([^\]\n]+)\]\(([^\s)]+(?:\([^\s)]*\)[^\s)]*)?)\)/g, match, cursor = 0;
+    while ((match = pattern.exec(value))) {
+      host.appendChild(document.createTextNode(value.slice(cursor, match.index)));
+      var link = null; try { var url = new URL(match[2], location.href); if (/^https?:$/.test(url.protocol) && !url.username && !url.password) { link = document.createElement('a'); link.href = url.href; link.textContent = match[1]; link.target = '_blank'; link.rel = 'noopener noreferrer'; } } catch (_) { /* unsafe URLs remain plain text */ }
+      host.appendChild(link || document.createTextNode(match[0])); cursor = pattern.lastIndex;
+    }
+    host.appendChild(document.createTextNode(value.slice(cursor)));
+  }
   function renderContent(host, value) {
     host.replaceChildren();
     String(value || '').replace(/\r\n?/g, '\n').split(/\n\s*\n/).forEach(function (block) {
@@ -54,19 +63,19 @@
       if (heading) {
         var level = Math.min(4, heading[1].length + 1);
         var title = document.createElement('h' + level);
-        title.textContent = heading[2];
+        inline(title, heading[2]);
         host.appendChild(title);
       } else if (lines.every(function (line) { return /^-\s+/.test(line); })) {
         var list = document.createElement('ul');
         lines.forEach(function (line) {
           var item = document.createElement('li');
-          item.textContent = line.replace(/^-\s+/, '');
+          inline(item, line.replace(/^-\s+/, ''));
           list.appendChild(item);
         });
         host.appendChild(list);
       } else {
         var paragraph = document.createElement('p');
-        paragraph.textContent = lines.join('\n');
+        inline(paragraph, lines.join('\n'));
         host.appendChild(paragraph);
       }
     });

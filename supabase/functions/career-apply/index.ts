@@ -88,7 +88,7 @@ Deno.serve(async (request) => {
   }
 
   let uploadedPath = '';
-  let service: ReturnType<typeof createClient> | undefined;
+  let service: ReturnType<typeof serviceClient> | undefined;
   let rpcAttempted = false;
   try {
     const form = await request.formData();
@@ -145,7 +145,7 @@ Deno.serve(async (request) => {
         p_resume_path: uploadedPath, p_consent: true,
       });
       if (submitted.error) throw submitted.error;
-      return json(origin, { success: true, message: 'Thank you for sharing your profile with LINKORA SOLUTIONS. Your resume has been received for future opportunities.' }, 201);
+      return json(origin, { success: true, message: 'Thank you for sharing your profile with LINKORA SOLUTION. Your resume has been received for future opportunities.' }, 201);
     }
     const job = await service.from('career_jobs').select('id,status,closes_at').eq('id', jobId).maybeSingle();
     if (job.error) throw job.error;
@@ -179,7 +179,7 @@ Deno.serve(async (request) => {
         const existing = rpcAttempted
           ? await service.from(uploadedPath.startsWith('general/') ? 'career_resume_submissions' : 'career_applications').select('id').eq('resume_path', uploadedPath).maybeSingle()
           : { data: null, error: null };
-        if (existing.data) return json(origin, { success: true, message: uploadedPath.startsWith('general/') ? 'Thank you for sharing your profile with LINKORA SOLUTIONS. Your resume has been received for future opportunities.' : 'Application received. Thank you for applying.' }, 201);
+        if (existing.data) return json(origin, { success: true, message: uploadedPath.startsWith('general/') ? 'Thank you for sharing your profile with LINKORA SOLUTION. Your resume has been received for future opportunities.' : 'Application received. Thank you for applying.' }, 201);
         if (!existing.error) await service.storage.from('career-resumes').remove([uploadedPath]);
       } catch { /* The private file is retained if commit status cannot be verified. */ }
     }

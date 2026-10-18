@@ -23,7 +23,7 @@
     item.content = value || '';
   }
   function notFound(message) {
-    document.title = 'Article not found | LINKORA SOLUTIONS';
+    document.title = 'Article not found | LINKORA SOLUTION';
     var status = document.getElementById('blog-article-status');
     status.textContent = message;
   }
@@ -31,16 +31,16 @@
     var title = post.seo_title || post.title;
     var description = post.seo_description || post.excerpt;
     var url = post.canonical_url || location.origin + '/blog-post.html?slug=' + encodeURIComponent(post.slug);
-    document.title = title + ' | LINKORA SOLUTIONS';
+    document.title = title + ' | LINKORA SOLUTION';
     meta('description', description);
     meta('robots', 'index,follow');
     meta('og:title', title, true);
     meta('og:description', description, true);
     meta('og:url', url, true);
-    meta('og:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-logo.png', true);
+    meta('og:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-mark.png', true);
     meta('twitter:title', title);
     meta('twitter:description', description);
-    meta('twitter:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-logo.png');
+    meta('twitter:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-mark.png');
     var canonical = document.querySelector('link[rel=canonical]') || node('link');
     canonical.rel = 'canonical'; canonical.href = url;
     if (!canonical.parentNode) document.head.appendChild(canonical);
@@ -50,8 +50,8 @@
       '@context': 'https://schema.org', '@type': 'Article', headline: post.title,
       description: description, image: blog.imageUrl(post.featured_image_url) || undefined,
       datePublished: post.published_at, dateModified: post.updated_at,
-      author: { '@type': 'Person', name: author.display_name || 'Linkora team' },
-      publisher: { '@type': 'Organization', name: 'LINKORA SOLUTIONS', logo: { '@type': 'ImageObject', url: location.origin + '/assets/linkora-logo.png' } },
+      author: { '@type': 'Person', name: author.display_name || 'LINKORA SOLUTION editorial team' },
+      publisher: { '@type': 'Organization', name: 'LINKORA SOLUTION', logo: { '@type': 'ImageObject', url: location.origin + '/assets/linkora-mark.png' } },
       mainEntityOfPage: url
     }).replace(/</g, '\\u003c');
     document.head.appendChild(json);
@@ -71,7 +71,7 @@
     var image = blog.imageUrl(post.featured_image_url);
     if (image) {
       var cover = node('img', 'blog-article__image');
-      cover.src = image; cover.alt = post.title;
+      cover.src = image; cover.alt = post.title; cover.width = 1280; cover.height = 720; cover.decoding = 'async';
       article.appendChild(cover);
     }
     var byline = node('div', 'blog-article__author');
@@ -81,7 +81,7 @@
       byline.appendChild(avatar);
     }
     var identity = node('div');
-    identity.appendChild(node('strong', '', author.display_name || 'Linkora team'));
+    identity.appendChild(node('strong', '', author.display_name || 'LINKORA SOLUTION editorial team'));
     if (author.title) identity.appendChild(node('span', '', author.title));
     byline.appendChild(identity);
     article.appendChild(byline);
@@ -100,6 +100,7 @@
       share.appendChild(link);
     });
     article.appendChild(share);
+    var cta = node('a', 'btn btn-gold', 'Discuss Your Project'); cta.href = 'contact.html'; cta.target = '_blank'; cta.rel = 'noopener noreferrer'; article.appendChild(cta);
   }
   async function loadRelated(client, post) {
     var result = await client.from('blog_posts').select('title,slug,excerpt,category,published_at')

@@ -26,7 +26,7 @@
       var picture = element('img');
       picture.src = image;
       picture.alt = '';
-      picture.loading = 'lazy';
+      picture.loading = 'lazy'; picture.decoding = 'async'; picture.width = 640; picture.height = 360;
       imageLink.appendChild(picture);
     } else {
       var fallback = element('span', 'blog-card__fallback');
@@ -48,7 +48,7 @@
     title.appendChild(titleLink);
     body.appendChild(title);
     body.appendChild(element('p', 'blog-card__excerpt', post.excerpt));
-    var author = post.blog_authors && post.blog_authors.display_name || 'Linkora team';
+    var author = post.blog_authors && post.blog_authors.display_name || 'LINKORA SOLUTION editorial team';
     var meta = element('p', 'blog-card__meta', author + ' · ' + blog.formatDate(post.published_at) + ' · ' + post.reading_minutes + ' min read · ' + Number(post.view_count || 0).toLocaleString() + ' views');
     body.appendChild(meta);
     var more = element('a', 'blog-card__more', 'Read article →');
