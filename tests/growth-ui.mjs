@@ -23,8 +23,14 @@ try{
   await page.fill('[name=name]','QA inquiry');await page.fill('[name=email]','qa@example.invalid');await page.fill('[name=message]','A disposable form behavior test.');await page.click('[data-lead-form] button[type=submit]');await page.locator('[data-lead-status]').filter({hasText:'Thank you'}).waitFor();
   assert.equal(saved.utm.utm_source,'growth-qa');assert.equal(saved.service,'Backlinks');assert.equal(saved.source_page,'/contact.html');assert.ok(saved.requestId);
   const events=await page.evaluate(()=>events);assert.deepEqual(events.map(e=>e.name),['lead_form_start','lead_form_submit','lead_form_success']);assert.equal(JSON.stringify(events).includes('qa@example.invalid'),false);assert.equal(await page.locator('[data-linkora-analytics]').count(),0);
+  await page.goto(base+'/index.html?utm_source=cross-tab-qa&utm_campaign=handoff');
+  if(width<600)await page.click('.nav-toggle');
+  const popupEvent=context.waitForEvent('page');await page.locator('nav.links > a').filter({hasText:'Contact'}).click();const popup=await popupEvent;await popup.waitForLoadState();
+  assert.equal(new URL(popup.url()).searchParams.get('utm_source'),'cross-tab-qa');assert.equal(await popup.evaluate(()=>window.opener),null);assert.equal(await popup.locator('[name=service]').count(),1);await popup.close();
+  assert.equal(await page.locator('a.tennis-portal-link').getAttribute('href'),'tennis-portal.html');
   // Public CMS renderer supports useful links without executing stored markup or unsafe URLs.
   await page.addScriptTag({path:'blog-common.js'});const result=await page.evaluate(()=>{const host=document.createElement('div');document.body.append(host);LinkoraBlog.renderContent(host,'# Test heading\n\nA [safe](backlinks.html) reference. <img src=x onerror=alert(1)>\n\n[unsafe](javascript:alert(1))');return {links:host.querySelectorAll('a').length,images:host.querySelectorAll('img').length,text:host.textContent,url:host.querySelector('a')?.href}});assert.equal(result.links,1);assert.equal(result.images,0);assert.ok(result.url.endsWith('/backlinks.html'));
+  const localLink=await page.evaluate(()=>{const host=document.createElement('div');LinkoraBlog.renderContent(host,'[Local quote](contact.html?service=Google%20Business%20Profile%20(GMB))');return host.querySelector('a')?.href});assert.equal(new URL(localLink).searchParams.get('service'),'Google Business Profile (GMB)');
   assert.deepEqual(errors,[]);await context.close();
  }
  if(out)writeFileSync(resolve(out,'mobile-desktop-metrics.json'),JSON.stringify(report,null,2));

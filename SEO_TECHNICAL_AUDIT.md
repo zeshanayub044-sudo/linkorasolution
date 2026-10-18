@@ -10,7 +10,7 @@ Important static public pages have one H1, a title, description, canonical, Open
 
 ## Blog and Careers
 
-Blog articles are rendered from the existing public API with `status=published`, title, excerpt, author, dates, featured image, SEO fields, canonical and Article JSON-LD. Initial/missing/unpublished article templates remain noindex. Published articles switch to index/follow after a successful published-row response. Google must render JavaScript for this architecture; no server-rendered social-card response or guaranteed Google indexing is claimed. Careers retains its existing JobPosting metadata and open-job filtering.
+Blog articles are rendered from the existing public API with `status=published`, title, excerpt, author, dates, featured image, SEO fields, canonical and Article JSON-LD. Initial/missing/unpublished article templates remain noindex. Published articles switch to index/follow after a successful published-row response. Google must render JavaScript for this architecture; no server-rendered social-card response or guaranteed Google indexing is claimed. Careers retains its existing JobPosting metadata and open-job filtering. Blog post rows in draft state remain private; the existing blog-images bucket is public, so uploaded images are public assets even before a post is published. Do not use it for confidential drafts or client evidence.
 
 `scripts/update-blog-sitemap.mjs` reads only published slugs through the browser-safe API and refreshes Blog URLs in the public sitemap. Run it after publication/unpublication and publish the reviewed sitemap through the repository workflow. The current architecture has no authenticated CMS-to-GitHub rebuild webhook; automatic immediate sitemap synchronization remains a configuration/automation gap. Drafts are never read by this tool. Prepared editorial source JSON is excluded from the Pages build using `_config.yml`; the public GitHub repository is not a confidential draft store.
 
@@ -34,8 +34,8 @@ Blog articles are rendered from the existing public API with `status=published`,
 | `/guest-posting.html` | Static | Service, BreadcrumbList, Organization, WebSite | Full content/FAQ/lead form |
 | `/on-page-seo.html` | Static | Service, BreadcrumbList, Organization, WebSite | Existing package prices preserved |
 | `/gmb.html` | Static | Service, BreadcrumbList, Organization, WebSite | Accurate local-service scope and FAQs |
-| `/blog.html` | Static listing metadata | Organization, WebSite | Live empty state at initial audit; article acceptance follows CMS publication |
-| `/blog-post.html?slug=...` | Dynamic published metadata; noindex otherwise | Article | Published-only API; safe links; CTA; real CMS acceptance recorded separately |
+| `/blog.html` | Static listing metadata | Organization, WebSite | Three real articles listed; desktop/mobile rendering verified |
+| `/blog-post.html?slug=...` | Dynamic published metadata; noindex otherwise | Article | Published-only API; safe links; CTA; real CMS acceptance passed; see CONTENT_STRATEGY.md |
 | `/careers.html` | Static listing metadata | Organization, WebSite | Existing applications preserved; event contains no applicant details |
 | `/career-job.html?slug=...` | Existing dynamic open-job metadata | JobPosting | Existing secure application flow retained |
 | `/privacy.html` | Static | Organization, WebSite | Inquiry/analytics data notice |

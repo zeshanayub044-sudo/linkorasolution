@@ -33,7 +33,7 @@ Repository syntax/link/conflict/secret validation, Deno handler validation and S
 
 Browser QA covers 1366px/390px public pages, H1/canonical/schema parsing, navigation protection, form success, UTM and privacy-safe event signals, plus existing Employee/Admin recording regressions using synthetic identities. Tests do not prove real-user Core Web Vitals or fresh real employee/recording acceptance.
 
-Blog publication and final deployment results are recorded in CONTENT_STRATEGY.md and SEO_TECHNICAL_AUDIT.md after live acceptance. Do not infer successful CMS publication merely from prepared JSON files.
+Three articles were created and published through the real CMS; editing, draft privacy, unpublication/republishing, featured-image upload and logout passed. See CONTENT_STRATEGY.md for evidence and exact limits. PR #17 merged as 6ecfd0b0debce177c359bb60dd84e61808f3c2a0 and its Pages deployment succeeded. Follow-up acceptance/sitemap changes use the same validated publishing lifecycle. A OneDrive checkout lock was recovered using a preservation stash and a clean fast-forward; no unique work was discarded.
 
 ## Owner input and next priorities
 

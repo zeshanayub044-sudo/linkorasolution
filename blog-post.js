@@ -50,7 +50,7 @@
       '@context': 'https://schema.org', '@type': 'Article', headline: post.title,
       description: description, image: blog.imageUrl(post.featured_image_url) || undefined,
       datePublished: post.published_at, dateModified: post.updated_at,
-      author: { '@type': 'Person', name: author.display_name || 'LINKORA SOLUTION editorial team' },
+      author: { '@type': (!author.display_name || author.display_name === 'LINKORA SOLUTION') ? 'Organization' : 'Person', name: author.display_name || 'LINKORA SOLUTION editorial team' },
       publisher: { '@type': 'Organization', name: 'LINKORA SOLUTION', logo: { '@type': 'ImageObject', url: location.origin + '/assets/linkora-mark.png' } },
       mainEntityOfPage: url
     }).replace(/</g, '\\u003c');
