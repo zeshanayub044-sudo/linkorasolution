@@ -100,7 +100,7 @@
       });
       var result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Your resume could not be sent.');
-      generalForm.reset(); feedback.textContent = result.message || 'Thank you for sharing your profile. Your resume has been received for future opportunities.'; feedback.dataset.kind = 'success';
+      window.LinkoraMarketing?.track('career_application', 'career'); generalForm.reset(); feedback.textContent = result.message || 'Thank you for sharing your profile. Your resume has been received for future opportunities.'; feedback.dataset.kind = 'success';
     } catch (error) { feedback.textContent = error.message || 'Your resume could not be sent. Please try again.'; feedback.dataset.kind = 'error'; }
     finally { button.disabled = false; }
   });

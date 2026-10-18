@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["enabled", "testimonials", "caseStudies", "portfolio"],
+  "properties": {
+    "enabled": {"type": "boolean"},
+    "testimonials": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+    "caseStudies": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+    "portfolio": {"type": "array", "items": {"$ref": "#/$defs/entry"}}
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["name", "summary", "evidence", "verified", "approvedForPublication"],
+      "properties": {
+        "name": {"type": "string"}, "industry": {"type": "string"},
+        "challenge": {"type": "string"}, "workPerformed": {"type": "string"},
+        "strategy": {"type": "string"}, "results": {"type": "string"},
+        "timePeriod": {"type": "string"}, "summary": {"type": "string"},
+        "servicesUsed": {"type": "array", "items": {"type": "string"}},
+        "evidence": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "verified": {"const": true}, "approvedForPublication": {"const": true}
+      }
+    }
+  }
+}

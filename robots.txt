@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+# Private/admin pages carry noindex; authorization is enforced by the backend.
 Sitemap: https://linkorasolution.com/sitemap.xml

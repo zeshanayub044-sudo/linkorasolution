@@ -1,0 +1,176 @@
+[
+  {
+    "slug": "backlinks",
+    "name": "Backlink Outreach Services",
+    "service": "Backlinks",
+    "title": "Relevant backlinks start with a relevant strategy.",
+    "description": "Plan contextual backlink outreach around audience fit, editorial quality and transparent reporting. Discuss your link-building goals with LINKORA SOLUTION.",
+    "intro": "Build a focused outreach plan that connects useful resources with relevant websites. We assess opportunities in context rather than selling an authority score as a business result.",
+    "problem": "A long list of links can hide poor relevance, weak editorial standards and pages nobody uses. A useful campaign begins with the pages you want to support, the audience you want to reach and the resources worth referencing.",
+    "overview": "We review your existing link profile and competitor link gaps, map target pages, and prioritize relevant outreach opportunities. Publisher decisions remain independent; availability and final placement terms are agreed within the project scope.",
+    "deliverables": [
+      "Baseline link-profile and competitor link-gap review",
+      "Target-page and natural anchor-text recommendations",
+      "Opportunity shortlist assessed for topic relevance, editorial standards and link quality",
+      "Outreach and placement tracker with live URLs, link attributes and delivery notes",
+      "Reporting that distinguishes completed work, referral opportunities and remaining risks"
+    ],
+    "process": [
+      "Discover — confirm target audience, goals, pages and existing links.",
+      "Plan — agree relevance criteria, anchor-text guardrails and an outreach scope.",
+      "Execute — approach suitable publishers and review proposed references in context.",
+      "Review — report accepted placements, exclusions and next priorities."
+    ],
+    "benefits": "A clear quality framework makes it easier to evaluate opportunities and avoid paying for volume that does not support your business. Contextual links can help readers discover useful resources; no ranking increase or placement outcome is guaranteed.",
+    "audience": "For agencies, SaaS teams, eCommerce brands, professional services and publishers with useful pages to promote. Sites with unresolved crawl, content or conversion issues may benefit from on-page work first.",
+    "faq": [
+      [
+        "Do higher authority scores always mean better links?",
+        "No. Third-party metrics are screening signals. Topic relevance, editorial standards, actual page quality and the nature of the link all matter."
+      ],
+      [
+        "Do you guarantee Google rankings?",
+        "No. Search performance depends on many factors outside an outreach campaign. We agree measurable deliverables and report the work performed."
+      ],
+      [
+        "How are paid placements handled?",
+        "Any sponsorship or paid placement should be disclosed and use appropriate sponsored or nofollow link attributes. Buying ranking credit is not a compliant strategy."
+      ],
+      [
+        "How much does the service cost?",
+        "Request a scoped quote. The existing package overview remains on our Services page; no new backlink price is asserted here."
+      ]
+    ]
+  },
+  {
+    "slug": "guest-posting",
+    "name": "Guest Posting Services",
+    "service": "Guest Posting",
+    "title": "Useful editorial content. Relevant placement opportunities.",
+    "description": "Explore niche-relevant guest posting with editorial content, publisher selection, outreach and placement reporting from LINKORA SOLUTION.",
+    "intro": "Connect a useful story with an appropriate publication. Our guest-posting scope brings research, content development, outreach and quality checks into one clear process.",
+    "problem": "A placement is not valuable simply because it contains a link. Generic articles, unrelated audiences and unclear commercial terms can waste a content budget. The right question is whether a publication and proposed article make sense for your readers.",
+    "overview": "We define the audience and topic, review suitable publications, prepare an editorial brief and manage agreed outreach. Editors decide what they accept. We do not claim access to an exclusive publisher network or promise publication on a named website.",
+    "deliverables": [
+      "Audience and topic brief aligned with your service and expertise",
+      "Publisher shortlist with relevance and editorial-quality notes",
+      "Original article draft and an agreed review process",
+      "Contextual reference and anchor-text recommendations",
+      "Placement report with published URL, relevant link attributes and scope notes"
+    ],
+    "process": [
+      "Brief — establish goals, subject expertise, audience and approval requirements.",
+      "Select — evaluate publication fit, content quality and commercial terms.",
+      "Create — prepare useful content and revise it against the agreed brief.",
+      "Pitch and report — approach editors and document accepted publication outcomes."
+    ],
+    "benefits": "Thoughtful guest content can introduce your expertise to a relevant audience and provide reusable material for your content program. Reporting makes publication outcomes visible without inventing traffic or ranking gains.",
+    "audience": "For agencies, professional services, SaaS businesses, eCommerce teams and subject experts with something useful to contribute. Content should reflect real knowledge and receive approval from your team before submission.",
+    "faq": [
+      [
+        "Can I approve the topic and publication?",
+        "Approval points can be included in the agreed project scope. Confirm publisher criteria, content ownership, edits and commercial terms before work begins."
+      ],
+      [
+        "Are placements guaranteed?",
+        "Editorial decisions and publication schedules belong to publishers. Your proposal should distinguish outreach activity from any explicitly agreed placement deliverables."
+      ],
+      [
+        "Will links always be followed?",
+        "No. Publishers set editorial policies, and paid placements should use sponsored or nofollow attributes. We do not promise ranking credit."
+      ],
+      [
+        "What does a placement report include?",
+        "The published URL, topic, relevant link attributes and delivery notes. Any audience or performance figures should have an identified source."
+      ]
+    ]
+  },
+  {
+    "slug": "on-page-seo",
+    "name": "On-Page SEO Services",
+    "service": "On-Page SEO",
+    "title": "Help search engines understand your pages—and visitors choose you.",
+    "description": "On-page SEO covering keyword mapping, titles, content, headings, internal links, schema and performance review. Explore LINKORA SOLUTION services.",
+    "intro": "Turn a collection of pages into a clearer search and conversion journey. Prioritize work around search intent, useful content and the next step you want a visitor to take.",
+    "problem": "Pages can attract the wrong searches, compete with each other or bury the information a customer needs. Changing titles alone rarely fixes an unclear page purpose or a weak internal journey.",
+    "overview": "We review important pages, map keywords to intent and recommend practical improvements to content, headings, metadata, links and technical presentation. The scope distinguishes recommendations from implementation and accounts for your CMS and approval process.",
+    "deliverables": [
+      "Keyword-to-page map and competitor content review",
+      "Title tags, meta descriptions and logical heading recommendations",
+      "Content improvements matched to user intent and conversion goals",
+      "Internal-link, URL and image-optimization recommendations",
+      "Applicable structured-data review and Core Web Vitals assessment",
+      "Prioritized implementation and validation checklist"
+    ],
+    "process": [
+      "Audit — identify page purpose, current content gaps and implementation constraints.",
+      "Map — assign search intent and a primary focus to each target page.",
+      "Improve — update or recommend copy, metadata, links and structured data.",
+      "Validate — check rendered pages, crawlability and the agreed implementation list."
+    ],
+    "benefits": "Clearer page purpose and structure help visitors assess your service and help search engines interpret your content. The aim is improved relevance and a more useful conversion path, without promising a particular ranking or revenue result.",
+    "audience": "For local businesses, eCommerce stores, SaaS teams, agencies and service companies. It is particularly useful after a redesign, when new services launch or when important pages overlap in search intent.",
+    "faq": [
+      [
+        "Which packages already exist?",
+        "The Services page lists Starter at PKR 15,000 one-time, Growth at PKR 35,000 one-time, and Authority at PKR 70,000 one-time or PKR 25,000/month. Confirm scope and suitability before ordering."
+      ],
+      [
+        "Does on-page SEO include development?",
+        "Only if agreed in the scope. Confirm which fixes will be implemented, which are recommendations and who approves changes in your CMS."
+      ],
+      [
+        "Do meta descriptions directly guarantee more traffic?",
+        "No. They describe a page for searchers, and search engines may show different snippets. Relevance, competition and many other factors affect traffic."
+      ],
+      [
+        "How do you measure progress?",
+        "Use an agreed baseline and review completed changes alongside relevant search queries, qualified visits and conversion behavior. Measurement depends on approved access to your tools."
+      ]
+    ]
+  },
+  {
+    "slug": "gmb",
+    "name": "Google Business Profile (GMB) Optimization",
+    "service": "Google Business Profile (GMB)",
+    "title": "Make your local business information clear and useful.",
+    "description": "Google Business Profile optimization covering categories, services, images, posts, citation consistency and review guidance from LINKORA SOLUTION.",
+    "intro": "Help local customers understand what you offer, where you operate and how to contact you. Start with accurate information and a profile that reflects your real business.",
+    "problem": "Inconsistent contact details, unclear services or outdated photos can make it harder for customers to choose a business. Local visibility is also affected by factors an agency cannot control, including the searcher’s location and competition.",
+    "overview": "We review profile completeness, business details, category fit, services, images and posts. Recommendations should reflect Google’s eligibility rules and your actual operations. We can guide review requests; we cannot control customer opinions or guarantee Google Maps positions.",
+    "deliverables": [
+      "Profile and eligibility review based on your actual business",
+      "Business information, category, service and description recommendations",
+      "Local keyword and citation-consistency review",
+      "Photo and post planning using approved business assets",
+      "Authentic review-request and response guidance",
+      "Prioritized local visibility and inquiry-tracking recommendations"
+    ],
+    "process": [
+      "Confirm — verify business details, eligibility and appropriate owner-managed access.",
+      "Audit — assess the profile and consistency of publicly listed information.",
+      "Optimize — implement approved categories, service descriptions and assets.",
+      "Maintain — review updates, customer questions and the agreed performance signals."
+    ],
+    "benefits": "Accurate, well-maintained information supports customer confidence and can make calls, directions and website visits easier. No guaranteed Maps position, review score or lead count is implied.",
+    "audience": "For eligible local businesses and service-area businesses, including professional services, retail and local operators. Virtual-only businesses should confirm eligibility before investing in profile work.",
+    "faq": [
+      [
+        "Can you guarantee a top-three Maps position?",
+        "No. Google’s local results depend on relevance, distance and prominence, among other factors. We focus on accurate information and useful profile improvements."
+      ],
+      [
+        "Will I retain ownership of my profile?",
+        "You should retain ownership and grant only the access needed for agreed work. Do not share your Google password with an agency."
+      ],
+      [
+        "Can you remove negative reviews or create positive ones?",
+        "No. We provide guidance for authentic review requests and appropriate responses. Ineligible content can be reported through Google’s process, but removal is not guaranteed."
+      ],
+      [
+        "Is Google Business Profile different from GMB?",
+        "Google Business Profile is the current product name. GMB is the older Google My Business abbreviation that many businesses still use."
+      ]
+    ]
+  }
+]
