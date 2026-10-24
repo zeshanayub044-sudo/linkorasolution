@@ -3,3 +3,5 @@ portal-config.js
 .env.*
 !.env.example
 supabase/.temp/
+
+_site/

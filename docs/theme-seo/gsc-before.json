@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-24",
+  "property": "sc-domain:linkorasolution.com",
+  "pageIndexing": {
+    "lastUpdated": "2026-10-16",
+    "indexed": 1,
+    "notIndexed": 5,
+    "canonicalAlternates": [
+      "http://linkorasolution.com/index.html",
+      "https://linkorasolution.com/index.html",
+      "http://linkorasolution.com/"
+    ],
+    "redirects": [
+      "https://www.linkorasolution.com/",
+      "http://www.linkorasolution.com/"
+    ]
+  },
+  "sitemaps": {
+    "submittedHtmlPages": [
+      "https://linkorasolution.com/blog.html",
+      "http://linkorasolution.com/blog-post.html?slug=what-is-seo-a-complete-guide-to-ranking-on-google"
+    ],
+    "submitted": "2026-10-20",
+    "lastRead": "2026-10-22",
+    "eachStatus": "1 error; Unknown type; 0 discovered pages",
+    "xmlSitemapSubmitted": false
+  },
+  "aboutInspection": {
+    "url": "https://linkorasolution.com/about.html",
+    "status": "URL is not on Google; URL is unknown to Google",
+    "sitemap": "No referring sitemaps detected",
+    "referrer": "None detected",
+    "lastCrawl": "N/A"
+  },
+  "fieldVitals": "No data for mobile or desktop in GSC overview",
+  "githubPages": {
+    "source": "Deploy from a branch: main / root",
+    "domain": "linkorasolution.com",
+    "dnsCheck": "successful",
+    "httpsEnforcement": "Disabled/unavailable: UI says domain is not properly configured to support HTTPS. Live HTTPS works; HTTP still returns 200 in baseline. No DNS changes made."
+  }
+}

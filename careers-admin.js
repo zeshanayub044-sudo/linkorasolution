@@ -328,8 +328,6 @@
   document.getElementById('career-resume-filter').addEventListener('change', renderResumes);
   document.getElementById('career-resume-refresh').addEventListener('click', refresh);
   document.getElementById('career-refresh').addEventListener('click', refresh);
-  var toggle = document.querySelector('.nav-toggle'), links = document.querySelector('nav.links');
-  toggle.addEventListener('click', function () { links.classList.toggle('open'); toggle.setAttribute('aria-expanded', String(links.classList.contains('open'))); });
   document.querySelector('.year').textContent = new Date().getFullYear();
   try {
     client = career.createClient(true);

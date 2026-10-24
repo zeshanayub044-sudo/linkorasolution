@@ -1,0 +1,1194 @@
+{
+  "date": "2026-10-24",
+  "pages": [
+    {
+      "file": "about.html",
+      "url": "https://linkorasolution.com/about.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/about.html",
+      "xRobots": null,
+      "title": "About LINKORA SOLUTION | Our SEO Approach",
+      "description": "Learn about LINKORA SOLUTION and our practical, transparent approach to SEO, content and authority building.",
+      "canonical": "https://linkorasolution.com/about.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "https://linkorasolution.com/about.html",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#guest-post-sheet",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339",
+        "https://wa.me/923216308339",
+        "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com"
+      ]
+    },
+    {
+      "file": "attendance-admin.html",
+      "url": "https://linkorasolution.com/attendance-admin.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/attendance-admin.html",
+      "xRobots": null,
+      "title": "Attendance Admin | LINKORA SOLUTION",
+      "description": "",
+      "canonical": "",
+      "robots": "noindex, nofollow",
+      "h1": 2,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "assets/favicon.ico?v=2",
+        "attendance-admin.css?v=5",
+        "tennis-portal.html",
+        "tennis-portal.html",
+        "index.html",
+        "tennis-portal.html"
+      ]
+    },
+    {
+      "file": "attendance.html",
+      "url": "https://linkorasolution.com/attendance.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/attendance.html",
+      "xRobots": null,
+      "title": "Staff Sign In | LINKORA SOLUTION",
+      "description": "Secure LINKORA SOLUTION staff sign-in and activity log.",
+      "canonical": "",
+      "robots": "noindex, nofollow",
+      "h1": 1,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=2",
+        "tennis-portal.css?v=3",
+        "tennis-portal.html"
+      ]
+    },
+    {
+      "file": "backlinks.html",
+      "url": "https://linkorasolution.com/backlinks.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/backlinks.html",
+      "xRobots": null,
+      "title": "Backlink Outreach Services | LINKORA SOLUTION",
+      "description": "Plan contextual backlink outreach around audience fit, editorial quality and transparent reporting. Discuss your link-building goals with LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/backlinks.html",
+      "robots": "index,follow",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Service",
+              "name": "Backlink Outreach Services",
+              "description": "Plan contextual backlink outreach around audience fit, editorial quality and transparent reporting. Discuss your link-building goals with LINKORA SOLUTION.",
+              "url": "https://linkorasolution.com/backlinks.html",
+              "provider": {
+                "@type": "Organization",
+                "name": "LINKORA SOLUTION",
+                "url": "https://linkorasolution.com/"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://linkorasolution.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": "https://linkorasolution.com/services.html"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Backlink Outreach Services",
+                  "item": "https://linkorasolution.com/backlinks.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "https://linkorasolution.com/backlinks.html",
+        "assets/favicon.ico?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "styles.css?v=7",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "#request-quote",
+        "services.html",
+        "about.html",
+        "services.html",
+        "privacy.html",
+        "https://wa.me/923216308339?text=Hello%20LINKORA%20SOLUTION%2C%20I%20would%20like%20to%20discuss%20Backlinks.",
+        "guest-posting.html",
+        "on-page-seo.html",
+        "gmb.html"
+      ]
+    },
+    {
+      "file": "blog-admin.html",
+      "url": "https://linkorasolution.com/blog-admin.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/blog-admin.html",
+      "xRobots": null,
+      "title": "Blog Editor | LINKORA SOLUTION",
+      "description": "",
+      "canonical": "",
+      "robots": "noindex,nofollow",
+      "h1": 1,
+      "schemas": [],
+      "initialArticleContent": true,
+      "initialLinks": [
+        "styles.css?v=2",
+        "blog.css?v=3",
+        "assets/favicon.ico?v=2",
+        "index.html",
+        "index.html",
+        "blog.html",
+        "contact.html",
+        "blog.html"
+      ]
+    },
+    {
+      "file": "blog-post.html",
+      "url": "https://linkorasolution.com/blog-post.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/blog-post.html",
+      "xRobots": null,
+      "title": "Article | LINKORA SOLUTION",
+      "description": "Read practical SEO insights from LINKORA SOLUTION.",
+      "canonical": "",
+      "robots": "noindex,follow",
+      "h1": 0,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "blog.css?v=3",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "blog.html",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339"
+      ]
+    },
+    {
+      "file": "blog.html",
+      "url": "https://linkorasolution.com/blog.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/blog.html",
+      "xRobots": null,
+      "title": "SEO Insights | LINKORA SOLUTION Blog",
+      "description": "Practical SEO, link building and digital growth insights from LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/blog.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "blog.css?v=3",
+        "https://linkorasolution.com/blog.html",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "blog-admin.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20an%20SEO%20strategy%20for%20my%20website.",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339"
+      ]
+    },
+    {
+      "file": "career-job.html",
+      "url": "https://linkorasolution.com/career-job.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/career-job.html",
+      "xRobots": null,
+      "title": "Career opportunity | LINKORA SOLUTION",
+      "description": "View a career opportunity and apply to LINKORA SOLUTION.",
+      "canonical": "",
+      "robots": "noindex,follow",
+      "h1": 0,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "careers.css?v=1",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "careers.html",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html"
+      ]
+    },
+    {
+      "file": "careers-admin.html",
+      "url": "https://linkorasolution.com/careers-admin.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/careers-admin.html",
+      "xRobots": null,
+      "title": "Careers Admin | LINKORA SOLUTION",
+      "description": "",
+      "canonical": "",
+      "robots": "noindex,nofollow",
+      "h1": 1,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=2",
+        "careers.css?v=2",
+        "assets/favicon.ico?v=2",
+        "index.html",
+        "index.html",
+        "careers.html",
+        "careers.html"
+      ]
+    },
+    {
+      "file": "careers.html",
+      "url": "https://linkorasolution.com/careers.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/careers.html",
+      "xRobots": null,
+      "title": "Careers at LINKORA SOLUTION | Open Roles",
+      "description": "Explore open roles at LINKORA SOLUTION and apply to join our digital growth and SEO team.",
+      "canonical": "https://linkorasolution.com/careers.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "https://linkorasolution.com/careers.html",
+        "styles.css?v=7",
+        "careers.css?v=3",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "careers-admin.html",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html"
+      ]
+    },
+    {
+      "file": "contact.html",
+      "url": "https://linkorasolution.com/contact.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/contact.html",
+      "xRobots": null,
+      "title": "Contact LINKORA SOLUTION | Get a Free SEO Audit",
+      "description": "Contact LINKORA SOLUTION by WhatsApp or email to discuss your website and request a free SEO audit.",
+      "canonical": "https://linkorasolution.com/contact.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "https://linkorasolution.com/contact.html",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "https://wa.me/923216308339",
+        "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com",
+        "privacy.html",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#guest-post-sheet",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339",
+        "https://wa.me/923216308339",
+        "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com"
+      ]
+    },
+    {
+      "file": "gmb.html",
+      "url": "https://linkorasolution.com/gmb.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/gmb.html",
+      "xRobots": null,
+      "title": "Google Business Profile (GMB) Optimization | LINKORA SOLUTION",
+      "description": "Google Business Profile optimization covering categories, services, images, posts, citation consistency and review guidance from LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/gmb.html",
+      "robots": "index,follow",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Service",
+              "name": "Google Business Profile (GMB) Optimization",
+              "description": "Google Business Profile optimization covering categories, services, images, posts, citation consistency and review guidance from LINKORA SOLUTION.",
+              "url": "https://linkorasolution.com/gmb.html",
+              "provider": {
+                "@type": "Organization",
+                "name": "LINKORA SOLUTION",
+                "url": "https://linkorasolution.com/"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://linkorasolution.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": "https://linkorasolution.com/services.html"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Google Business Profile (GMB) Optimization",
+                  "item": "https://linkorasolution.com/gmb.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "https://linkorasolution.com/gmb.html",
+        "assets/favicon.ico?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "styles.css?v=7",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "#request-quote",
+        "services.html",
+        "about.html",
+        "services.html",
+        "privacy.html",
+        "https://wa.me/923216308339?text=Hello%20LINKORA%20SOLUTION%2C%20I%20would%20like%20to%20discuss%20Google%20Business%20Profile%20(GMB).",
+        "backlinks.html",
+        "guest-posting.html",
+        "on-page-seo.html"
+      ]
+    },
+    {
+      "file": "guest-posting.html",
+      "url": "https://linkorasolution.com/guest-posting.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/guest-posting.html",
+      "xRobots": null,
+      "title": "Guest Posting Services | LINKORA SOLUTION",
+      "description": "Explore niche-relevant guest posting with editorial content, publisher selection, outreach and placement reporting from LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/guest-posting.html",
+      "robots": "index,follow",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Service",
+              "name": "Guest Posting Services",
+              "description": "Explore niche-relevant guest posting with editorial content, publisher selection, outreach and placement reporting from LINKORA SOLUTION.",
+              "url": "https://linkorasolution.com/guest-posting.html",
+              "provider": {
+                "@type": "Organization",
+                "name": "LINKORA SOLUTION",
+                "url": "https://linkorasolution.com/"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://linkorasolution.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": "https://linkorasolution.com/services.html"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Guest Posting Services",
+                  "item": "https://linkorasolution.com/guest-posting.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "https://linkorasolution.com/guest-posting.html",
+        "assets/favicon.ico?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "styles.css?v=7",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "#request-quote",
+        "services.html",
+        "about.html",
+        "services.html",
+        "privacy.html",
+        "https://wa.me/923216308339?text=Hello%20LINKORA%20SOLUTION%2C%20I%20would%20like%20to%20discuss%20Guest%20Posting.",
+        "backlinks.html",
+        "on-page-seo.html",
+        "gmb.html"
+      ]
+    },
+    {
+      "file": "index.html",
+      "url": "https://linkorasolution.com/",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/",
+      "xRobots": null,
+      "title": "LINKORA SOLUTION | SEO & Web Development",
+      "description": "LINKORA SOLUTION builds business-focused websites and provides white-hat SEO, local search, content, and multi-site SEO management for growing businesses.",
+      "canonical": "https://linkorasolution.com/",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "https://linkorasolution.com/",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "services.html",
+        "gmb.html",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "contact.html",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "gmb.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#guest-post-sheet",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339",
+        "https://wa.me/923216308339",
+        "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com"
+      ]
+    },
+    {
+      "file": "on-page-seo.html",
+      "url": "https://linkorasolution.com/on-page-seo.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/on-page-seo.html",
+      "xRobots": null,
+      "title": "On-Page SEO Services | LINKORA SOLUTION",
+      "description": "On-page SEO covering keyword mapping, titles, content, headings, internal links, schema and performance review. Explore LINKORA SOLUTION services.",
+      "canonical": "https://linkorasolution.com/on-page-seo.html",
+      "robots": "index,follow",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Service",
+              "name": "On-Page SEO Services",
+              "description": "On-page SEO covering keyword mapping, titles, content, headings, internal links, schema and performance review. Explore LINKORA SOLUTION services.",
+              "url": "https://linkorasolution.com/on-page-seo.html",
+              "provider": {
+                "@type": "Organization",
+                "name": "LINKORA SOLUTION",
+                "url": "https://linkorasolution.com/"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://linkorasolution.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": "https://linkorasolution.com/services.html"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "On-Page SEO Services",
+                  "item": "https://linkorasolution.com/on-page-seo.html"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "https://linkorasolution.com/on-page-seo.html",
+        "assets/favicon.ico?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "site.webmanifest?v=3",
+        "styles.css?v=7",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "#request-quote",
+        "services.html",
+        "about.html",
+        "services.html",
+        "privacy.html",
+        "https://wa.me/923216308339?text=Hello%20LINKORA%20SOLUTION%2C%20I%20would%20like%20to%20discuss%20On-Page%20SEO.",
+        "backlinks.html",
+        "guest-posting.html",
+        "gmb.html"
+      ]
+    },
+    {
+      "file": "privacy.html",
+      "url": "https://linkorasolution.com/privacy.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/privacy.html",
+      "xRobots": null,
+      "title": "Inquiry Data & Privacy | LINKORA SOLUTION",
+      "description": "How LINKORA SOLUTION handles website inquiries, campaign attribution and optional marketing analytics.",
+      "canonical": "https://linkorasolution.com/privacy.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "https://linkorasolution.com/privacy.html",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "/cdn-cgi/l/email-protection#adc1c4c3c6c2dfccdec8c2dec2c1d8d9c4c2c3deedcac0ccc4c183cec2c0"
+      ]
+    },
+    {
+      "file": "services.html",
+      "url": "https://linkorasolution.com/services.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/services.html",
+      "xRobots": null,
+      "title": "SEO, Web Development & Digital Growth Services | LINKORA SOLUTION",
+      "description": "Explore web development, white-hat SEO, and the 12-Website Monthly SEO Plan alongside LINKORA SOLUTION' existing search and digital growth services.",
+      "canonical": "https://linkorasolution.com/services.html",
+      "robots": "",
+      "h1": 1,
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://linkorasolution.com/#organization",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "email": "linkoraseosolutions@gmail.com",
+              "telephone": "+923216308339",
+              "logo": "https://linkorasolution.com/assets/linkora-mark.png"
+            },
+            {
+              "@type": "WebSite",
+              "name": "LINKORA SOLUTION",
+              "url": "https://linkorasolution.com/",
+              "publisher": {
+                "@id": "https://linkorasolution.com/#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=7",
+        "https://linkorasolution.com/services.html",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=3",
+        "growth.css?v=1",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "index.html",
+        "index.html",
+        "services.html",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "contact.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20SEO%20for%20my%20website.",
+        "on-page-seo.html",
+        "backlinks.html",
+        "guest-posting.html",
+        "contact.html?service=Guest%20Posting",
+        "gmb.html",
+        "https://wa.me/923216308339?text=Hi%20LINKORA%20SOLUTION%2C%20I%27d%20like%20to%20book%20a%20meeting%20to%20discuss%20which%20SEO%20service%20fits%20my%20website.",
+        "on-page-seo.html",
+        "services.html#off-page-seo",
+        "backlinks.html",
+        "guest-posting.html",
+        "gmb.html",
+        "services.html#blog-writing",
+        "services.html#da-increase",
+        "services.html#guest-post-sheet",
+        "services.html#technical-seo",
+        "services.html#web-development",
+        "services.html#multi-site-seo",
+        "blog.html",
+        "careers.html",
+        "about.html",
+        "contact.html",
+        "https://wa.me/923216308339",
+        "https://wa.me/923216308339",
+        "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=linkoraseosolutions%40gmail.com"
+      ]
+    },
+    {
+      "file": "tennis-portal.html",
+      "url": "https://linkorasolution.com/tennis-portal.html",
+      "http": 200,
+      "finalUrl": "https://linkorasolution.com/tennis-portal.html",
+      "xRobots": null,
+      "title": "Employee Portal | LINKORA SOLUTION",
+      "description": "",
+      "canonical": "",
+      "robots": "noindex, nofollow",
+      "h1": 1,
+      "schemas": [],
+      "initialArticleContent": false,
+      "initialLinks": [
+        "styles.css?v=2",
+        "tennis-portal.css?v=7",
+        "assets/favicon.ico?v=2",
+        "assets/favicon-32x32.png?v=2",
+        "assets/favicon-16x16.png?v=2",
+        "assets/apple-touch-icon.png?v=2",
+        "assets/android-chrome-192x192.png?v=2",
+        "assets/android-chrome-512x512.png?v=2",
+        "site.webmanifest?v=2",
+        "index.html",
+        "attendance-admin.html",
+        "attendance-admin.html"
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "url": "http://linkorasolution.com/about.html",
+      "status": 200,
+      "final": "http://linkorasolution.com/about.html"
+    },
+    {
+      "url": "https://www.linkorasolution.com/about.html",
+      "status": 200,
+      "final": "https://linkorasolution.com/about.html"
+    },
+    {
+      "url": "https://linkorasolution.com/about",
+      "status": 200,
+      "final": "https://linkorasolution.com/about"
+    },
+    {
+      "url": "https://linkorasolution.com/about.html/",
+      "status": 404,
+      "final": "https://linkorasolution.com/about.html/"
+    },
+    {
+      "url": "https://linkorasolution.com/index.html",
+      "status": 200,
+      "final": "https://linkorasolution.com/index.html"
+    }
+  ]
+}
