@@ -59,7 +59,7 @@
       }
     });
   }
-  function jobUrl(slug) { return 'career-job.html?slug=' + encodeURIComponent(slug); }
+  function jobUrl(slug) { return window.LINKORA_PUBLIC_ROUTES?.jobs.includes(slug) ? '/jobs/' + encodeURIComponent(slug) + '.html' : '/career-job.html?slug=' + encodeURIComponent(slug); }
   window.LinkoraCareers = Object.freeze({
     config: config, createClient: createClient, slugify: slugify, validSlug: validSlug,
     node: node, formatDate: formatDate, employment: employment, workplace: workplace,

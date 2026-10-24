@@ -49,7 +49,7 @@
     var pattern = /\[([^\]\n]+)\]\(((?:[^\s()]|\([^\s()]*\))+)\)/g, match, cursor = 0;
     while ((match = pattern.exec(value))) {
       host.appendChild(document.createTextNode(value.slice(cursor, match.index)));
-      var link = null; try { var url = new URL(match[2], location.href); if (/^https?:$/.test(url.protocol) && !url.username && !url.password) { link = document.createElement('a'); link.href = url.href; link.textContent = match[1]; link.target = '_blank'; link.rel = 'noopener noreferrer'; } } catch (_) { /* unsafe URLs remain plain text */ }
+      var link = null; try { var url = new URL(match[2], document.baseURI); if (/^https?:$/.test(url.protocol) && !url.username && !url.password) { link = document.createElement('a'); link.href = url.href; link.textContent = match[1]; link.target = '_blank'; link.rel = 'noopener noreferrer'; } } catch (_) { /* unsafe URLs remain plain text */ }
       host.appendChild(link || document.createTextNode(match[0])); cursor = pattern.lastIndex;
     }
     host.appendChild(document.createTextNode(value.slice(cursor)));
@@ -81,11 +81,12 @@
     });
   }
 
-  function postUrl(slug) { return 'blog-post.html?slug=' + encodeURIComponent(slug); }
+  function canonicalUrl(value, fallback) { try { var url = new URL(value); if (url.protocol === 'https:' && !url.username && !url.password) return url.href; } catch (_) {} return fallback; }
+  function postUrl(slug) { return window.LINKORA_PUBLIC_ROUTES?.blog.includes(slug) ? '/blog/' + encodeURIComponent(slug) + '.html' : '/blog-post.html?slug=' + encodeURIComponent(slug); }
 
   window.LinkoraBlog = Object.freeze({
     config: config, createClient: createClient, slugify: slugify, validSlug: validSlug,
     imageUrl: imageUrl, formatDate: formatDate, readingTime: readingTime,
-    renderContent: renderContent, postUrl: postUrl
+    renderContent: renderContent, postUrl: postUrl, canonicalUrl: canonicalUrl
   });
 }());

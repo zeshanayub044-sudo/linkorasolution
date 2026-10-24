@@ -179,7 +179,7 @@
       formPanel.hidden = true;
       resetEditor();
       await loadPosts();
-      show('Article saved successfully.', 'success');
+      show('Article saved successfully. Search-ready pages update after the next site refresh; check the public page before sharing.', 'success');
     } catch (error) {
       show(errorMessage(error), 'error');
       console.error('Blog save failed', error);
@@ -192,7 +192,7 @@
       var result = await client.from('blog_posts').update({ status: next }).eq('id', post.id).select('id').single();
       if (result.error) throw result.error;
       await loadPosts();
-      show('Article ' + (next === 'published' ? 'published.' : 'unpublished.'), 'success');
+      show('Article ' + (next === 'published' ? 'published.' : 'unpublished.') + ' Search-ready pages update after the next site refresh.', 'success');
     } catch (error) { show(errorMessage(error), 'error'); }
   }
   async function deletePost(post) {
@@ -256,12 +256,6 @@
     document.getElementById('blog-preview-excerpt').textContent = field('excerpt').value;
     blog.renderContent(document.getElementById('blog-preview-content'), field('content').value);
     document.getElementById('blog-preview-dialog').showModal();
-  });
-  var navToggle = document.querySelector('.nav-toggle');
-  var navLinks = document.querySelector('nav.links');
-  navToggle.addEventListener('click', function () {
-    var expanded = navLinks.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(expanded));
   });
   try {
     client = blog.createClient(true);

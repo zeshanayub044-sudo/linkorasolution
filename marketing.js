@@ -29,7 +29,7 @@
     var url = new URL(link.href, location.href);
     // New tabs with noopener do not inherit sessionStorage. Carry attribution only
     // into known public documents, never private portals or third-party URLs.
-    if (url.origin !== location.origin || !/^\/(?:index\.html|services\.html|about\.html|contact\.html|blog\.html|blog-post\.html|careers\.html|career-job\.html|backlinks\.html|guest-posting\.html|on-page-seo\.html|gmb\.html|privacy\.html)?$/.test(url.pathname)) return;
+    if (url.origin !== location.origin || !/^\/(?:index\.html|services\.html|about\.html|contact\.html|blog\.html|blog-post\.html|careers\.html|career-job\.html|backlinks\.html|guest-posting\.html|on-page-seo\.html|gmb\.html|privacy\.html|blog\/[a-z0-9-]+\.html|jobs\/[a-z0-9-]+\.html)?$/.test(url.pathname)) return;
     keys.forEach(function (key) { if (typeof campaign[key] === 'string' && !url.searchParams.has(key)) url.searchParams.set(key, campaign[key]); });
     link.href = url.href;
     if (url.hash && url.pathname === location.pathname && url.search === location.search) { link.removeAttribute('target'); link.removeAttribute('rel'); }

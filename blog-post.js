@@ -4,7 +4,7 @@
   var article = document.getElementById('blog-article');
   var relatedSection = document.getElementById('blog-related');
   var relatedGrid = document.getElementById('blog-related-grid');
-  var slug = new URLSearchParams(location.search).get('slug');
+  var slug = document.body.dataset.blogSlug || new URLSearchParams(location.search).get('slug');
 
   function node(tag, className, value) {
     var item = document.createElement(tag);
@@ -24,13 +24,15 @@
   }
   function notFound(message) {
     document.title = 'Article not found | LINKORA SOLUTION';
-    var status = document.getElementById('blog-article-status');
-    status.textContent = message;
+    meta('robots', 'noindex,follow');
+    document.getElementById('public-content-schema')?.remove();
+    article.replaceChildren(node('p', '', message));
+    article.firstChild.id = 'blog-article-status';
   }
   function setSeo(post, author) {
     var title = post.seo_title || post.title;
     var description = post.seo_description || post.excerpt;
-    var url = post.canonical_url || location.origin + '/blog-post.html?slug=' + encodeURIComponent(post.slug);
+    var url = blog.canonicalUrl(post.canonical_url, new URL(blog.postUrl(post.slug), location.origin).href);
     document.title = title + ' | LINKORA SOLUTION';
     meta('description', description);
     meta('robots', 'index,follow');
@@ -44,10 +46,12 @@
     var canonical = document.querySelector('link[rel=canonical]') || node('link');
     canonical.rel = 'canonical'; canonical.href = url;
     if (!canonical.parentNode) document.head.appendChild(canonical);
+    document.getElementById('public-content-schema')?.remove();
     var json = node('script');
+    json.id = 'public-content-schema';
     json.type = 'application/ld+json';
     json.textContent = JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'Article', headline: post.title,
+      '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title,
       description: description, image: blog.imageUrl(post.featured_image_url) || undefined,
       datePublished: post.published_at, dateModified: post.updated_at,
       author: { '@type': (!author.display_name || author.display_name === 'LINKORA SOLUTION') ? 'Organization' : 'Person', name: author.display_name || 'LINKORA SOLUTION editorial team' },
@@ -59,7 +63,7 @@
   function render(post) {
     var author = post.blog_authors || {};
     setSeo(post, author);
-    document.getElementById('blog-article-status').remove();
+    var back = article.querySelector('.blog-back'); article.replaceChildren(); if (back) article.appendChild(back);
     article.appendChild(node('span', 'blog-article__category', post.category));
     article.appendChild(node('h1', '', post.title));
     article.appendChild(node('p', 'blog-article__lead', post.excerpt));

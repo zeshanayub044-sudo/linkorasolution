@@ -6,7 +6,7 @@
   var form = document.getElementById('career-application-form');
   var formMessage = document.getElementById('career-form-message');
   var submitButton = document.getElementById('career-submit');
-  var slug = new URLSearchParams(location.search).get('slug');
+  var slug = document.body.dataset.jobSlug || new URLSearchParams(location.search).get('slug');
   var submitting = false;
 
   function meta(name, content, property) {
@@ -18,12 +18,14 @@
   }
   function notFound(message) {
     document.title = 'Job unavailable | LINKORA SOLUTION';
-    document.getElementById('career-job-status').textContent = message;
+    meta('robots', 'noindex,follow');
+    document.getElementById('public-content-schema')?.remove();
+    detail.replaceChildren(career.node('p', '', message)); detail.firstChild.id = 'career-job-status';
     applyPanel.hidden = true;
   }
   function seo(job) {
     var title = job.title + ' | Careers at LINKORA SOLUTION';
-    var url = location.origin + '/career-job.html?slug=' + encodeURIComponent(job.slug);
+    var url = window.LINKORA_PUBLIC_ROUTES?.jobs.includes(job.slug) ? location.origin + '/jobs/' + encodeURIComponent(job.slug) + '.html' : location.origin + '/career-job.html?slug=' + encodeURIComponent(job.slug);
     document.title = title;
     meta('description', job.summary);
     meta('robots', 'index,follow');
@@ -44,7 +46,8 @@
     };
     if (job.workplace_type === 'remote') structured.jobLocationType = 'TELECOMMUTE';
     else structured.jobLocation = { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: job.location } };
-    var json = career.node('script'); json.type = 'application/ld+json';
+    document.getElementById('public-content-schema')?.remove();
+    var json = career.node('script'); json.id = 'public-content-schema'; json.type = 'application/ld+json';
     json.textContent = JSON.stringify(structured).replace(/</g, '\\u003c');
     document.head.appendChild(json);
   }
@@ -59,7 +62,7 @@
   }
   function render(job) {
     seo(job);
-    document.getElementById('career-job-status').remove();
+    var back = detail.querySelector('.career-back'); detail.replaceChildren(); if (back) detail.appendChild(back);
     detail.appendChild(career.node('span', 'career-pill', job.department));
     detail.appendChild(career.node('h1', '', job.title));
     detail.appendChild(career.node('p', 'career-detail__summary', job.summary));
@@ -71,7 +74,7 @@
     if (job.closes_at) dates += ' · Apply by ' + career.formatDate(job.closes_at);
     detail.appendChild(career.node('p', 'career-detail__dates', dates));
     var apply = career.node('a', 'btn btn-whatsapp career-detail__apply', 'Apply for this role');
-    apply.href = '#career-apply-panel'; detail.appendChild(apply);
+    apply.href = location.pathname + location.search + '#career-apply-panel'; detail.appendChild(apply);
     [['The role', job.description], ['Responsibilities', job.responsibilities], ['Requirements', job.requirements],
       ['Preferred qualifications', job.preferred_qualifications], ['Benefits', job.benefits]].forEach(function (pair) {
       var block = section(pair[0], pair[1]); if (block) detail.appendChild(block);

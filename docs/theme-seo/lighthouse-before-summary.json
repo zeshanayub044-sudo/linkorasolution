@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-24",
+  "url": "https://linkorasolution.com/about.html",
+  "fetchTime": "2026-10-24T16:05:39.407Z",
+  "version": "12.8.2",
+  "formFactor": "mobile",
+  "scores": {
+    "performance": 0.7,
+    "accessibility": 0.98,
+    "seo": 1
+  },
+  "metrics": {
+    "largest-contentful-paint": {
+      "value": 3988.188,
+      "display": "4.0 s"
+    },
+    "cumulative-layout-shift": {
+      "value": 0.0005557165168202738,
+      "display": "0.001"
+    },
+    "total-blocking-time": {
+      "value": 176,
+      "display": "180 ms"
+    },
+    "first-contentful-paint": {
+      "value": 3988.188,
+      "display": "4.0 s"
+    }
+  },
+  "labOnly": true,
+  "rawReport": "C:/Users/ME/.codex/visualizations/2026/09/30/01a0f3e2-b3f4-7d22-8fb0-91b1e61eb40f/theme-upgrade/lighthouse-before.json"
+}
