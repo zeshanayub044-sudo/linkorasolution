@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-26",
+  "checks": [
+    "Lead required/email validation, error/retry idempotency, UTM and success (intercepted network only).",
+    "Careers empty state, required form fields, rejected file type, PDF multipart and confirmation (intercepted only).",
+    "Job detail and job-specific CV application validated with local API fixtures; no production job/application created.",
+    "Static Blog content and metadata without JavaScript; simulated unpublish removes snapshot/JSON-LD and sets noindex.",
+    "Signed-out Blog/Careers admin remains protected/noindex; theme and mobile navigation work.",
+    "Theme synchronizes open tabs and persists into a reopened browser context.",
+    "Blocked storage keeps the default and in-memory theme control usable."
+  ],
+  "productionWrites": 0,
+  "sourceSuite": "tests/public-workflows-ui.mjs"
+}

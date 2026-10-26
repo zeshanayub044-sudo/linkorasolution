@@ -1,0 +1,1364 @@
+{
+  "date": "2026-10-26",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "LINKORA SOLUTION | SEO & Web Development",
+      "description": "LINKORA SOLUTION builds business-focused websites and provides white-hat SEO, local search, content, and multi-site SEO management for growing businesses.",
+      "canonical": "https://linkorasolution.com/",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "SEO that connects visibility to business goals."
+        },
+        {
+          "level": 2,
+          "text": "From stronger websites to smarter search growth."
+        },
+        {
+          "level": 3,
+          "text": "On-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Off-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Backlinks"
+        },
+        {
+          "level": 3,
+          "text": "Guest Posting"
+        },
+        {
+          "level": 3,
+          "text": "Blog Writing"
+        },
+        {
+          "level": 3,
+          "text": "DA Increase"
+        },
+        {
+          "level": 3,
+          "text": "Guest Post Sites Sheet"
+        },
+        {
+          "level": 3,
+          "text": "Technical SEO"
+        },
+        {
+          "level": 3,
+          "text": "Google Business Profile (GMB)"
+        },
+        {
+          "level": 3,
+          "text": "Web Development"
+        },
+        {
+          "level": 3,
+          "text": "12-Website Monthly SEO Plan"
+        },
+        {
+          "level": 2,
+          "text": "A straight line from audit to ranking."
+        },
+        {
+          "level": 4,
+          "text": "Audit"
+        },
+        {
+          "level": 4,
+          "text": "Strategy"
+        },
+        {
+          "level": 4,
+          "text": "Build"
+        },
+        {
+          "level": 4,
+          "text": "Report"
+        },
+        {
+          "level": 2,
+          "text": "Ready to see your link graph fill in?"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what your website needs."
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 23440
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/index.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "LINKORA SOLUTION | SEO & Web Development",
+      "description": "LINKORA SOLUTION builds business-focused websites and provides white-hat SEO, local search, content, and multi-site SEO management for growing businesses.",
+      "canonical": "https://linkorasolution.com/",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "SEO that connects visibility to business goals."
+        },
+        {
+          "level": 2,
+          "text": "From stronger websites to smarter search growth."
+        },
+        {
+          "level": 3,
+          "text": "On-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Off-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Backlinks"
+        },
+        {
+          "level": 3,
+          "text": "Guest Posting"
+        },
+        {
+          "level": 3,
+          "text": "Blog Writing"
+        },
+        {
+          "level": 3,
+          "text": "DA Increase"
+        },
+        {
+          "level": 3,
+          "text": "Guest Post Sites Sheet"
+        },
+        {
+          "level": 3,
+          "text": "Technical SEO"
+        },
+        {
+          "level": 3,
+          "text": "Google Business Profile (GMB)"
+        },
+        {
+          "level": 3,
+          "text": "Web Development"
+        },
+        {
+          "level": 3,
+          "text": "12-Website Monthly SEO Plan"
+        },
+        {
+          "level": 2,
+          "text": "A straight line from audit to ranking."
+        },
+        {
+          "level": 4,
+          "text": "Audit"
+        },
+        {
+          "level": 4,
+          "text": "Strategy"
+        },
+        {
+          "level": 4,
+          "text": "Build"
+        },
+        {
+          "level": 4,
+          "text": "Report"
+        },
+        {
+          "level": 2,
+          "text": "Ready to see your link graph fill in?"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what your website needs."
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 23440
+    },
+    {
+      "path": "/about.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/about.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "About LINKORA SOLUTION | SEO &amp; Digital Growth Agency",
+      "description": "Meet the founder of LINKORA SOLUTION and learn how we approach SEO, outreach and website growth through clear scope, thoughtful strategy and transparent communication.",
+      "canonical": "https://linkorasolution.com/about.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Built by people who place the links themselves."
+        },
+        {
+          "level": 2,
+          "text": "Why LINKORA SOLUTION exists"
+        },
+        {
+          "level": 2,
+          "text": "The principles behind every campaign."
+        },
+        {
+          "level": 3,
+          "text": "White-hat, always"
+        },
+        {
+          "level": 3,
+          "text": "Transparent reporting"
+        },
+        {
+          "level": 3,
+          "text": "Regionally aware"
+        },
+        {
+          "level": 3,
+          "text": "Built to compound"
+        },
+        {
+          "level": 2,
+          "text": "Want to talk through your website?"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 15067
+    },
+    {
+      "path": "/services.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/services.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "SEO &amp; Website Development Services | LINKORA SOLUTION",
+      "description": "Compare LINKORA SOLUTION services for on-page SEO, backlink outreach, guest posting, local visibility and website development. Review scope and request a quote.",
+      "canonical": "https://linkorasolution.com/services.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Services built for stronger digital growth."
+        },
+        {
+          "level": 2,
+          "text": "On-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Starter"
+        },
+        {
+          "level": 3,
+          "text": "Growth"
+        },
+        {
+          "level": 3,
+          "text": "Authority"
+        },
+        {
+          "level": 2,
+          "text": "Off-Page SEO"
+        },
+        {
+          "level": 3,
+          "text": "Link Building Strategy"
+        },
+        {
+          "level": 3,
+          "text": "Digital PR &amp; Outreach"
+        },
+        {
+          "level": 3,
+          "text": "Brand Mention Recovery"
+        },
+        {
+          "level": 2,
+          "text": "Backlinks"
+        },
+        {
+          "level": 3,
+          "text": "Starter Pack"
+        },
+        {
+          "level": 3,
+          "text": "Growth Pack"
+        },
+        {
+          "level": 3,
+          "text": "Authority Pack"
+        },
+        {
+          "level": 2,
+          "text": "Guest Posting"
+        },
+        {
+          "level": 4,
+          "text": "Niche match"
+        },
+        {
+          "level": 4,
+          "text": "Pitch &amp; write"
+        },
+        {
+          "level": 4,
+          "text": "Publish"
+        },
+        {
+          "level": 4,
+          "text": "Report"
+        },
+        {
+          "level": 2,
+          "text": "Blog Writing"
+        },
+        {
+          "level": 3,
+          "text": "Keyword-Led Articles"
+        },
+        {
+          "level": 3,
+          "text": "On-Brand Voice"
+        },
+        {
+          "level": 3,
+          "text": "Publish-Ready"
+        },
+        {
+          "level": 2,
+          "text": "DA Increase"
+        },
+        {
+          "level": 2,
+          "text": "Guest Post Sites Sheet"
+        },
+        {
+          "level": 2,
+          "text": "Technical SEO"
+        },
+        {
+          "level": 3,
+          "text": "Site Architecture"
+        },
+        {
+          "level": 3,
+          "text": "Core Web Vitals"
+        },
+        {
+          "level": 3,
+          "text": "Schema Markup"
+        },
+        {
+          "level": 2,
+          "text": "Google Business Profile (GMB) Optimization"
+        },
+        {
+          "level": 3,
+          "text": "What We Optimize"
+        },
+        {
+          "level": 2,
+          "text": "Ready to Get More Local Customers?"
+        },
+        {
+          "level": 2,
+          "text": "Web Development"
+        },
+        {
+          "level": 3,
+          "text": "Built around your business"
+        },
+        {
+          "level": 2,
+          "text": "12-Website Monthly SEO Plan"
+        },
+        {
+          "level": 3,
+          "text": "What the plan covers"
+        },
+        {
+          "level": 2,
+          "text": "Not sure which service you need?"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 27628
+    },
+    {
+      "path": "/backlinks.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/backlinks.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Backlink Building &amp; Outreach Services | LINKORA SOLUTION",
+      "description": "Build an outreach plan around relevant publishers, editorial quality and clear reporting. Explore LINKORA SOLUTION backlink services and discuss your website goals.",
+      "canonical": "https://linkorasolution.com/backlinks.html",
+      "robots": "index,follow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Relevant backlinks start with a relevant strategy."
+        },
+        {
+          "level": 2,
+          "text": "The problem we address"
+        },
+        {
+          "level": 2,
+          "text": "What the service includes"
+        },
+        {
+          "level": 2,
+          "text": "Clear deliverables"
+        },
+        {
+          "level": 2,
+          "text": "Our process"
+        },
+        {
+          "level": 2,
+          "text": "Benefits that matter"
+        },
+        {
+          "level": 2,
+          "text": "Who it is for"
+        },
+        {
+          "level": 2,
+          "text": "Why discuss your project with LINKORA SOLUTION?"
+        },
+        {
+          "level": 2,
+          "text": "Questions before you start"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what you want to improve."
+        }
+      ],
+      "bytes": 14641
+    },
+    {
+      "path": "/guest-posting.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/guest-posting.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Guest Posting &amp; Editorial Outreach | LINKORA SOLUTION",
+      "description": "Explore guest posting with niche-relevant publisher selection, editorial content, outreach and placement reporting. Discuss a tailored plan with LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/guest-posting.html",
+      "robots": "index,follow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Useful editorial content. Relevant placement opportunities."
+        },
+        {
+          "level": 2,
+          "text": "The problem we address"
+        },
+        {
+          "level": 2,
+          "text": "What the service includes"
+        },
+        {
+          "level": 2,
+          "text": "Clear deliverables"
+        },
+        {
+          "level": 2,
+          "text": "Our process"
+        },
+        {
+          "level": 2,
+          "text": "Benefits that matter"
+        },
+        {
+          "level": 2,
+          "text": "Who it is for"
+        },
+        {
+          "level": 2,
+          "text": "Why discuss your project with LINKORA SOLUTION?"
+        },
+        {
+          "level": 2,
+          "text": "Questions before you start"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what you want to improve."
+        }
+      ],
+      "bytes": 14679
+    },
+    {
+      "path": "/on-page-seo.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/on-page-seo.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "On-Page SEO for Business Websites | LINKORA SOLUTION",
+      "description": "Review on-page SEO covering keyword mapping, titles, content, headings, internal links and schema. Compare existing packages and request a website review.",
+      "canonical": "https://linkorasolution.com/on-page-seo.html",
+      "robots": "index,follow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Help search engines understand your pages—and visitors choose you."
+        },
+        {
+          "level": 2,
+          "text": "The problem we address"
+        },
+        {
+          "level": 2,
+          "text": "What the service includes"
+        },
+        {
+          "level": 2,
+          "text": "Clear deliverables"
+        },
+        {
+          "level": 2,
+          "text": "Our process"
+        },
+        {
+          "level": 2,
+          "text": "Benefits that matter"
+        },
+        {
+          "level": 2,
+          "text": "Who it is for"
+        },
+        {
+          "level": 2,
+          "text": "Why discuss your project with LINKORA SOLUTION?"
+        },
+        {
+          "level": 2,
+          "text": "Questions before you start"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what you want to improve."
+        }
+      ],
+      "bytes": 14685
+    },
+    {
+      "path": "/gmb.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/gmb.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Google Business Profile Optimization | LINKORA SOLUTION",
+      "description": "Improve the completeness and consistency of your Google Business Profile with category, service, image and local visibility guidance. Discuss your business needs.",
+      "canonical": "https://linkorasolution.com/gmb.html",
+      "robots": "index,follow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Make your local business information clear and useful."
+        },
+        {
+          "level": 2,
+          "text": "The problem we address"
+        },
+        {
+          "level": 2,
+          "text": "What the service includes"
+        },
+        {
+          "level": 2,
+          "text": "Clear deliverables"
+        },
+        {
+          "level": 2,
+          "text": "Our process"
+        },
+        {
+          "level": 2,
+          "text": "Benefits that matter"
+        },
+        {
+          "level": 2,
+          "text": "Who it is for"
+        },
+        {
+          "level": 2,
+          "text": "Why discuss your project with LINKORA SOLUTION?"
+        },
+        {
+          "level": 2,
+          "text": "Questions before you start"
+        },
+        {
+          "level": 2,
+          "text": "Tell us what you want to improve."
+        }
+      ],
+      "bytes": 14654
+    },
+    {
+      "path": "/contact.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/contact.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Contact LINKORA SOLUTION | Discuss Your SEO Project",
+      "description": "Tell LINKORA SOLUTION about your website, service needs and goals. Request a tailored quote for SEO, guest posting, backlinks or website development.",
+      "canonical": "https://linkorasolution.com/contact.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Let's grow your search visibility."
+        },
+        {
+          "level": 4,
+          "text": "WhatsApp"
+        },
+        {
+          "level": 4,
+          "text": "Email"
+        },
+        {
+          "level": 4,
+          "text": "Response Time"
+        },
+        {
+          "level": 4,
+          "text": "Markets Served"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 15218
+    },
+    {
+      "path": "/blog.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/blog.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "SEO Guides &amp; Digital Marketing Insights | LINKORA SOLUTION",
+      "description": "Read practical LINKORA SOLUTION guides on backlink quality, on-page SEO, content and local visibility. Find useful checklists and connect them to your website goals.",
+      "canonical": "https://linkorasolution.com/blog.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "SEO advice built for steady, lasting growth."
+        },
+        {
+          "level": 2,
+          "text": "What Is SEO? A Complete Guide to Ranking on Google"
+        },
+        {
+          "level": 2,
+          "text": "Want a tailored SEO plan?"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 11554
+    },
+    {
+      "path": "/careers.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/careers.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Careers at LINKORA SOLUTION | Roles &amp; Resume Submissions",
+      "description": "Explore current LINKORA SOLUTION opportunities in SEO, content and digital growth. Review open roles or submit your resume securely for future consideration.",
+      "canonical": "https://linkorasolution.com/careers.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Help businesses grow through better search."
+        },
+        {
+          "level": 2,
+          "text": "Good work starts with curiosity and care."
+        },
+        {
+          "level": 2,
+          "text": "Open positions"
+        },
+        {
+          "level": 2,
+          "text": "Upload Your Resume"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 11810
+    },
+    {
+      "path": "/privacy.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/privacy.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Inquiry Data &amp; Privacy | LINKORA SOLUTION",
+      "description": "Learn how LINKORA SOLUTION handles website inquiries, optional campaign attribution and consent-based analytics, and how to contact us about your information.",
+      "canonical": "https://linkorasolution.com/privacy.html",
+      "robots": "index allowed by default",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Website inquiry data"
+        },
+        {
+          "level": 2,
+          "text": "What is collected"
+        },
+        {
+          "level": 2,
+          "text": "How information is used"
+        },
+        {
+          "level": 2,
+          "text": "Public website measurement"
+        },
+        {
+          "level": 2,
+          "text": "Questions and data requests"
+        }
+      ],
+      "bytes": 8839
+    },
+    {
+      "path": "/blog-post.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/blog-post.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Article | LINKORA SOLUTION",
+      "description": "Read practical SEO insights from LINKORA SOLUTION.",
+      "robots": "noindex,follow",
+      "headings": [
+        {
+          "level": 2,
+          "text": "More from the blog"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 6707
+    },
+    {
+      "path": "/career-job.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/career-job.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Career opportunity | LINKORA SOLUTION",
+      "description": "View a career opportunity and apply to LINKORA SOLUTION.",
+      "robots": "noindex,follow",
+      "headings": [
+        {
+          "level": 2,
+          "text": "Join our team"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 8834
+    },
+    {
+      "path": "/blog-admin.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/blog-admin.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Blog Editor | LINKORA SOLUTION",
+      "robots": "noindex,nofollow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Blog Editor"
+        },
+        {
+          "level": 2,
+          "text": "Admin sign in"
+        },
+        {
+          "level": 2,
+          "text": "Articles"
+        },
+        {
+          "level": 2,
+          "text": "New article"
+        },
+        {
+          "level": 2,
+          "text": ""
+        }
+      ],
+      "bytes": 7489
+    },
+    {
+      "path": "/careers-admin.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/careers-admin.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Careers Admin | LINKORA SOLUTION",
+      "robots": "noindex,nofollow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Careers Admin"
+        },
+        {
+          "level": 2,
+          "text": "Admin sign in"
+        },
+        {
+          "level": 2,
+          "text": "Job postings"
+        },
+        {
+          "level": 2,
+          "text": "New job"
+        },
+        {
+          "level": 2,
+          "text": "Applicants"
+        },
+        {
+          "level": 2,
+          "text": "Resume Inbox"
+        },
+        {
+          "level": 2,
+          "text": ""
+        },
+        {
+          "level": 3,
+          "text": "Cover letter"
+        },
+        {
+          "level": 2,
+          "text": ""
+        },
+        {
+          "level": 3,
+          "text": "Candidate note"
+        }
+      ],
+      "bytes": 12393
+    },
+    {
+      "path": "/attendance-admin.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/attendance-admin.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Attendance Admin | LINKORA SOLUTION",
+      "robots": "noindex, nofollow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Attendance Admin"
+        },
+        {
+          "level": 1,
+          "text": "Executive overview"
+        },
+        {
+          "level": 2,
+          "text": "Latest sign-ins and sign-outs"
+        },
+        {
+          "level": 2,
+          "text": "Workforce presence"
+        },
+        {
+          "level": 2,
+          "text": "People currently present"
+        },
+        {
+          "level": 2,
+          "text": "Today's attendance"
+        },
+        {
+          "level": 2,
+          "text": "Needs attention"
+        },
+        {
+          "level": 2,
+          "text": "Currently present"
+        },
+        {
+          "level": 2,
+          "text": "Today's live status"
+        },
+        {
+          "level": 2,
+          "text": "Presence &amp; work screen sharing"
+        },
+        {
+          "level": 2,
+          "text": "Employees &amp; accounts"
+        },
+        {
+          "level": 2,
+          "text": "Today's attendance"
+        },
+        {
+          "level": 2,
+          "text": "Screen Recordings"
+        },
+        {
+          "level": 2,
+          "text": "Monthly attendance"
+        },
+        {
+          "level": 2,
+          "text": "Employee leaves"
+        },
+        {
+          "level": 2,
+          "text": "Attendance history"
+        },
+        {
+          "level": 2,
+          "text": "Reports"
+        },
+        {
+          "level": 3,
+          "text": "Supabase attendance log"
+        },
+        {
+          "level": 2,
+          "text": "Attendance issues"
+        },
+        {
+          "level": 2,
+          "text": "Admin audit log"
+        },
+        {
+          "level": 2,
+          "text": "Schedule settings"
+        },
+        {
+          "level": 2,
+          "text": "Google Sheets mirror"
+        },
+        {
+          "level": 2,
+          "text": "Rebuild matrix dates"
+        },
+        {
+          "level": 2,
+          "text": "Add employee"
+        },
+        {
+          "level": 2,
+          "text": "Add leave"
+        },
+        {
+          "level": 2,
+          "text": ""
+        },
+        {
+          "level": 3,
+          "text": "Daily breakdown"
+        },
+        {
+          "level": 3,
+          "text": "Recent sessions"
+        },
+        {
+          "level": 3,
+          "text": "Screen Recording History"
+        },
+        {
+          "level": 2,
+          "text": "Correct attendance"
+        },
+        {
+          "level": 2,
+          "text": "Add attendance session"
+        },
+        {
+          "level": 2,
+          "text": "Confirm change"
+        },
+        {
+          "level": 2,
+          "text": "Employee screen share"
+        },
+        {
+          "level": 2,
+          "text": "Screen recording"
+        }
+      ],
+      "bytes": 34323
+    },
+    {
+      "path": "/tennis-portal.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/tennis-portal.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Employee Portal | LINKORA SOLUTION",
+      "robots": "noindex, nofollow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Employee Portal"
+        },
+        {
+          "level": 2,
+          "text": "Set a new password"
+        },
+        {
+          "level": 2,
+          "text": ""
+        },
+        {
+          "level": 3,
+          "text": "Work Session Monitoring"
+        },
+        {
+          "level": 3,
+          "text": "Screen recording"
+        },
+        {
+          "level": 3,
+          "text": "Today’s attendance"
+        },
+        {
+          "level": 3,
+          "text": "Live screen sharing"
+        },
+        {
+          "level": 3,
+          "text": "Co-CEO admin panel"
+        }
+      ],
+      "bytes": 7731
+    },
+    {
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "cf-cache-status": "DYNAMIC",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "What Is SEO? A Complete Guide to Ranking on Google | LINKORA SOLUTION",
+      "description": "Learn what SEO means, how search engines work, and how to improve website visibility with this practical introduction from LINKORA SOLUTION.",
+      "canonical": "https://linkorasolution.com/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "robots": "index,follow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "What Is SEO? A Complete Guide to Ranking on Google"
+        },
+        {
+          "level": 2,
+          "text": "More from the blog"
+        },
+        {
+          "level": 2,
+          "text": "Services"
+        },
+        {
+          "level": 2,
+          "text": "More"
+        },
+        {
+          "level": 2,
+          "text": "Company"
+        }
+      ],
+      "bytes": 31907
+    },
+    {
+      "path": "/attendance.html",
+      "status": 200,
+      "finalUrl": "https://linkorasolution.com/attendance.html",
+      "headers": {
+        "cache-control": "max-age=600",
+        "content-type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "title": "Staff Sign In | LINKORA SOLUTION",
+      "description": "Secure LINKORA SOLUTION staff sign-in and activity log.",
+      "robots": "noindex, nofollow",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Employee Attendance Portal"
+        }
+      ],
+      "bytes": 1420
+    }
+  ],
+  "redirects": [
+    {
+      "url": "http://linkorasolution.com/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "http://linkorasolution.com/about.html",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://www.linkorasolution.com/",
+      "status": 301,
+      "location": "https://linkorasolution.com/"
+    },
+    {
+      "url": "http://www.linkorasolution.com/",
+      "status": 301,
+      "location": "http://linkorasolution.com/"
+    },
+    {
+      "url": "https://linkorasolution.com/about",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://linkorasolution.com/about.html/",
+      "status": 404,
+      "location": null
+    }
+  ],
+  "rootEqualsIndex": true,
+  "assets": [
+    {
+      "path": "linkora-logo.png",
+      "bytes": 1326546
+    },
+    {
+      "path": "android-chrome-512x512.png",
+      "bytes": 437199
+    },
+    {
+      "path": "android-chrome-192x192.png",
+      "bytes": 69146
+    },
+    {
+      "path": "apple-touch-icon.png",
+      "bytes": 60586
+    },
+    {
+      "path": "linkora-mark.png",
+      "bytes": 32566
+    },
+    {
+      "path": "founder.jpg",
+      "bytes": 22567
+    },
+    {
+      "path": "favicon.ico",
+      "bytes": 9771
+    },
+    {
+      "path": "favicon-32x32.png",
+      "bytes": 2939
+    },
+    {
+      "path": "favicon-16x16.png",
+      "bytes": 948
+    },
+    {
+      "path": ".gitkeep",
+      "bytes": 1
+    },
+    {
+      "path": "leadership",
+      "bytes": 0
+    }
+  ]
+}

@@ -187,7 +187,7 @@ export function blogArticle(post) {
     (author.title ? "<span>" + escape(author.title) + "</span>" : "") +
     '</div></div><div class="blog-article__content">' +
     renderText(post.content) +
-    '</div><a class="btn btn-gold" href="contact.html" target="_blank" rel="noopener noreferrer">Discuss Your Project</a>'
+    '</div><nav class="growth-related" aria-label="Project next steps"><a class="btn btn-ghost" href="services.html" target="_blank" rel="noopener noreferrer">Explore SEO and website services</a><a class="btn btn-gold" href="contact.html" target="_blank" rel="noopener noreferrer">Discuss Your Project</a></nav>'
   );
 }
 export async function build() {

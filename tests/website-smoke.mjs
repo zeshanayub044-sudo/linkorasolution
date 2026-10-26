@@ -35,10 +35,10 @@ const server = createServer((q, r) => {
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const base =
     process.env.SMOKE_BASE || "http://127.0.0.1:" + server.address().port,
-  out = resolve("docs/theme-seo");
+  out = resolve(process.env.SMOKE_REPORT_DIR || "docs/theme-seo");
 mkdirSync(out, { recursive: true });
 const evidence = {
-    date: "2026-10-24",
+    date: new Date().toISOString().slice(0, 10),
     base,
     browsers: [],
     checks: [],
