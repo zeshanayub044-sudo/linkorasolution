@@ -104,7 +104,11 @@
       share.appendChild(link);
     });
     article.appendChild(share);
-    var cta = node('a', 'btn btn-gold', 'Discuss Your Project'); cta.href = 'contact.html'; cta.target = '_blank'; cta.rel = 'noopener noreferrer'; article.appendChild(cta);
+    var next = node('nav', 'growth-related'); next.setAttribute('aria-label', 'Project next steps');
+    [['services.html', 'Explore SEO and website services', 'btn btn-ghost'], ['contact.html', 'Discuss Your Project', 'btn btn-gold']].forEach(function (item) {
+      var cta = node('a', item[2], item[1]); cta.href = item[0]; cta.target = '_blank'; cta.rel = 'noopener noreferrer'; next.appendChild(cta);
+    });
+    article.appendChild(next);
   }
   async function loadRelated(client, post) {
     var result = await client.from('blog_posts').select('title,slug,excerpt,category,published_at')

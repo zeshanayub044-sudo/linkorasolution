@@ -1,0 +1,3040 @@
+{
+  "date": "2026-10-26",
+  "base": "http://127.0.0.1:52402",
+  "browsers": [
+    "Edge Chromium",
+    "Chrome"
+  ],
+  "checks": [
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 320,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 375,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 390,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 768,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1024,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Edge Chromium",
+      "width": 1920,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 390,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/index.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/about.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/services.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/gmb.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/contact.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/careers.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/privacy.html",
+      "passed": true
+    },
+    {
+      "browser": "Chrome",
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "passed": true
+    }
+  ],
+  "performance": [
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.001156004296875,
+      "lcp": 3844
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.00007778671875,
+      "lcp": 600
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.008295,
+      "lcp": 456
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.00007778671875,
+      "lcp": 2224
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0,
+      "lcp": 592
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.00007778671875,
+      "lcp": 656
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.00007778671875,
+      "lcp": 1044
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.00007778671875,
+      "lcp": 528
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.12438265625,
+      "lcp": 8912
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0,
+      "lcp": 3392
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.00007778671875,
+      "lcp": 1028
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.000189952734375,
+      "lcp": 744
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.001156004296875,
+      "lcp": 844
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0,
+      "lcp": 716
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.011519999999999999,
+      "lcp": 840
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0,
+      "lcp": 660
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0,
+      "lcp": 320
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0,
+      "lcp": 596
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.00007778671875,
+      "lcp": 708
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.00007778671875,
+      "lcp": 740
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.041053203125,
+      "lcp": 460
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0,
+      "lcp": 528
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0,
+      "lcp": 544
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.000092745703125,
+      "lcp": 772
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.000360168,
+      "lcp": 1164
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0,
+      "lcp": 696
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0,
+      "lcp": 908
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.000833906,
+      "lcp": 564
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0,
+      "lcp": 688
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.00043684,
+      "lcp": 432
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.029583922500000002,
+      "lcp": 672
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.000065416,
+      "lcp": 608
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.0337221875,
+      "lcp": 1640
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.0253621725,
+      "lcp": 1928
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.000065416,
+      "lcp": 400
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.00017723975,
+      "lcp": 832
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.0008983045000000001,
+      "lcp": 928
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.000065416,
+      "lcp": 536
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.014705415999999999,
+      "lcp": 960
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.01557488225,
+      "lcp": 1460
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.0010756085,
+      "lcp": 1640
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.0010756085,
+      "lcp": 2508
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.0299498985,
+      "lcp": 384
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.000065416,
+      "lcp": 1012
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.0337221875,
+      "lcp": 560
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.0253621725,
+      "lcp": 952
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.000065416,
+      "lcp": 384
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.000077996,
+      "lcp": 904
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.004646093189102564,
+      "lcp": 2952
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.000063825,
+      "lcp": 540
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.06673275841346155,
+      "lcp": 572
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.0035310094551282054,
+      "lcp": 716
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.0004576923076923077,
+      "lcp": 688
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.0011222384615384615,
+      "lcp": 800
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.015758313301282054,
+      "lcp": 500
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.000063825,
+      "lcp": 1168
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.05820720552884616,
+      "lcp": 532
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.000063825,
+      "lcp": 388
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.000063825,
+      "lcp": 508
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.00007609903846153847,
+      "lcp": 2484
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.0009004341346153846,
+      "lcp": 1276
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.000063825,
+      "lcp": 1004
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.06673275841346155,
+      "lcp": 1484
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.0035310094551282054,
+      "lcp": 1060
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.0004576923076923077,
+      "lcp": 556
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.0011222384615384615,
+      "lcp": 660
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 1100
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.000063825,
+      "lcp": 1192
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.07389751802884616,
+      "lcp": 908
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.000063825,
+      "lcp": 392
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.000063825,
+      "lcp": 636
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.00007609903846153847,
+      "lcp": 3456
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.0008646576334635417,
+      "lcp": 1164
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.000890959716796875,
+      "lcp": 884
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0,
+      "lcp": 1324
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.0005518355712890625,
+      "lcp": 1192
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.000171662841796875,
+      "lcp": 480
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.0014671315917968752,
+      "lcp": 980
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 2520
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.000171662841796875,
+      "lcp": 608
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.06861640551757811,
+      "lcp": 1340
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.000814679443359375,
+      "lcp": 564
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.000890959716796875,
+      "lcp": 252
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.003488312255859375,
+      "lcp": 3924
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.001614611368815104,
+      "lcp": 944
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.000890959716796875,
+      "lcp": 320
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.000171662841796875,
+      "lcp": 644
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.000890959716796875,
+      "lcp": 524
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.000890959716796875,
+      "lcp": 492
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0,
+      "lcp": 0
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.000890959716796875,
+      "lcp": 420
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.000171662841796875,
+      "lcp": 480
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.06861640551757811,
+      "lcp": 588
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.0005043658447265626,
+      "lcp": 688
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.000890959716796875,
+      "lcp": 404
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0014371345825195314,
+      "lcp": 2116
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.0006467921733856201,
+      "lcp": 976
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.009338637903332711,
+      "lcp": 424
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.01688228327035904,
+      "lcp": 1124
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0,
+      "lcp": 1084
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.0006525583863258363,
+      "lcp": 356
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.00012572962045669556,
+      "lcp": 332
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 660
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.0009749420285224916,
+      "lcp": 520
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.07982562965154648,
+      "lcp": 372
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.0007351625561714171,
+      "lcp": 308
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.0006525583863258363,
+      "lcp": 244
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.001620577499270439,
+      "lcp": 1020
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.0006554739475250244,
+      "lcp": 1020
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0,
+      "lcp": 444
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.00026420313119888305,
+      "lcp": 480
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.0036817904114723205,
+      "lcp": 464
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.0006525583863258363,
+      "lcp": 628
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.0004041764438152314,
+      "lcp": 936
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.0006525583863258363,
+      "lcp": 488
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.0007910318970680238,
+      "lcp": 1004
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.07982562965154648,
+      "lcp": 1236
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.00043756252527236934,
+      "lcp": 568
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.00012572962045669556,
+      "lcp": 684
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0005879791378974915,
+      "lcp": 5176
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0,
+      "lcp": 972
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.0016166158266420717,
+      "lcp": 508
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.00003599971064814815,
+      "lcp": 924
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.001064699074074074,
+      "lcp": 544
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.0011051085521556713,
+      "lcp": 400
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 704
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.0030205439814814817,
+      "lcp": 944
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.00013064552589699073,
+      "lcp": 364
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.00031419712396315593,
+      "lcp": 1172
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.0011103805881076388,
+      "lcp": 272
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0013431056646653163,
+      "lcp": 2440
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.01886461016619647,
+      "lcp": 1060
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.00054288897479022,
+      "lcp": 620
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.014360300925925926,
+      "lcp": 544
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 768
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.0011051085521556713,
+      "lcp": 448
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.00008197252061631944,
+      "lcp": 1052
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.001064699074074074,
+      "lcp": 476
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.0012079500325520832,
+      "lcp": 880
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.04603016809534143,
+      "lcp": 608
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.001550429438838252,
+      "lcp": 604
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.00003595929181134259,
+      "lcp": 392
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0013431056646653163,
+      "lcp": 2500
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.010713096834818522,
+      "lcp": 1020
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.0009093464024861654,
+      "lcp": 400
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.00010221598307291667,
+      "lcp": 732
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.00001999595642089844,
+      "lcp": 992
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.00001999595642089844,
+      "lcp": 552
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0,
+      "lcp": 536
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.00001999595642089844,
+      "lcp": 972
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.00014800114949544273,
+      "lcp": 1252
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.03437841059366862,
+      "lcp": 1192
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.0007553491634792751,
+      "lcp": 1088
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.0006245890808105469,
+      "lcp": 656
+    },
+    {
+      "width": 1920,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.000818014653523763,
+      "lcp": 1848
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.012821292652553981,
+      "lcp": 572
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.000763114013671875,
+      "lcp": 464
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.006543296712239583,
+      "lcp": 900
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.000621623560587565,
+      "lcp": 584
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.000621623560587565,
+      "lcp": 520
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.000621623560587565,
+      "lcp": 588
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0.00001999595642089844,
+      "lcp": 944
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.0006794718933105469,
+      "lcp": 528
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.034329795023600264,
+      "lcp": 360
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.0029232259114583335,
+      "lcp": 452
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.00002022710164388021,
+      "lcp": 456
+    },
+    {
+      "width": 1920,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.000818014653523763,
+      "lcp": 620
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0,
+      "lcp": 0
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.000063825,
+      "lcp": 472
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.025706674278846153,
+      "lcp": 744
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.0035310094551282054,
+      "lcp": 556
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0,
+      "lcp": 748
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.0011222384615384615,
+      "lcp": 312
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0.016625287339743593,
+      "lcp": 620
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.000063825,
+      "lcp": 260
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.05820720552884616,
+      "lcp": 504
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.000063825,
+      "lcp": 288
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.000063825,
+      "lcp": 172
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.00007609903846153847,
+      "lcp": 280
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.0009004341346153846,
+      "lcp": 1424
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.000063825,
+      "lcp": 452
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0.025706674278846153,
+      "lcp": 1052
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.0035310094551282054,
+      "lcp": 488
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.0011222384615384615,
+      "lcp": 548
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0,
+      "lcp": 464
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 644
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0,
+      "lcp": 364
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.05820720552884616,
+      "lcp": 360
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.000063825,
+      "lcp": 772
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.000063825,
+      "lcp": 1372
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.00007609903846153847,
+      "lcp": 768
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/index.html",
+      "cls": 0.01798589900264034,
+      "lcp": 844
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/about.html",
+      "cls": 0.0013566471354166667,
+      "lcp": 672
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/services.html",
+      "cls": 0.0003752484809027778,
+      "lcp": 592
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/backlinks.html",
+      "cls": 0.0011051085521556713,
+      "lcp": 808
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/guest-posting.html",
+      "cls": 0.001064699074074074,
+      "lcp": 436
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/on-page-seo.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 548
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 528
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/contact.html",
+      "cls": 0.00026311315465856486,
+      "lcp": 380
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog.html",
+      "cls": 0.04603016809534143,
+      "lcp": 356
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/careers.html",
+      "cls": 0.005196846064814815,
+      "lcp": 480
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/privacy.html",
+      "cls": 0.00003595929181134259,
+      "lcp": 208
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0004269913284866898,
+      "lcp": 3980
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/index.html",
+      "cls": 0.01798589900264034,
+      "lcp": 828
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/about.html",
+      "cls": 0.00054288897479022,
+      "lcp": 392
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/services.html",
+      "cls": 0,
+      "lcp": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/backlinks.html",
+      "cls": 0.0011051085521556713,
+      "lcp": 464
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/guest-posting.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 496
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/on-page-seo.html",
+      "cls": 0.000035548366970486116,
+      "lcp": 396
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/gmb.html",
+      "cls": 0,
+      "lcp": 464
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/contact.html",
+      "cls": 0.00026311315465856486,
+      "lcp": 320
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog.html",
+      "cls": 0.04603016809534143,
+      "lcp": 224
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/careers.html",
+      "cls": 0.005196846064814815,
+      "lcp": 244
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/privacy.html",
+      "cls": 0.0011103805881076388,
+      "lcp": 136
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "path": "/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html",
+      "cls": 0.0004269913284866898,
+      "lcp": 3604
+    }
+  ],
+  "limitations": [
+    "Firefox runtime unavailable; no test claimed.",
+    "WebKit runtime unavailable; no test claimed."
+  ]
+}

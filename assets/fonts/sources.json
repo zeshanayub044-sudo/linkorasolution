@@ -1,0 +1,132 @@
+{
+  "downloaded": "2026-10-26",
+  "source": "https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400..500&family=Space+Grotesk:wght@400..700&display=swap",
+  "fonts": [
+    {
+      "family": "Inter",
+      "subset": "cyrillic-ext",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2",
+      "file": "inter-cyrillic-ext-ca157063339a.woff2",
+      "bytes": 25960
+    },
+    {
+      "family": "Inter",
+      "subset": "cyrillic",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+      "file": "inter-cyrillic-71d5ee93cc1e.woff2",
+      "bytes": 18748
+    },
+    {
+      "family": "Inter",
+      "subset": "greek-ext",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2",
+      "file": "inter-greek-ext-6e9e020a25f9.woff2",
+      "bytes": 11232
+    },
+    {
+      "family": "Inter",
+      "subset": "greek",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2",
+      "file": "inter-greek-1be3448e292f.woff2",
+      "bytes": 18996
+    },
+    {
+      "family": "Inter",
+      "subset": "vietnamese",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+      "file": "inter-vietnamese-5c66f9e07e90.woff2",
+      "bytes": 10252
+    },
+    {
+      "family": "Inter",
+      "subset": "latin-ext",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+      "file": "inter-latin-ext-34b9c504cab7.woff2",
+      "bytes": 85068
+    },
+    {
+      "family": "Inter",
+      "subset": "latin",
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "file": "inter-latin-3100e775e861.woff2",
+      "bytes": 48256
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "cyrillic-ext",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx3cwhsk.woff2",
+      "file": "jetbrains-mono-cyrillic-ext-62213be8a78b.woff2",
+      "bytes": 1640
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "cyrillic",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxTcwhsk.woff2",
+      "file": "jetbrains-mono-cyrillic-e17cfd15fb96.woff2",
+      "bytes": 8872
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "greek",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxPcwhsk.woff2",
+      "file": "jetbrains-mono-greek-0a557721b1f8.woff2",
+      "bytes": 6836
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "vietnamese",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx_cwhsk.woff2",
+      "file": "jetbrains-mono-vietnamese-c89b9cc0bc62.woff2",
+      "bytes": 5888
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "latin-ext",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPx7cwhsk.woff2",
+      "file": "jetbrains-mono-latin-ext-db5ff4db83e5.woff2",
+      "bytes": 11624
+    },
+    {
+      "family": "JetBrains Mono",
+      "subset": "latin",
+      "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2",
+      "file": "jetbrains-mono-latin-83c005d49d8a.woff2",
+      "bytes": 31432
+    },
+    {
+      "family": "Space Grotesk",
+      "subset": "vietnamese",
+      "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2",
+      "file": "space-grotesk-vietnamese-8895e3d49825.woff2",
+      "bytes": 6712
+    },
+    {
+      "family": "Space Grotesk",
+      "subset": "latin-ext",
+      "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2",
+      "file": "space-grotesk-latin-ext-952dddb45d2f.woff2",
+      "bytes": 18940
+    },
+    {
+      "family": "Space Grotesk",
+      "subset": "latin",
+      "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+      "file": "space-grotesk-latin-0640890476fc.woff2",
+      "bytes": 22288
+    }
+  ],
+  "licenses": [
+    {
+      "family": "inter",
+      "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/OFL.txt"
+    },
+    {
+      "family": "jetbrainsmono",
+      "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt"
+    },
+    {
+      "family": "spacegrotesk",
+      "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/spacegrotesk/OFL.txt"
+    }
+  ]
+}

@@ -26,6 +26,8 @@ jobs:
         run: node scripts/build-public-site.mjs
       - name: Validate artifact links and excluded sources
         run: node tests/public-link-audit.mjs
+      - name: Validate initial public metadata and private page exclusions
+        run: node scripts/audit-public-seo.mjs
       - name: Skip unchanged public snapshots
         id: fresh
         run: node scripts/check-site-change.mjs

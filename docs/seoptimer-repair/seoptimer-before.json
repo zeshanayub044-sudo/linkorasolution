@@ -1,0 +1,262 @@
+{
+  "date": "2026-10-26",
+  "source": "https://www.seoptimer.com/linkorasolution.com",
+  "generated": "26 October 3:31PM UTC",
+  "grades": {
+    "overall": "B-",
+    "onPage": "A-",
+    "geo": "A+",
+    "links": "F",
+    "usability": "A",
+    "performance": "A"
+  },
+  "recommendationCount": 21,
+  "reportedLab": {
+    "mobile": {
+      "performance": 92,
+      "lcpSeconds": 2.6,
+      "cls": 0.003,
+      "tbtSeconds": 0
+    },
+    "desktop": {
+      "performance": 99,
+      "lcpSeconds": 0.7,
+      "cls": 0.005,
+      "tbtSeconds": 0
+    }
+  },
+  "fieldData": "Insufficient real-world data reported",
+  "findings": [
+    {
+      "id": "SEO-001",
+      "name": "Execute a Link Building Strategy",
+      "category": "Links",
+      "reportedPriority": "High",
+      "url": "https://linkorasolution.com/",
+      "observed": "0 backlinks / 0 referring domains in this vendor dataset",
+      "independent": "No independent complete backlink dataset; cannot establish zero links across the web",
+      "fix": "External authority work; code does not create earned backlinks",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-002",
+      "name": "Implement a Redirect to HTTPS",
+      "category": "On-Page SEO",
+      "reportedPriority": "Medium",
+      "url": "https://linkorasolution.com/",
+      "observed": "HTTP root and About return 200",
+      "independent": "Reproduced: www also redirects to HTTP when requested over HTTP",
+      "fix": "Enabled Cloudflare Always Use HTTPS; verified real 301 redirects, query preservation and no loop",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "SEO-003",
+      "name": "Increase length of Title Tag",
+      "category": "On-Page SEO",
+      "reportedPriority": "Medium",
+      "url": "https://linkorasolution.com/",
+      "observed": "40 characters; tool suggests 50-60",
+      "independent": "Title accurately describes real services; length alone is not a technical defect",
+      "fix": "Keep established homepage title; no padding for a character target",
+      "status": "REVIEWED - RETAINED"
+    },
+    {
+      "id": "SEO-004",
+      "name": "Improve Heading Structure",
+      "category": "On-Page SEO",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "One skipped level in Home process steps",
+      "independent": "Home and Services H2 to H4; independent Contact H1 to H4 gap",
+      "fix": "Correct H3 steps / H2 contact headings and preserve sizing",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "SEO-005",
+      "name": "Improve Link Anchor Text",
+      "category": "Links",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "One generic Learn More link to gmb.html",
+      "independent": "Reproduced exactly",
+      "fix": "Descriptive GBP link; initial service links added",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "SEO-006",
+      "name": "Update Link URLs to be more readable",
+      "category": "Links",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": ".html filenames flagged",
+      "independent": "Routes are readable, working and canonicalized; no broken URL established",
+      "fix": "Retain established paths and inbound links; avoid unnecessary migration",
+      "status": "REVIEWED - RETAINED"
+    },
+    {
+      "id": "SEO-007",
+      "name": "Increase Page Text Content",
+      "category": "On-Page SEO",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "619 words according to report method",
+      "independent": "No required word minimum; useful scope gaps assessed individually",
+      "fix": "Clarify About/project process and Technical SEO deliverables; no filler quota",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "SEO-008",
+      "name": "Defer Render Blocking Resources",
+      "category": "Usability",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "External font CSS and critical CSS; report estimates 1.35s mobile savings",
+      "independent": "Google Fonts CSS creates a cross-origin dependency before fonts",
+      "fix": "Original fonts self-hosted as licensed WOFF2 with swap and Inter preload; critical CSS retained",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "SEO-009",
+      "name": "Add DMARC Mail Record",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No DMARC record detected",
+      "independent": "Public DNS _dmarc lookup returns NXDOMAIN",
+      "fix": "Mail owner must verify domain-sending model before a policy is chosen",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-010",
+      "name": "Add SPF Mail Record",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No SPF record detected",
+      "independent": "Root TXT lookup contains verification record, no SPF",
+      "fix": "No sender invented; existing public contact uses Gmail",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-011",
+      "name": "Add Business Address and Phone Number to site",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "Report misses phone and address on Home",
+      "independent": "Contact already publishes phone; no verified street address in repository",
+      "fix": "Existing phone made readable in footer; street address awaits owner verification",
+      "status": "PARTIALLY COMPLETED"
+    },
+    {
+      "id": "SEO-012",
+      "name": "Add Local Business Schema",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No LocalBusiness schema",
+      "independent": "Organization schema already present; verified physical address unavailable",
+      "fix": "Retain truthful Organization schema; no fictitious address or eligibility assertion",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-013",
+      "name": "Create and link Facebook Page",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No company Facebook link detected",
+      "independent": "Repository socialProfiles is empty",
+      "fix": "Only owner-verified company profile may be linked",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-014",
+      "name": "Create and link X Profile",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No company X link detected",
+      "independent": "Repository socialProfiles is empty",
+      "fix": "No account created or guessed",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-015",
+      "name": "Create and link Instagram Profile",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No company Instagram link detected",
+      "independent": "Repository socialProfiles is empty",
+      "fix": "No account created or guessed",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-016",
+      "name": "Create and link LinkedIn Profile",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No company LinkedIn link detected",
+      "independent": "Sharing endpoint is not a company profile",
+      "fix": "Only verified company profile may be linked",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-017",
+      "name": "Create and link YouTube Channel",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "No company channel link detected",
+      "independent": "Repository socialProfiles is empty",
+      "fix": "No account created or guessed",
+      "status": "OWNER ACTION REQUIRED"
+    },
+    {
+      "id": "SEO-018",
+      "name": "Implement a llms.txt File",
+      "category": "GEO",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "File not detected",
+      "independent": "Optional file; existing public content, robots and schema are available",
+      "fix": "No indexing claim or invented dependency on this optional file",
+      "status": "OPTIONAL - NOT IMPLEMENTED"
+    },
+    {
+      "id": "SEO-019",
+      "name": "Install a Facebook Pixel",
+      "category": "Other",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "Pixel not detected",
+      "independent": "No approved Pixel ID or need for additional tracking established",
+      "fix": "Existing consent-based measurement retained; no unsolicited tracker",
+      "status": "OPTIONAL - NOT IMPLEMENTED"
+    },
+    {
+      "id": "SEO-020",
+      "name": "Remove Inline Styles",
+      "category": "Performance",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "Inline SVG dimensions / small layout settings detected",
+      "independent": "Not a demonstrated indexing blocker; some early theme styling prevents flashing",
+      "fix": "Keep necessary settings and brand layout; do not defer critical theme CSS for grade alone",
+      "status": "REVIEWED - RETAINED"
+    },
+    {
+      "id": "SEO-021",
+      "name": "Utilize Browser Caching",
+      "category": "Performance",
+      "reportedPriority": "Low",
+      "url": "https://linkorasolution.com/",
+      "observed": "Some resources have short cache lifetime",
+      "independent": "Live cache-control recorded in baseline; headers are controlled by hosting/CDN",
+      "fix": "Font assets have content-hashed names; do not cache HTML aggressively or invent unsupported GitHub _headers",
+      "status": "PARTIALLY COMPLETED"
+    }
+  ]
+}
