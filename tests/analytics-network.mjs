@@ -22,7 +22,8 @@ const send = process.env.GA4_SEND === '1';
 assert.ok(!send || base === 'https://linkorasolution.com', 'Only explicit public production verification may transmit real hits');
 const browser = await chromium.launch({ headless:true, executablePath:process.env.EDGE_EXECUTABLE || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' });
 const context = await browser.newContext({ viewport:{ width:1440,height:960 }, reducedMotion:'reduce' });
-const records = [], statuses = [], requests = [], checks = [];
+const records = [], statuses = [], requests = [], acknowledgements = [], failures = [], checks = [];
+const collection = url => /https:\/\/[^/]*(?:google-analytics\.com|analytics\.google\.com)\/(?:g\/collect|collect)/.test(url);
 let tags = 0, tagResponses = [];
 function decoded(request) {
   const shared = new URL(request.url()).searchParams;
@@ -42,22 +43,25 @@ try {
     window.open = () => null;
     document.addEventListener('click', event => { if (event.target.closest('a[href]')) event.preventDefault(); }, true);
   });
-  await context.route(/https:\/\/[^/]*(?:google-analytics\.com|analytics\.google\.com)\/(?:g\/collect|collect)/, async route => {
-    const request = route.request();
+  // Never intercept live beacons: Fetch routing changes their navigation/keepalive lifecycle.
+  if (!send) await context.route(/https:\/\/[^/]*(?:google-analytics\.com|analytics\.google\.com)\/(?:g\/collect|collect)/, route => route.fulfill({ status:204 }));
+  context.on('request', request => {
+    if (request.url().startsWith('https://www.googletagmanager.com/gtag/js?')) tags++;
+    if (!collection(request.url())) return;
     for (const params of decoded(request)) {
       assert.equal(params.get('tid'), 'G-S30W1WLJL9', 'One approved destination only');
       assert.ok(![...params.values()].some(value => value.includes('network-private-canary')), 'No test query/form content in any Google collection field');
       records.push(Object.fromEntries(['tid','en','dl','dt','dr','gcs','ep.service_name','ep.source_page','ep.cta_location'].filter(key => params.has(key)).map(key => [key,params.get(key)])));
     }
-    requests.push(request.url());
-    if (send) await route.continue();
-    else await route.fulfill({ status:204 });
+    requests.push(request);
   });
-  context.on('request', request => { if (request.url().startsWith('https://www.googletagmanager.com/gtag/js?')) tags++; });
   context.on('response', response => {
     if (response.url().startsWith('https://www.googletagmanager.com/gtag/js?')) tagResponses.push(response.status());
-    if (/google-analytics\.com\/g\/collect|analytics\.google\.com\/g\/collect/.test(response.url())) statuses.push(response.status());
+    if (!collection(response.url())) return;
+    statuses.push(response.status());
+    for (const params of decoded(response.request())) acknowledgements.push({ event:params.get('en'),location:params.get('dl'),status:response.status() });
   });
+  context.on('requestfailed', request => { if (collection(request.url())) failures.push({ error:request.failure()?.errorText }); });
   const page = await context.newPage();
   await page.goto(base + '/');
   await page.locator('[data-analytics-preferences]').waitFor();
@@ -69,6 +73,7 @@ try {
   await page.locator('[data-analytics-preferences]').click();
   await page.getByRole('button',{ name:'Allow analytics',exact:true }).click();
   await until(() => records.some(row => row.en === 'page_view'), 'Real Google SDK generated a page view after opt-in');
+  if (send) await until(() => acknowledgements.some(row => row.event === 'page_view' && row.location === base + '/about.html'), 'Opt-in page view acknowledged by Google');
   assert.ok(tagResponses.some(status => status >= 200 && status < 400));
   checks.push('Real Google script loads successfully only after opt-in; persistent decline sends no tag/collection request.');
   const sitemap = await (await page.request.get(base + '/sitemap.xml')).text();
@@ -76,9 +81,10 @@ try {
   paths.push('/index.html', '/about');
   const pages = [];
   for (const path of paths) {
-    const before = records.length, tagBefore = tags;
+    const before = records.length, tagBefore = tags, acknowledgedBefore = acknowledgements.length;
     await page.goto(base + path + (send ? '' : '?email=network-private-canary%40example.invalid&search=network-private-canary&utm_source=network-private-canary'));
     await until(() => records.slice(before).some(row => row.en === 'page_view'), path + ': page view');
+    if (send) await until(() => acknowledgements.slice(acknowledgedBefore).some(row => row.event === 'page_view' && row.location === base + path), path + ': Google page-view acknowledgement');
     await page.waitForTimeout(350);
     const views = records.slice(before).filter(row => row.en === 'page_view');
     assert.equal(views.length,1,path + ': one page view');
@@ -89,13 +95,16 @@ try {
     pages.push({ path,title:views[0].dt,pageViews:views.length });
   }
   checks.push('One real-SDK page view with the correct URL/title and asynchronous head loader on every current sitemap page.');
+  const servicesBefore = records.length, servicesAcknowledgedBefore = acknowledgements.length;
   await page.goto(base + '/services.html');
-  await until(() => records.at(-1)?.en === 'page_view', 'Services view is ready');
-  const beforeClicks = records.length;
+  await until(() => records.slice(servicesBefore).some(row => row.en === 'page_view'), 'Services view is ready');
+  if (send) await until(() => acknowledgements.slice(servicesAcknowledgedBefore).some(row => row.event === 'page_view' && row.location === base + '/services.html'), 'Services view acknowledged');
+  const beforeClicks = records.length, clicksAcknowledgedBefore = acknowledgements.length;
   await page.locator('.services-nav > a').hover();
   await page.locator('.services-dropdown a[href$="#web-development"]').click();
   await page.locator('header a[href*="wa.me"]').click();
   await until(() => records.slice(beforeClicks).some(row => row.en === 'service_cta_click') && records.slice(beforeClicks).some(row => row.en === 'whatsapp_click'),'Real SDK CTA and WhatsApp collection');
+  if (send) await until(() => acknowledgements.slice(clicksAcknowledgedBefore).some(row => row.event === 'service_cta_click') && acknowledgements.slice(clicksAcknowledgedBefore).some(row => row.event === 'whatsapp_click'), 'Google CTA and WhatsApp acknowledgements');
   assert.equal(records.slice(beforeClicks).filter(row => row.en === 'service_cta_click').length,1);
   assert.equal(records.slice(beforeClicks).filter(row => row.en === 'whatsapp_click').length,1);
   checks.push('Real SDK emits one Web Development CTA and one WhatsApp event, with controlled labels and no destination URL/contact text.');
@@ -132,11 +141,10 @@ try {
     checks.push('Real SDK regrant restores event collection without another page view.');
   }
   if (send) {
-    await until(() => statuses.length >= requests.length,'Collection response statuses received');
-    assert.ok(statuses.every(status => status >= 200 && status < 300),'Google accepted all collection requests over HTTP');
+    assert.ok(statuses.length > 0 && statuses.every(status => status >= 200 && status < 300),'Google acknowledged all verified views/CTAs over HTTP');
   }
   checks.push('Real SDK stops collection after withdrawal; no hidden denied-consent pings.');
-  writeFileSync(resolve(out,send ? 'analytics-production-network.json' : 'analytics-real-sdk-capture.json'),JSON.stringify({ date:new Date().toISOString(),mode:send ? 'production requests sent to Google; no form submission' : 'real SDK, collection and business endpoints intercepted',measurementId:'G-S30W1WLJL9',checks,pages,tagResponses,collectionStatuses:statuses,events:records },null,2));
+  writeFileSync(resolve(out,send ? 'analytics-production-network.json' : 'analytics-real-sdk-capture.json'),JSON.stringify({ date:new Date().toISOString(),mode:send ? 'production requests observed without routing; no form submission' : 'real SDK, collection and business endpoints intercepted',measurementId:'G-S30W1WLJL9',checks,pages,tagResponses,collectionRequests:requests.length,collectionStatuses:statuses,acknowledgements,failures,events:records },null,2));
   console.log('Real Google SDK verified: ' + pages.length + ' public pages; ' + checks.length + ' network/privacy groups; mode=' + (send?'production':'intercepted'));
 } finally {
   await context.close();
