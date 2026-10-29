@@ -47,7 +47,8 @@ try {
     await route.fulfill({ status: mode === 'fail' ? 503 : 200, contentType: 'application/json', body: JSON.stringify({ accepted: mode === 'success' }) });
   });
   await page.goto(base + '/contact.html?email=private-canary%40example.invalid&search=private-canary&utm_source=private-canary#private-canary', { referer: 'https://example.test/private-canary?email=private-canary' });
-  await page.locator('[data-analytics-preferences]').waitFor();
+  await page.locator('.analytics-choice').waitFor();
+  assert.equal(await page.locator('footer [data-analytics-preferences], footer .analytics-settings').count(), 0);
   assert.equal(tagLoads.length, 0);
   await page.screenshot({ path: resolve(out, 'consent-mobile.png') });
   await page.getByRole('button', { name:'Allow analytics', exact:true }).click();
@@ -60,9 +61,9 @@ try {
   assert.equal(configured[0][2].page_title, await page.title());
   assert.equal(configured[0][2].page_referrer, 'https://example.test/');
   assert.equal((await events(page, 'page_view')).length, 0, 'No duplicate manual page view');
-  await page.addScriptTag({ url: base + '/marketing.js?v=4' });
+  await page.addScriptTag({ url: base + '/marketing.js?v=5' });
   assert.equal((await configCommands(page)).length, 1);
-  assert.equal(await page.locator('[data-analytics-preferences]').count(), 1);
+  assert.equal(await page.locator('[data-analytics-preferences]').count(), 0);
   assert.equal(await page.locator('script[data-linkora-analytics]').count(), 1);
   await page.locator('main a[href*="wa.me"]').first().click();
   assert.equal((await events(page, 'whatsapp_click')).length, 1);
@@ -114,18 +115,23 @@ try {
   await second.waitForFunction(() => window.__gaFixtureLoaded);
   assert.equal((await configCommands(second))[0][2].page_location, base + '/about', 'Existing extensionless public aliases retain their actual URL');
   await page.evaluate(() => { document.cookie = '_ga=fixture; path=/'; document.cookie = '_ga_S30W1WLJL9=fixture; path=/'; });
-  await page.locator('[data-analytics-preferences]').click();
-  await page.getByRole('button', { name:'Withdraw analytics', exact:true }).click();
+  const settings = await ctx.newPage();
+  const privacyLink = page.getByRole('link', { name:'Privacy & cookies', exact:true });
+  await settings.goto(new URL(await privacyLink.getAttribute('href'), page.url()).href + '#analytics');
+  assert.equal(await settings.locator('main [data-analytics-preferences]').count(), 1);
+  await settings.getByRole('button', { name:'Change analytics settings', exact:true }).press('Enter');
+  await settings.getByRole('button', { name:'Withdraw analytics', exact:true }).click();
   await second.waitForFunction(() => window['ga-disable-G-S30W1WLJL9'] === true);
   assert.equal(await page.evaluate(() => window['ga-disable-G-S30W1WLJL9']), true);
   assert.doesNotMatch(await page.evaluate(() => document.cookie), /_ga(?:=|_)/);
   const beforeWithdrawClick = (await events(page, 'whatsapp_click')).length;
   await page.locator('main a[href*="wa.me"]').first().click();
   assert.equal((await events(page, 'whatsapp_click')).length, beforeWithdrawClick);
-  await page.locator('[data-analytics-preferences]').click();
-  await page.getByRole('button', { name:'Allow analytics', exact:true }).click();
+  await settings.getByRole('button', { name:'Change analytics settings', exact:true }).click();
+  await settings.getByRole('button', { name:'Allow analytics', exact:true }).click();
+  await page.waitForFunction(() => window['ga-disable-G-S30W1WLJL9'] === false);
   assert.equal((await configCommands(page)).length, 1, 'Regrant does not configure/send a second page view');
-  checks.push('Footer preferences, withdrawal, first-party cookie deletion, cross-tab consent synchronization and regrant without duplicate config.');
+  checks.push('Shared Privacy & cookies link reaches one keyboard-accessible settings control in Privacy main content; no footer injection. Withdrawal, cookie deletion, cross-tab consent and regrant without duplicate config.');
   await ctx.close();
 
   const serviceCtx = await context({ viewport:{ width:1440, height:960 } });
@@ -195,7 +201,7 @@ try {
   for (const file of ['blog-admin.html','careers-admin.html','attendance-admin.html','tennis-portal.html']) {
     await privatePage.goto(base + '/' + file);
     await privatePage.addScriptTag({ url: base + '/marketing-config.js?v=2' });
-    await privatePage.addScriptTag({ url: base + '/marketing.js?v=4' });
+    await privatePage.addScriptTag({ url: base + '/marketing.js?v=5' });
     assert.equal(await privatePage.evaluate(() => typeof window.LinkoraMarketing), 'undefined', file);
     assert.equal(await privatePage.locator('script[data-linkora-analytics], [data-analytics-preferences]').count(), 0, file);
   }

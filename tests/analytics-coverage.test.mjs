@@ -7,7 +7,7 @@ const htmlFiles = readdirSync('.').filter(file => file.endsWith('.html'));
 const templates = new Set(['blog-post.html', 'career-job.html']);
 function integration(html, name) {
   const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] || '';
-  for (const source of ['marketing-config.js?v=2', 'marketing.js?v=4']) {
+  for (const source of ['marketing-config.js?v=2', 'marketing.js?v=5']) {
     assert.equal(html.split('src="' + source + '"').length - 1, 1, name + ': one ' + source);
     assert.ok(head.includes('src="' + source + '" defer'), name + ': deferred head integration');
   }

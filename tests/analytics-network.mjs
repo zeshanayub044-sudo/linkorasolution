@@ -64,16 +64,19 @@ try {
   context.on('requestfailed', request => { if (collection(request.url())) failures.push({ error:request.failure()?.errorText }); });
   const page = await context.newPage();
   await page.goto(base + '/');
-  await page.locator('[data-analytics-preferences]').waitFor();
+  await page.locator('.analytics-choice').waitFor();
+  assert.equal(await page.locator('footer [data-analytics-preferences], footer .analytics-settings').count(),0);
   assert.equal(tags,0);
   assert.equal(records.length,0);
   await page.getByRole('button',{ name:'Decline analytics',exact:true }).click();
   await page.goto(base + '/about.html');
   assert.equal(tags,0,'Decline persists without a Google request');
+  const privacyPath = await page.getByRole('link',{name:'Privacy & cookies',exact:true}).getAttribute('href');
+  await page.goto(new URL(privacyPath, page.url()).href + '#analytics');
   await page.locator('[data-analytics-preferences]').click();
   await page.getByRole('button',{ name:'Allow analytics',exact:true }).click();
   await until(() => records.some(row => row.en === 'page_view'), 'Real Google SDK generated a page view after opt-in');
-  if (send) await until(() => acknowledgements.some(row => row.event === 'page_view' && row.location === base + '/about.html'), 'Opt-in page view acknowledged by Google');
+  if (send) await until(() => acknowledgements.some(row => row.event === 'page_view' && row.location === base + '/privacy.html'), 'Opt-in page view acknowledged by Google');
   assert.ok(tagResponses.some(status => status >= 200 && status < 400));
   checks.push('Real Google script loads successfully only after opt-in; persistent decline sends no tag/collection request.');
   const sitemap = await (await page.request.get(base + '/sitemap.xml')).text();
@@ -92,6 +95,7 @@ try {
     assert.equal(views[0].dl,base + path,path + ': safe actual URL');
     assert.equal(views[0].dt,await page.title(),path + ': actual final title');
     assert.equal(await page.locator('head script[data-linkora-analytics]').evaluate(element => element.async),true);
+    assert.equal(await page.locator('footer [data-analytics-preferences], footer .analytics-settings').count(),0,path + ': no injected footer control');
     pages.push({ path,title:views[0].dt,pageViews:views.length });
   }
   checks.push('One real-SDK page view with the correct URL/title and asynchronous head loader on every current sitemap page.');
@@ -122,10 +126,14 @@ try {
     assert.equal(records.filter(row => row.en === 'quote_request').length,1);
     checks.push('Real SDK produces confirmed-only lead/quote requests without PII; both business and Google collection endpoints intercepted for synthetic form data.');
   }
+  const privacyBefore = acknowledgements.length, privacyRecordsBefore = records.length;
+  await page.goto(base + '/privacy.html#analytics');
+  await until(() => records.slice(privacyRecordsBefore).some(row => row.en === 'page_view' && row.dl === base + '/privacy.html'),'Privacy view ready');
+  await until(() => acknowledgements.slice(privacyBefore).some(row => row.event === 'page_view' && row.location === base + '/privacy.html'),'Privacy view acknowledged');
   const beforeWithdrawal = records.length;
   await page.locator('[data-analytics-preferences]').click();
   await page.getByRole('button',{name:'Withdraw analytics',exact:true}).click();
-  await page.locator('main a[href*="wa.me"]').first().click().catch(async () => page.locator('header a[href*="wa.me"]').click());
+  await page.locator('header a[href*="wa.me"]').click();
   await page.waitForTimeout(1200);
   assert.equal(records.length,beforeWithdrawal,'Withdrawal sends no further collection pings/events');
   assert.equal(await page.evaluate(() => window['ga-disable-G-S30W1WLJL9']),true);
@@ -136,7 +144,7 @@ try {
     await page.waitForTimeout(1000);
     assert.equal(records.filter(row => row.en === 'page_view').length,viewCount,'Real SDK does not duplicate the page view after regrant');
     const beforeRegrantClick = records.filter(row => row.en === 'whatsapp_click').length;
-    await page.locator('main a[href*="wa.me"]').first().click();
+    await page.locator('header a[href*="wa.me"]').click();
     await until(() => records.filter(row => row.en === 'whatsapp_click').length === beforeRegrantClick + 1,'Regrant restores a permitted event');
     checks.push('Real SDK regrant restores event collection without another page view.');
   }
