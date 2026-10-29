@@ -33,6 +33,9 @@ function decoded(request) {
     return params;
   });
 }
+// Async third-party loaders must not hold navigation open after the document is ready.
+// Tracking assertions below still require the actual Google SDK and acknowledgements.
+async function navigate(page, url) { await page.goto(url, { waitUntil: 'domcontentloaded' }); }
 async function until(predicate, message) {
   const deadline = Date.now() + 30000;
   while (!predicate() && Date.now() < deadline) await new Promise(done => setTimeout(done,100));
@@ -63,13 +66,13 @@ try {
   });
   context.on('requestfailed', request => { if (collection(request.url())) failures.push({ error:request.failure()?.errorText }); });
   const page = await context.newPage();
-  await page.goto(base + '/');
+  await navigate(page, base + '/');
   await page.locator('.analytics-choice').waitFor();
   assert.equal(await page.locator('footer [data-analytics-preferences], footer .analytics-settings').count(),0);
   assert.equal(tags,0);
   assert.equal(records.length,0);
   await page.getByRole('button',{ name:'Decline analytics',exact:true }).click();
-  await page.goto(base + '/about.html');
+  await navigate(page, base + '/about.html');
   assert.equal(tags,0,'Decline persists without a Google request');
   const privacyPath = await page.getByRole('link',{name:'Privacy & cookies',exact:true}).getAttribute('href');
   await page.goto(new URL(privacyPath, page.url()).href + '#analytics');
@@ -85,7 +88,7 @@ try {
   const pages = [];
   for (const path of paths) {
     const before = records.length, tagBefore = tags, acknowledgedBefore = acknowledgements.length;
-    await page.goto(base + path + (send ? '' : '?email=network-private-canary%40example.invalid&search=network-private-canary&utm_source=network-private-canary'));
+    await navigate(page, base + path + (send ? '' : '?email=network-private-canary%40example.invalid&search=network-private-canary&utm_source=network-private-canary'));
     await until(() => records.slice(before).some(row => row.en === 'page_view'), path + ': page view');
     if (send) await until(() => acknowledgements.slice(acknowledgedBefore).some(row => row.event === 'page_view' && row.location === base + path), path + ': Google page-view acknowledgement');
     await page.waitForTimeout(350);
@@ -100,7 +103,7 @@ try {
   }
   checks.push('One real-SDK page view with the correct URL/title and asynchronous head loader on every current sitemap page.');
   const servicesBefore = records.length, servicesAcknowledgedBefore = acknowledgements.length;
-  await page.goto(base + '/services.html');
+  await navigate(page, base + '/services.html');
   await until(() => records.slice(servicesBefore).some(row => row.en === 'page_view'), 'Services view is ready');
   if (send) await until(() => acknowledgements.slice(servicesAcknowledgedBefore).some(row => row.event === 'page_view' && row.location === base + '/services.html'), 'Services view acknowledged');
   const beforeClicks = records.length, clicksAcknowledgedBefore = acknowledgements.length;
@@ -114,7 +117,7 @@ try {
   checks.push('Real SDK emits one Web Development CTA and one WhatsApp event, with controlled labels and no destination URL/contact text.');
   if (!send) {
     await page.route('**/functions/v1/marketing-lead',route => route.fulfill({ contentType:'application/json',body:'{"accepted":true}' }));
-    await page.goto(base + '/contact.html?email=network-private-canary%40example.invalid');
+    await navigate(page, base + '/contact.html?email=network-private-canary%40example.invalid');
     await page.locator('[name=name]').fill('network-private-canary');
     await page.locator('[name=email]').fill('network-private-canary@example.invalid');
     await page.locator('[name=message]').fill('network-private-canary');
@@ -127,7 +130,7 @@ try {
     checks.push('Real SDK produces confirmed-only lead/quote requests without PII; both business and Google collection endpoints intercepted for synthetic form data.');
   }
   const privacyBefore = acknowledgements.length, privacyRecordsBefore = records.length;
-  await page.goto(base + '/privacy.html#analytics');
+  await navigate(page, base + '/privacy.html#analytics');
   await until(() => records.slice(privacyRecordsBefore).some(row => row.en === 'page_view' && row.dl === base + '/privacy.html'),'Privacy view ready');
   await until(() => acknowledgements.slice(privacyBefore).some(row => row.event === 'page_view' && row.location === base + '/privacy.html'),'Privacy view acknowledged');
   const beforeWithdrawal = records.length;
