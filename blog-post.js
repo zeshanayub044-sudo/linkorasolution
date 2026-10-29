@@ -23,6 +23,8 @@
     item.content = value || '';
   }
   function notFound(message) {
+    article.dataset.analyticsReady = 'false';
+    document.dispatchEvent(new Event('linkora:public-page-unavailable'));
     document.title = 'Article not found | LINKORA SOLUTION';
     meta('robots', 'noindex,follow');
     document.getElementById('public-content-schema')?.remove();
@@ -109,6 +111,8 @@
       var cta = node('a', item[2], item[1]); cta.href = item[0]; cta.target = '_blank'; cta.rel = 'noopener noreferrer'; next.appendChild(cta);
     });
     article.appendChild(next);
+    article.dataset.analyticsReady = 'true'; article.dataset.analyticsSlug = post.slug;
+    document.dispatchEvent(new Event('linkora:public-page-ready'));
   }
   async function loadRelated(client, post) {
     var result = await client.from('blog_posts').select('title,slug,excerpt,category,published_at')
