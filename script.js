@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
         + 'Website: ' + (data.get('website') || 'Not provided') + '\n'
         + 'Contact: ' + data.get('contact') + '\n'
         + 'Requirements: ' + (data.get('notes') || 'Not provided');
-      window.LinkoraMarketing?.track('whatsapp_click', 'service');
+      window.LinkoraMarketing?.track('whatsapp_click', { context: 'service', service_name: selectedService, cta_location: 'order_modal' });
       window.open('https://wa.me/923216308339?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
       closeOrder();
     });

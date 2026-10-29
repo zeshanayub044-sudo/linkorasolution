@@ -17,6 +17,8 @@
     if (!item.parentNode) document.head.appendChild(item);
   }
   function notFound(message) {
+    detail.dataset.analyticsReady = 'false';
+    document.dispatchEvent(new Event('linkora:public-page-unavailable'));
     document.title = 'Job unavailable | LINKORA SOLUTION';
     meta('robots', 'noindex,follow');
     document.getElementById('public-content-schema')?.remove();
@@ -81,6 +83,8 @@
     });
     form.elements.namedItem('job_id').value = job.id;
     applyPanel.hidden = false;
+    detail.dataset.analyticsReady = 'true'; detail.dataset.analyticsSlug = job.slug;
+    document.dispatchEvent(new Event('linkora:public-page-ready'));
   }
   async function load() {
     if (!career.validSlug(slug)) { notFound('This job could not be found.'); return; }
