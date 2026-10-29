@@ -166,13 +166,11 @@
     loadAnalytics();
     if (enabled) {
       if (storedChoice !== 'granted' && storedChoice !== 'denied') showChoices(false);
-      setTimeout(function () {
-        var host = document.querySelector('.footer-bottom') || document.querySelector('footer');
-        if (!host || document.querySelector('[data-analytics-preferences]')) return;
-        var preferences = document.createElement('button'); preferences.type = 'button'; preferences.className = 'analytics-settings';
-        preferences.dataset.analyticsPreferences = ''; preferences.textContent = 'Analytics preferences';
-        preferences.onclick = function () { showChoices(true); }; host.appendChild(preferences);
-      }, 0);
+      // The Privacy page owns the persistent settings control; shared footers
+      // link there rather than injecting a second row/control on every page.
+      document.querySelectorAll('[data-analytics-preferences]').forEach(function (preferences) {
+        preferences.addEventListener('click', function () { showChoices(true); });
+      });
     }
     document.addEventListener('linkora:public-page-ready', loadAnalytics);
     document.addEventListener('linkora:public-page-unavailable', function () { if (enabled) window['ga-disable-' + measurementId] = true; });

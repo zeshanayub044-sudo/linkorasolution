@@ -33,7 +33,7 @@ Use generate_lead as the primary lead key event if configuring business conversi
 
 - Basic opt-in behavior worldwide: no Google SDK/collection before permission or after a persisted decline.
 - Consent Mode defaults denied before configuration; the opt-in grants analytics storage only. Ads storage, ad user data and ad personalization remain denied; Google signals/ad personalization features are disabled.
-- Footer **Analytics preferences** remains available after either choice. Withdrawal disables collection before the consent update and clears accessible first-party GA cookies. Other tabs synchronize the saved choice. Regrant does not repeat config/page views.
+- **Change analytics settings** on privacy.html#analytics remains available after either choice through the shared footer's **Privacy & cookies** link. The footer does not inject a separate preferences button. Withdrawal disables collection before the consent update and clears accessible first-party GA cookies. Other tabs synchronize the saved choice. Regrant does not repeat config/page views.
 - Blocked local storage falls back to current-tab choice; subsequent loads default to denied. A blocked analytics script does not block rendering or business forms.
 - Query strings, fragments, private referrer paths and arbitrary campaign parameters are excluded from GA events. External referrers retain the origin only. Existing optional UTM attribution to an actual inquiry remains in the separate first-party form workflow.
 - This intentionally limits GA URL/campaign attribution. Google still receives normal request/device metadata after opt-in; no claim of anonymity, legal compliance or retroactive deletion is made.
