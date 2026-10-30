@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { resolve, extname } from "node:path";
 import { pathToFileURL } from "node:url";
 import assert from "node:assert/strict";
@@ -37,7 +37,8 @@ const base = "http://127.0.0.1:" + server.address().port,
       process.env.EDGE_EXECUTABLE ||
       "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
   });
-const checks = [];
+const checks = [], out = resolve(process.env.QA_OUT || process.env.SMOKE_REPORT_DIR || '.tmp/public-workflows');
+mkdirSync(out, { recursive:true });
 try {
   const context = await browser.newContext({
       viewport: { width: 390, height: 900 },
@@ -322,9 +323,9 @@ try {
   );
   await context.close();
   writeFileSync(
-    "docs/theme-seo/workflow-fixtures.json",
+    resolve(out, "workflow-fixtures.json"),
     JSON.stringify(
-      { date: "2026-10-24", checks, productionWrites: 0 },
+      { date: new Date().toISOString(), checks, productionWrites: 0 },
       null,
       2,
     ),

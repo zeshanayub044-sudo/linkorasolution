@@ -5,3 +5,4 @@ portal-config.js
 supabase/.temp/
 
 _site/
+.tmp/

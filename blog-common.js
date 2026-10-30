@@ -82,11 +82,35 @@
   }
 
   function canonicalUrl(value, fallback) { try { var url = new URL(value); if (url.protocol === 'https:' && !url.username && !url.password) return url.href; } catch (_) {} return fallback; }
+  async function validatePublication(post) {
+    if (!post.excerpt || !post.content) throw new Error('A published article needs an excerpt and content.');
+    var value = String(post.canonical_url || '').trim();
+    if (!value) return; // The generated article URL is the default canonical.
+    var canonical = canonicalUrl(value, '');
+    if (!canonical || new URL(canonical).hash) throw new Error('Use an HTTPS canonical URL without credentials or a fragment, or leave it blank.');
+    var url = new URL(canonical);
+    if (!['linkorasolution.com', 'www.linkorasolution.com'].includes(url.hostname)) return;
+    if (url.href === 'https://linkorasolution.com/blog/' + post.slug + '.html') return; // A new article is generated after publishing.
+    if (url.port) throw new Error('Use the normal public website URL for the canonical, or leave it blank.');
+    var response;
+    try {
+      response = await fetch(url.href, { credentials: 'omit', referrerPolicy: 'no-referrer', signal: AbortSignal.timeout(10000) });
+    } catch (_) { throw new Error('The canonical page could not be verified. Use a working public URL or leave it blank for this article.'); }
+    if (!response.ok) throw new Error('The canonical page returned HTTP ' + response.status + '. Use a working public URL or leave it blank for this article.');
+    var page = new DOMParser().parseFromString(await response.text(), 'text/html');
+    var robots = Array.from(page.querySelectorAll('meta')).filter(function (meta) {
+      return ['robots', 'googlebot'].includes((meta.getAttribute('name') || '').toLowerCase());
+    }).map(function (meta) { return meta.content; }).join(',') + ',' + (response.headers.get('X-Robots-Tag') || '');
+    if (/(?:^|[\s,])(?:noindex|none)(?:$|[\s,])/i.test(robots)) throw new Error('The canonical page is not indexable. Choose a public original article URL or leave this field blank.');
+    var preferred = page.querySelector('link[rel="canonical"]')?.getAttribute('href');
+    if (!preferred) throw new Error('The canonical page has no preferred public URL. Leave this field blank to use this article’s URL.');
+    if (new URL(preferred, response.url || url.href).href !== url.href) throw new Error('Use the original page’s preferred canonical URL, or leave this field blank.');
+  }
   function postUrl(slug) { return window.LINKORA_PUBLIC_ROUTES?.blog.includes(slug) ? '/blog/' + encodeURIComponent(slug) + '.html' : '/blog-post.html?slug=' + encodeURIComponent(slug); }
 
   window.LinkoraBlog = Object.freeze({
     config: config, createClient: createClient, slugify: slugify, validSlug: validSlug,
     imageUrl: imageUrl, formatDate: formatDate, readingTime: readingTime,
-    renderContent: renderContent, postUrl: postUrl, canonicalUrl: canonicalUrl
+    renderContent: renderContent, postUrl: postUrl, canonicalUrl: canonicalUrl, validatePublication: validatePublication
   });
 }());

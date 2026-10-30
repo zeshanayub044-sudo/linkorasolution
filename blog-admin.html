@@ -41,7 +41,7 @@
         <div><label>Current image<input id="blog-image-url" type="text" readonly placeholder="No image uploaded"></label><button id="blog-image-clear" type="button" class="btn btn-ghost" style="margin-top:10px">Remove image</button></div>
         <label>SEO title<input name="seo_title" maxlength="200" placeholder="Defaults to article title"></label>
         <label>SEO description<input name="seo_description" maxlength="500" placeholder="Defaults to excerpt"></label>
-        <label class="blog-admin__wide">Canonical URL<input name="canonical_url" type="url" placeholder="Optional HTTPS URL for republished content"></label>
+        <label class="blog-admin__wide">Canonical URL<input name="canonical_url" type="url" placeholder="Optional HTTPS URL for republished content"><span class="blog-admin__hint">Leave blank for this article’s public URL. Use an existing original URL only for republished content.</span></label>
       </div>
       <div class="blog-admin__actions"><button id="blog-save" type="submit" class="btn btn-whatsapp">Save article</button><button id="blog-preview" type="button" class="btn btn-ghost">Preview content</button><button id="blog-cancel" type="button" class="btn btn-ghost">Cancel</button></div>
     </form></section>
@@ -49,5 +49,5 @@
 </div></main>
 <dialog id="blog-preview-dialog" class="blog-admin__panel" style="max-width:760px;width:calc(100% - 30px);max-height:90vh;overflow:auto;background:var(--surface);color:var(--text)"><article><h2 id="blog-preview-title"></h2><p id="blog-preview-excerpt" class="blog-article__lead"></p><div id="blog-preview-content" class="blog-article__content"></div></article><form method="dialog"><button class="btn btn-ghost">Close preview</button></form></dialog>
 <footer><div class="wrap"><div class="footer-bottom"><p>© 2026 LINKORA SOLUTION. All rights reserved.</p></div></div></footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="blog-config.js"></script><script src="public-routes.js?v=1"></script><script src="blog-common.js?v=4"></script><script src="blog-admin.js?v=5"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="blog-config.js"></script><script src="public-routes.js?v=1"></script><script src="blog-common.js?v=5"></script><script src="blog-admin.js?v=6"></script>
 </body></html>
