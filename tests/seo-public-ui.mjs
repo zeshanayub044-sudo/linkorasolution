@@ -29,7 +29,9 @@ try {
   for (const path of articles) {
     await p.goto(base + path);
     assert.equal(await p.locator('#blog-article h1').count(), 1);
-    assert.ok(await p.locator('#blog-article .blog-article__content p').count() > 1, 'Readable article paragraphs');
+    const content = p.locator('#blog-article .blog-article__content');
+    assert.ok(await content.locator('p').count() >= 1, 'Initial article body is rendered');
+    assert.ok((await content.innerText()).trim().split(/\s+/).length > 100, 'Full readable content without JavaScript: ' + path);
     assert.ok(await p.locator('#blog-article nav[aria-label="Project next steps"] a[href="services.html"]').count());
   }
   await nojs.close();

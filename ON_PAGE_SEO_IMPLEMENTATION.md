@@ -1,3 +1,154 @@
+# On-page SEO re-audit — 31 October 2026
+
+Public titles, descriptions, H1 copy, pricing and approved branding were already healthy and were retained. The Guest Post article was unavailable in the old deployment; its configured metadata is now served at its correct generated URL after clearing the erroneous canonical override. No keyword-volume or ranking claims are made. Blog listing initial content now includes its existing image/category/byline/read-more layout to avoid reflow and improve initial article discovery.
+
+## https://linkorasolution.com/
+
+- Topic / H1: SEO that connects visibility to business goals.
+- Previous title: LINKORA SOLUTION | SEO & Web Development
+- Final title: LINKORA SOLUTION | SEO & Web Development
+- Previous description: LINKORA SOLUTION builds business-focused websites and provides white-hat SEO, local search, content, and multi-site SEO management for growing businesses.
+- Final description: LINKORA SOLUTION builds business-focused websites and provides white-hat SEO, local search, content, and multi-site SEO management for growing businesses.
+- Canonical: https://linkorasolution.com/
+- Initial main-content links: 15; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/about.html
+
+- Topic / H1: About LINKORA SOLUTION and how we work.
+- Previous title: About LINKORA SOLUTION | SEO & Digital Growth Agency
+- Final title: About LINKORA SOLUTION | SEO & Digital Growth Agency
+- Previous description: Meet the founder of LINKORA SOLUTION and learn how we approach SEO, outreach and website growth through clear scope, thoughtful strategy and transparent communication.
+- Final description: Meet the founder of LINKORA SOLUTION and learn how we approach SEO, outreach and website growth through clear scope, thoughtful strategy and transparent communication.
+- Canonical: https://linkorasolution.com/about.html
+- Initial main-content links: 4; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/services.html
+
+- Topic / H1: Services built for stronger digital growth.
+- Previous title: SEO & Website Development Services | LINKORA SOLUTION
+- Final title: SEO & Website Development Services | LINKORA SOLUTION
+- Previous description: Compare LINKORA SOLUTION services for on-page SEO, backlink outreach, guest posting, local visibility and website development. Review scope and request a quote.
+- Final description: Compare LINKORA SOLUTION services for on-page SEO, backlink outreach, guest posting, local visibility and website development. Review scope and request a quote.
+- Canonical: https://linkorasolution.com/services.html
+- Initial main-content links: 8; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/backlinks.html
+
+- Topic / H1: Relevant backlinks start with a relevant strategy.
+- Previous title: Backlink Building & Outreach Services | LINKORA SOLUTION
+- Final title: Backlink Building & Outreach Services | LINKORA SOLUTION
+- Previous description: Build an outreach plan around relevant publishers, editorial quality and clear reporting. Explore LINKORA SOLUTION backlink services and discuss your website goals.
+- Final description: Build an outreach plan around relevant publishers, editorial quality and clear reporting. Explore LINKORA SOLUTION backlink services and discuss your website goals.
+- Canonical: https://linkorasolution.com/backlinks.html
+- Initial main-content links: 10; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/guest-posting.html
+
+- Topic / H1: Useful editorial content. Relevant placement opportunities.
+- Previous title: Guest Posting & Editorial Outreach | LINKORA SOLUTION
+- Final title: Guest Posting & Editorial Outreach | LINKORA SOLUTION
+- Previous description: Explore guest posting with niche-relevant publisher selection, editorial content, outreach and placement reporting. Discuss a tailored plan with LINKORA SOLUTION.
+- Final description: Explore guest posting with niche-relevant publisher selection, editorial content, outreach and placement reporting. Discuss a tailored plan with LINKORA SOLUTION.
+- Canonical: https://linkorasolution.com/guest-posting.html
+- Initial main-content links: 10; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/on-page-seo.html
+
+- Topic / H1: Help search engines understand your pages—and visitors choose you.
+- Previous title: On-Page SEO for Business Websites | LINKORA SOLUTION
+- Final title: On-Page SEO for Business Websites | LINKORA SOLUTION
+- Previous description: Review on-page SEO covering keyword mapping, titles, content, headings, internal links and schema. Compare existing packages and request a website review.
+- Final description: Review on-page SEO covering keyword mapping, titles, content, headings, internal links and schema. Compare existing packages and request a website review.
+- Canonical: https://linkorasolution.com/on-page-seo.html
+- Initial main-content links: 10; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/gmb.html
+
+- Topic / H1: Make your local business information clear and useful.
+- Previous title: Google Business Profile Optimization | LINKORA SOLUTION
+- Final title: Google Business Profile Optimization | LINKORA SOLUTION
+- Previous description: Improve the completeness and consistency of your Google Business Profile with category, service, image and local visibility guidance. Discuss your business needs.
+- Final description: Improve the completeness and consistency of your Google Business Profile with category, service, image and local visibility guidance. Discuss your business needs.
+- Canonical: https://linkorasolution.com/gmb.html
+- Initial main-content links: 10; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/contact.html
+
+- Topic / H1: Let's grow your search visibility.
+- Previous title: Contact LINKORA SOLUTION | Discuss Your SEO Project
+- Final title: Contact LINKORA SOLUTION | Discuss Your SEO Project
+- Previous description: Tell LINKORA SOLUTION about your website, service needs and goals. Request a tailored quote for SEO, guest posting, backlinks or website development.
+- Final description: Tell LINKORA SOLUTION about your website, service needs and goals. Request a tailored quote for SEO, guest posting, backlinks or website development.
+- Canonical: https://linkorasolution.com/contact.html
+- Initial main-content links: 4; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/blog.html
+
+- Topic / H1: SEO advice built for steady, lasting growth.
+- Previous title: SEO Guides & Digital Marketing Insights | LINKORA SOLUTION
+- Final title: SEO Guides & Digital Marketing Insights | LINKORA SOLUTION
+- Previous description: Read practical LINKORA SOLUTION guides on backlink quality, on-page SEO, content and local visibility. Find useful checklists and connect them to your website goals.
+- Final description: Read practical LINKORA SOLUTION guides on backlink quality, on-page SEO, content and local visibility. Find useful checklists and connect them to your website goals.
+- Canonical: https://linkorasolution.com/blog.html
+- Initial main-content links: 9; existing service/project/contact paths retained.
+- Content: Full existing card layout pre-rendered; live filtering preserved.
+
+## https://linkorasolution.com/careers.html
+
+- Topic / H1: Help businesses grow through better search.
+- Previous title: Careers at LINKORA SOLUTION | Roles & Resume Submissions
+- Final title: Careers at LINKORA SOLUTION | Roles & Resume Submissions
+- Previous description: Explore current LINKORA SOLUTION opportunities in SEO, content and digital growth. Review open roles or submit your resume securely for future consideration.
+- Final description: Explore current LINKORA SOLUTION opportunities in SEO, content and digital growth. Review open roles or submit your resume securely for future consideration.
+- Canonical: https://linkorasolution.com/careers.html
+- Initial main-content links: 2; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/privacy.html
+
+- Topic / H1: Website inquiry data
+- Previous title: Inquiry Data & Privacy | LINKORA SOLUTION
+- Final title: Inquiry Data & Privacy | LINKORA SOLUTION
+- Previous description: Learn how LINKORA SOLUTION handles website inquiries, optional campaign attribution and consent-based analytics, and how to contact us about your information.
+- Final description: Learn how LINKORA SOLUTION handles website inquiries, optional campaign attribution and consent-based analytics, and how to contact us about your information.
+- Canonical: https://linkorasolution.com/privacy.html
+- Initial main-content links: 3; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+## https://linkorasolution.com/blog/what-is-guest-post-a-complete-beginner-s-guide.html
+
+- Topic / H1: What Is Guest Post? A Complete Beginner’s Guide
+- Previous title: What Is Guest Post? Benefits & Complete SEO Guide | LINKORA SOLUTION
+- Final title: What Is Guest Post? Benefits & Complete SEO Guide | LINKORA SOLUTION
+- Previous description: What is guest post? Learn how guest posting works, its SEO benefits, how to find quality websites, and effective strategies to build authority.
+- Final description: What is guest post? Learn how guest posting works, its SEO benefits, how to find quality websites, and effective strategies to build authority.
+- Canonical: https://linkorasolution.com/blog/what-is-guest-post-a-complete-beginner-s-guide.html
+- Initial main-content links: 3; existing service/project/contact paths retained.
+- Content: Article wording retained; canonical corrected from the invalid root override; static page made available.
+
+## https://linkorasolution.com/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html
+
+- Topic / H1: What Is SEO? A Complete Guide to Ranking on Google
+- Previous title: What Is SEO? A Complete Guide to Ranking on Google | LINKORA SOLUTION
+- Final title: What Is SEO? A Complete Guide to Ranking on Google | LINKORA SOLUTION
+- Previous description: Learn what SEO means, how search engines work, and how to improve website visibility with this practical introduction from LINKORA SOLUTION.
+- Final description: Learn what SEO means, how search engines work, and how to improve website visibility with this practical introduction from LINKORA SOLUTION.
+- Canonical: https://linkorasolution.com/blog/what-is-seo-a-complete-guide-to-ranking-on-google.html
+- Initial main-content links: 5; existing service/project/contact paths retained.
+- Content: Unchanged; inspected for heading structure, crawlability and contextual links.
+
+The following material is historical and retained for traceability.
+
+---
+
 # On-page SEO implementation — 24 October 2026
 
 Intent mapping follows actual services and existing content. These are qualitative search-intent choices, not claims of keyword volume, difficulty or ranking. No paid keyword dataset was available. Homepage title, description and hero copy are preserved. Web Development and the 12-Website Plan remain sections of Services; no unnecessary URL migration was introduced for those offerings.

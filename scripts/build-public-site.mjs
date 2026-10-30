@@ -26,6 +26,19 @@ export function canonicalUrl(value, fallback) {
   } catch {}
   return fallback;
 }
+export function blogCard(post) {
+  const href = '/blog/' + post.slug + '.html';
+  const image = /^https:\/\/nbvylffxmjmovyfhbytu.supabase.co\/storage\/v1\/object\/public\/blog-images\//.test(post.featured_image_url || '')
+    ? '<img src="' + escape(post.featured_image_url) + '" alt="" width="640" height="360" loading="lazy" decoding="async">'
+    : '<span class="blog-card__fallback"><img src="assets/linkora-mark.png" alt="" width="90" height="90"></span>';
+  const author = post.blog_authors?.display_name || 'LINKORA SOLUTION editorial team';
+  const date = new Date(post.published_at).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
+  const link = ' href="' + escape(href) + '" target="_blank" rel="noopener noreferrer"';
+  return '<article class="blog-card"><a class="blog-card__image" aria-label="' + escape('Read ' + post.title) + '"' + link + '>' + image + '</a><div class="blog-card__body">' +
+    '<span class="blog-card__category">' + escape(post.category || 'Insights') + '</span><h2><a' + link + '>' + escape(post.title) + '</a></h2>' +
+    '<p class="blog-card__excerpt">' + escape(post.excerpt) + '</p><p class="blog-card__meta">' + escape(author + ' · ' + date + ' · ' + post.reading_minutes + ' min read · ' + Number(post.view_count || 0).toLocaleString('en-US') + ' views') + '</p>' +
+    '<a class="blog-card__more"' + link + '>Read article →</a></div></article>';
+}
 export function inline(text) {
   let out = "",
     cursor = 0;
@@ -190,7 +203,7 @@ export function blogArticle(post) {
     '</div><nav class="growth-related" aria-label="Project next steps"><a class="btn btn-ghost" href="services.html" target="_blank" rel="noopener noreferrer">Explore SEO and website services</a><a class="btn btn-gold" href="contact.html" target="_blank" rel="noopener noreferrer">Discuss Your Project</a></nav>'
   );
 }
-export async function build() {
+export async function readPublicContent() {
   const [posts, jobs] = await Promise.all([
     publicRows(
       "blog-config.js",
@@ -205,11 +218,14 @@ export async function build() {
       "status=eq.open",
     ),
   ]);
-  const open = jobs.filter(
-      (j) => !j.closes_at || new Date(j.closes_at) > new Date(),
-    ),
-    root = process.cwd(),
-    out = resolve(root, "_site");
+  return { posts, open: jobs.filter((j) => !j.closes_at || new Date(j.closes_at) > new Date()) };
+}
+export function publicSnapshotDigest(commit, posts, open) {
+  return createHash("sha256").update(JSON.stringify({ commit, posts, jobs: open })).digest("hex");
+}
+export async function build() {
+  const { posts, open } = await readPublicContent();
+  const root = process.cwd(), out = resolve(root, "_site");
   if (out !== resolve(root, "_site") || lstatSync(root).isSymbolicLink())
     throw Error("Unsafe output");
   if (existsSync(out)) {
@@ -319,17 +335,9 @@ export async function build() {
   listing = listing.replace(
     '<div id="blog-grid" class="blog-grid" aria-live="polite"></div>',
     '<div id="blog-grid" class="blog-grid" aria-live="polite">' +
-      (posts
-        .map(
-          (p) =>
-            '<article class="blog-card"><div class="blog-card__body"><h2><a href="/blog/' +
-            p.slug +
-            '.html" target="_blank" rel="noopener noreferrer">' +
-            escape(p.title) +
-            '</a></h2><p class="blog-card__excerpt">' +
-            escape(p.excerpt) +
-            "</p></div></article>",
-        )
+      ([...posts]
+        .sort((a,b) => new Date(b.published_at) - new Date(a.published_at))
+        .map(blogCard)
         .join("") || '<p class="blog-empty">No published articles yet.</p>') +
       "</div>",
   );
@@ -453,9 +461,7 @@ export async function build() {
   const commit =
       process.env.GITHUB_SHA ||
       execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
-    digest = createHash("sha256")
-      .update(JSON.stringify({ commit, posts, jobs: open }))
-      .digest("hex");
+    digest = publicSnapshotDigest(commit, posts, open);
   write(
     "public-build.json",
     JSON.stringify({

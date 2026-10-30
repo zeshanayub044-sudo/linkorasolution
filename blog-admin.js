@@ -168,6 +168,11 @@
       show('A published article needs an excerpt and content.', 'error'); return;
     }
     saveButton.disabled = true;
+    if (status === 'published') {
+      show('Checking article…');
+      try { await blog.validatePublication(payload); }
+      catch (error) { show(errorMessage(error), 'error'); saveButton.disabled = false; return; }
+    }
     show('Saving article…');
     try {
       if (imageFile.files[0]) payload.featured_image_url = await uploadImage(imageFile.files[0]);
@@ -189,6 +194,7 @@
     var next = post.status === 'published' ? 'draft' : 'published';
     if (!confirm((next === 'published' ? 'Publish' : 'Unpublish') + ' “' + post.title + '”?')) return;
     try {
+      if (next === 'published') await blog.validatePublication(post);
       var result = await client.from('blog_posts').update({ status: next }).eq('id', post.id).select('id').single();
       if (result.error) throw result.error;
       await loadPosts();

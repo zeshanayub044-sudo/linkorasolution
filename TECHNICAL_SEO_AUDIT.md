@@ -1,3 +1,21 @@
+# Technical SEO re-audit — 31 October 2026
+
+Fresh production inventory: 13 canonical public pages, 7 root application/detail-template exclusions and 7 known aliases/retired paths (27 endpoints total). Public pages returned 200, have one H1, unique nonempty title/description, one preferred canonical, parseable structured data and crawlable initial content. Live SEO audit passed with zero errors. Current sitemap includes both published articles and no private routes or closed jobs.
+
+The new article publication defect was a CMS canonical override, not a robots or Auth failure. Its static URL now returns 200, is self-canonical and appears in the 13-URL sitemap. The authenticated editor can no longer publish with an unreachable/noindex/alternate local canonical without an actionable error; blank canonical uses the generated URL. The existing build safety check remains enabled.
+
+All 701 initial references/fragments passed in the repaired build. Runtime Services hover/focus, mobile nav and new-tab/opener protections passed. Published article body text is available without JavaScript; generic readers remain intentionally noindex. BlogPosting, BreadcrumbList and Organization/WebSite JSON-LD were parsed; no review stars, invented employment openings or fabricated claims were added. Google live smartphone tests passed for the corrected article and Services, including crawl/fetch/index permission and self-canonical.
+
+HTTP apex redirects 301 to HTTPS. HTTPS www redirects 301 to apex; HTTP www takes two 301 hops. /index.html remains a 200 alternate canonicalizing to /. This is supported on Pages and excluded from the sitemap; no false server-301 claim is made. The reserved /cdn-cgi/l/email-protection and erroneous /what-is-guest-post/ remain 404, unlinked and absent from the sitemap. Do not request their indexing.
+
+Performance: local 234-run lab LCP p50 492 ms, p75 700 ms, max 7064 ms; these unthrottled, variable-load readings are not field CWV or evidence of universal fast loads. Blog CLS improved from max 0.3123 to 0.02449 in the broad runs; a gated API test separately measured max 0.04552. A one-off GMB 375-px CLS 0.1300 was investigated: three cold-context probes measured 0.06967, 0.05690 and 0.05690, with font/header/hero sources. No unproven global font redesign was applied. Search Console shows no mobile/desktop field CWV data, so field INP/CWV pass cannot be claimed.
+
+The 1.33 MB original logo remains a brand asset; critical headers use the existing 32.6 KB mark. Local WOFF2 requests passed and no Google Fonts waterfall was observed. No claim of a Lighthouse score or third-party tool score was invented.
+
+The sections below are historical evidence from prior releases, not current execution results.
+
+---
+
 # Technical SEO audit — 24 October 2026
 
 ## Verified baseline and Google evidence

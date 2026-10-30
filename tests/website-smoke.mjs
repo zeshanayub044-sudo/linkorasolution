@@ -79,7 +79,8 @@ const routes = JSON.parse(
     /Object\.freeze\((.*)\)/,
   )[1],
 );
-const articlePath = routes.blog[0] ? "/blog/" + routes.blog[0] + ".html" : null;
+const articlePaths = routes.blog.map(slug => "/blog/" + slug + ".html");
+const jobPaths = routes.jobs.map(slug => "/jobs/" + slug + ".html");
 const pages = [
   "/index.html",
   "/about.html",
@@ -92,7 +93,7 @@ const pages = [
   "/blog.html",
   "/careers.html",
   "/privacy.html",
-].concat(articlePath ? [articlePath] : []);
+].concat(articlePaths, jobPaths);
 function contrast(a, b) {
   const lum = (c) => {
     const rgb = c
@@ -242,7 +243,7 @@ try {
               ["index", "contact", "backlinks"].some(
                 (s) => path === "/" + s + ".html",
               ) ||
-              path === articlePath
+              articlePaths.includes(path) || jobPaths.includes(path)
             ) {
               await page.locator("img").evaluateAll(async (xs) => {
                 xs.forEach((i) => (i.loading = "eager"));
@@ -260,15 +261,15 @@ try {
             if (
               flavor.name === "Edge Chromium" &&
               [390, 1440].includes(width) &&
-              ["/index.html", "/contact.html", articlePath].includes(path) &&
+              ["/index.html", "/contact.html", ...articlePaths, ...jobPaths].includes(path) &&
               process.env.QA_OUT
             ) {
               mkdirSync(process.env.QA_OUT, { recursive: true });
               await page.screenshot({
                 path: resolve(
                   process.env.QA_OUT,
-                  path === articlePath
-                    ? "article-" + theme + "-" + width + ".png"
+                  articlePaths.includes(path) || jobPaths.includes(path)
+                    ? path.split('/').pop().replace('.html', '') + "-" + theme + "-" + width + ".png"
                     : path.slice(1, -5) + "-" + theme + "-" + width + ".png",
                 ),
                 fullPage: true,

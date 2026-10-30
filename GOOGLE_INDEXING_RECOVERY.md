@@ -1,3 +1,11 @@
+# Google indexing recovery — 31 October 2026
+
+See GOOGLE_INDEXING_RECOVERY_AUDIT.md for the full 13-URL current matrix and eight historical exclusions. Individual URL Inspection: 8 indexed, 5 not indexed; aggregate remains dated 23 October. Corrected new article 404/canonical and resumed production publishing. Google smartphone live tests and indexing requests succeeded for the new article and Services. Resubmitted changed XML sitemap once: Success, 13 discovered pages, last read 31 October. Public eligibility is verified; indexing timing is Google-controlled.
+
+The following sections are historical release evidence.
+
+---
+
 # Google indexing recovery - 26 October 2026
 
 Authenticated property: sc-domain:linkorasolution.com. The current Page Indexing report says last update 23 October, 6 indexed and 8 not indexed. This supersedes the older report observed on the prior task, and does not establish that this release caused any indexing change.

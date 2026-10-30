@@ -18,6 +18,7 @@
   function card(post) {
     var article = element('article', 'blog-card');
     var imageLink = element('a', 'blog-card__image');
+    imageLink.setAttribute('aria-label', 'Read ' + post.title);
     imageLink.href = blog.postUrl(post.slug);
     imageLink.target = "_blank";
     imageLink.rel = "noopener noreferrer";
@@ -33,6 +34,7 @@
       var mark = element('img');
       mark.src = 'assets/linkora-mark.png';
       mark.alt = '';
+      mark.width = 90; mark.height = 90;
       fallback.appendChild(mark);
       imageLink.appendChild(fallback);
     }
@@ -81,7 +83,6 @@
 
   async function load() {
     status.textContent = 'Loading articles…';
-    grid.replaceChildren();
     try {
       client = client || blog.createClient(false);
       var all = [];
@@ -109,6 +110,7 @@
         });
       render();
     } catch (error) {
+      grid.replaceChildren();
       status.textContent = 'Articles could not be loaded right now.';
       var retry = element('button', 'btn btn-ghost', 'Try again');
       retry.type = 'button';
