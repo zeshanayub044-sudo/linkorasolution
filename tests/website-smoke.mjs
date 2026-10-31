@@ -22,6 +22,7 @@ const server = createServer((q, r) => {
         ".json": "application/json",
         ".png": "image/png",
         ".jpg": "image/jpeg",
+        ".webp": "image/webp",
         ".svg": "image/svg+xml",
         ".ico": "image/x-icon",
       }[extname(file)] || "application/octet-stream",
