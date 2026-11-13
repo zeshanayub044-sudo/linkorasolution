@@ -8,7 +8,7 @@
     root.dataset.theme = light ? "light" : "dark";
     root.style.colorScheme = light ? "light" : "dark";
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = light ? "#f4f7fb" : "#0a0e14";
+    if (meta) meta.content = light ? "#f4f7fb" : "#0B1E3D";
     var button = document.querySelector("[data-theme-toggle]");
     if (button) {
       button.setAttribute("aria-pressed", String(light));

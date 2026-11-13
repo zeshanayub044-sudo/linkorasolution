@@ -250,6 +250,28 @@ header.site-header{
   filter:drop-shadow(0 2px 7px rgba(47,212,196,0.18));
 }
 
+/* Use the supplied horizontal lockup in shared site headers and footers. */
+.logo .mark{display:none;}
+.logo .brandname{
+  display:block;
+  width:210px;
+  height:62px;
+  flex:none;
+  overflow:hidden;
+  font-size:0;
+}
+.logo .brandname::before{
+  content:"";
+  display:block;
+  width:100%;
+  height:100%;
+  background:url("assets/linkora-horizontal-reversed.png") center/contain no-repeat;
+}
+[data-theme="light"] .logo .brandname::before{
+  background-image:url("assets/linkora-horizontal-color.png");
+}
+.logo .brandname .sub{display:none;}
+
 .logo .brandname .sub{
   display:block;
   font-family:'JetBrains Mono', monospace;
@@ -943,6 +965,7 @@ form.contact-form textarea{resize:vertical;min-height:110px;}
   .header-actions .btn-whatsapp{display:none;}
   .logo{font-size:1rem;gap:8px;}
   .logo .mark{width:44px;height:44px;}
+  .logo .brandname{width:172px;height:51px;}
   .logo .brandname .sub{font-size:.48rem;letter-spacing:.08em;}
 }
 

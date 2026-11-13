@@ -32,9 +32,9 @@
     meta('description', job.summary);
     meta('robots', 'index,follow');
     meta('og:title', title, true); meta('og:description', job.summary, true);
-    meta('og:url', url, true); meta('og:image', location.origin + '/assets/linkora-mark.png', true);
+    meta('og:url', url, true); meta('og:image', location.origin + '/assets/logo_primary_on_navy.png?v=4', true);
     meta('twitter:title', title); meta('twitter:description', job.summary);
-    meta('twitter:image', location.origin + '/assets/linkora-mark.png');
+    meta('twitter:image', location.origin + '/assets/logo_primary_on_navy.png?v=4');
     var canonical = document.querySelector('link[rel=canonical]') || career.node('link');
     canonical.rel = 'canonical'; canonical.href = url;
     if (!canonical.parentNode) document.head.appendChild(canonical);
@@ -43,7 +43,7 @@
       description: [job.description, job.responsibilities, job.requirements].filter(Boolean).join('\n\n'),
       datePosted: job.published_at, validThrough: job.closes_at || undefined,
       employmentType: { full_time: 'FULL_TIME', part_time: 'PART_TIME', internship: 'INTERN', contract: 'CONTRACTOR' }[job.employment_type],
-      hiringOrganization: { '@type': 'Organization', name: 'LINKORA SOLUTION', sameAs: 'https://linkorasolution.com', logo: 'https://linkorasolution.com/assets/linkora-mark.png' },
+      hiringOrganization: { '@type': 'Organization', name: 'LINKORA SOLUTION', sameAs: 'https://linkorasolution.com', logo: 'https://linkorasolution.com/assets/linkora-horizontal-color.png?v=4' },
       url: url
     };
     if (job.workplace_type === 'remote') structured.jobLocationType = 'TELECOMMUTE';
