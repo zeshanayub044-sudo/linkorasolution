@@ -41,10 +41,10 @@
     meta('og:title', title, true);
     meta('og:description', description, true);
     meta('og:url', url, true);
-    meta('og:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-mark.png', true);
+    meta('og:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/logo_primary_on_navy.png?v=4', true);
     meta('twitter:title', title);
     meta('twitter:description', description);
-    meta('twitter:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/linkora-mark.png');
+    meta('twitter:image', blog.imageUrl(post.featured_image_url) || location.origin + '/assets/logo_primary_on_navy.png?v=4');
     var canonical = document.querySelector('link[rel=canonical]') || node('link');
     canonical.rel = 'canonical'; canonical.href = url;
     if (!canonical.parentNode) document.head.appendChild(canonical);
@@ -57,7 +57,7 @@
       description: description, image: blog.imageUrl(post.featured_image_url) || undefined,
       datePublished: post.published_at, dateModified: post.updated_at,
       author: { '@type': (!author.display_name || author.display_name === 'LINKORA SOLUTION') ? 'Organization' : 'Person', name: author.display_name || 'LINKORA SOLUTION editorial team' },
-      publisher: { '@type': 'Organization', name: 'LINKORA SOLUTION', logo: { '@type': 'ImageObject', url: location.origin + '/assets/linkora-mark.png' } },
+      publisher: { '@type': 'Organization', name: 'LINKORA SOLUTION', logo: { '@type': 'ImageObject', url: location.origin + '/assets/linkora-horizontal-color.png?v=4' } },
       mainEntityOfPage: url
     }).replace(/</g, '\\u003c');
     document.head.appendChild(json);

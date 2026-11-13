@@ -5,9 +5,9 @@ param(
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
-$sourcePath = Join-Path $AssetsDirectory 'linkora-logo.png'
+$sourcePath = Join-Path $AssetsDirectory 'app_icon_navy.png'
 if (-not (Test-Path -LiteralPath $sourcePath)) {
-    throw "Missing official logo: $sourcePath"
+    throw "Missing official app icon: $sourcePath"
 }
 
 function Save-SquarePng {
@@ -26,7 +26,7 @@ function Save-SquarePng {
         $graphics.DrawImage(
             $Source,
             [System.Drawing.Rectangle]::new(0, 0, $Size, $Size),
-            [System.Drawing.Rectangle]::new(270, 65, 670, 670),
+            [System.Drawing.Rectangle]::new(0, 0, $Source.Width, $Source.Height),
             [System.Drawing.GraphicsUnit]::Pixel
         )
         $output.Save($Path, [System.Drawing.Imaging.ImageFormat]::Png)
@@ -39,12 +39,11 @@ function Save-SquarePng {
 
 $source = [System.Drawing.Image]::FromFile($sourcePath)
 try {
-    if ($source.Width -ne 1254 -or $source.Height -ne 1254) {
-        throw "Official logo dimensions changed; review the icon crop before regenerating assets."
+    if ($source.Width -ne $source.Height) {
+        throw "Official app icon must be square; refusing to distort it."
     }
 
     $icons = @(
-        @{ Name = 'linkora-mark.png'; Size = 128 },
         @{ Name = 'favicon-16x16.png'; Size = 16 },
         @{ Name = 'favicon-32x32.png'; Size = 32 },
         @{ Name = 'apple-touch-icon.png'; Size = 180 },

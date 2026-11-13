@@ -32,7 +32,7 @@
     } else {
       var fallback = element('span', 'blog-card__fallback');
       var mark = element('img');
-      mark.src = 'assets/linkora-mark.png';
+      mark.src = 'assets/symbol_color.png';
       mark.alt = '';
       mark.width = 90; mark.height = 90;
       fallback.appendChild(mark);
