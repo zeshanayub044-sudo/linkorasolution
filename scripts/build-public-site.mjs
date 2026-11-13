@@ -30,7 +30,7 @@ export function blogCard(post) {
   const href = '/blog/' + post.slug + '.html';
   const image = /^https:\/\/nbvylffxmjmovyfhbytu.supabase.co\/storage\/v1\/object\/public\/blog-images\//.test(post.featured_image_url || '')
     ? '<img src="' + escape(post.featured_image_url) + '" alt="" width="640" height="360" loading="lazy" decoding="async">'
-    : '<span class="blog-card__fallback"><img src="assets/linkora-mark.png" alt="" width="90" height="90"></span>';
+    : '<span class="blog-card__fallback"><img src="assets/symbol_color.png" alt="" width="90" height="90"></span>';
   const author = post.blog_authors?.display_name || 'LINKORA SOLUTION editorial team';
   const date = new Date(post.published_at).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
   const link = ' href="' + escape(href) + '" target="_blank" rel="noopener noreferrer"';
@@ -136,10 +136,10 @@ export function seo(
     ["og:title", title, "property"],
     ["og:description", description, "property"],
     ["og:url", url, "property"],
-    ["og:image", image || origin + "/assets/linkora-mark.png", "property"],
+    ["og:image", image || origin + "/assets/logo_primary_on_navy.png?v=4", "property"],
     ["twitter:title", title, "name"],
     ["twitter:description", description, "name"],
-    ["twitter:image", image || origin + "/assets/linkora-mark.png", "name"],
+    ["twitter:image", image || origin + "/assets/logo_primary_on_navy.png?v=4", "name"],
   ]) {
     const tag =
         "<meta " + attr + '="' + key + '" content="' + escape(value) + '">',
@@ -307,7 +307,7 @@ export async function build() {
         name: "LINKORA SOLUTION",
         logo: {
           "@type": "ImageObject",
-          url: origin + "/assets/linkora-mark.png",
+          url: origin + "/assets/linkora-horizontal-color.png?v=4",
         },
       },
       mainEntityOfPage: url,

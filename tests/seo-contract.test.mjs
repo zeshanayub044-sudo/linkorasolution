@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { inspectHtml, validatePages, privatePages, robotsAllows } from '../scripts/audit-public-seo.mjs';
 const url = 'https://linkorasolution.com/';
-const html = `<head><title>Example &amp; Topic</title><META content='Useful public description' NAME='description'><link href='${url}' rel='canonical'><meta property='og:title' content='Example'><meta property='og:description' content='Description'><meta property='og:url' content='${url}'><meta property='og:image' content='https://linkorasolution.com/assets/linkora-mark.png'></head><main><h1>Topic</h1><h2>Scope</h2><h3>Details</h3></main>`;
+const html = `<head><title>Example &amp; Topic</title><META content='Useful public description' NAME='description'><link href='${url}' rel='canonical'><meta property='og:title' content='Example'><meta property='og:description' content='Description'><meta property='og:url' content='${url}'><meta property='og:image' content='https://linkorasolution.com/assets/logo_primary_on_navy.png?v=4'></head><main><h1>Topic</h1><h2>Scope</h2><h3>Details</h3></main>`;
 test('robots audit respects crawler groups and the most specific matching path', () => {
   assert.equal(robotsAllows('User-agent: *\nAllow: /\nUser-agent: SomeAIbot\nDisallow: /', '/about.html'), true);
   assert.equal(robotsAllows('User-agent: *\nAllow: /\nUser-agent: Googlebot\nDisallow: /', '/about.html'), false);
