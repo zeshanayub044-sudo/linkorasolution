@@ -18,6 +18,13 @@ test("published content renderer escapes markup and allows only ordinary web lin
   );
   assert.match(html, /<ul><li>First<\/li>/);
 });
+test("article body headings start at h2 and keep relative nesting", () => {
+  assert.equal(
+    renderText("## Introduction\n\n### Background\n\n## Next section"),
+    "<h2>Introduction</h2>\n<h3>Background</h3>\n<h2>Next section</h2>",
+  );
+  assert.equal(renderText("# Introduction\n\n## Background"), "<h2>Introduction</h2>\n<h3>Background</h3>");
+});
 test("snapshot SEO is unique, escaped, and contains one canonical", () => {
   const html = seo(
     '<head><title>Old</title><meta name="robots" content="noindex"><link rel="canonical" href="old"></head>',
