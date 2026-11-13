@@ -63,15 +63,25 @@ export function inline(text) {
   return out + escape(text.slice(cursor));
 }
 export function renderText(value) {
-  return String(value || "")
+  const blocks = String(value || "")
     .replace(/\r\n?/g, "\n")
-    .split(/\n\s*\n/)
+    .split(/\n\s*\n/);
+  const markdownHeadings = blocks
+    .map((block) => /^(#{1,3})\s+(.+)$/m.exec(block.trim().split("\n")[0]))
+    .filter(Boolean);
+  const firstHeadingDepth = markdownHeadings[0]?.[1].length;
+  return blocks
     .map((block) => {
       const lines = block.trim().split("\n");
       if (!lines[0]) return "";
       const heading = lines.length === 1 && /^(#{1,3})\s+(.+)$/.exec(lines[0]);
       if (heading) {
-        const level = Math.min(4, heading[1].length + 1);
+        // The article title is rendered separately as h1. Anchor the first
+        // body heading at h2 and preserve the relative Markdown nesting.
+        const level = Math.min(
+          6,
+          Math.max(2, 2 + heading[1].length - firstHeadingDepth),
+        );
         return "<h" + level + ">" + inline(heading[2]) + "</h" + level + ">";
       }
       if (lines.every((l) => /^-\s+/.test(l)))
